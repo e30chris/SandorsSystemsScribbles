@@ -5,6 +5,7 @@ author:      Sandor
 description: "Sandors HowTo notes to keep the Argo purring."
 baseurl:     ""
 url:         "http://sandorsscribbl.es"
+sitemap: sitemap.xml
 
 # Google analytics
 google_analytics: UA-38590178-1
