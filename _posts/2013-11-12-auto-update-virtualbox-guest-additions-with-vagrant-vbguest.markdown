@@ -11,7 +11,7 @@ categories: vagrant
 
 - Keep the VirtualBox guest additions at the latest version using vagrant-vbguest built by dotless-de.
 
-<!-- more -->
+
 
 ## The Links
 
