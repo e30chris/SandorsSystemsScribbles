@@ -1,13 +1,13 @@
 # Site settings
-title:       Pixyll
-email:       your_email@example.com
-author:      John Otander
-description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
+title:       Sandors Systems Scribbles
+email:       sandor@sandorsscribbl.es
+author:      Sandor
+description: "Sandors HowTo notes to keep the Argo purring."
 baseurl:     ""
-url:         "http://pixyll.com"
+url:         "http://sandorsscribbl.es"
 
 # Google analytics
-google_analytics:
+google_analytics: UA-38590178-1
 
 # Optional features
 animated:           false
@@ -15,12 +15,12 @@ show_related_posts: false
 show_post_footers:  false
 
 # Social icons
-show_social_icons: false
-github_username:
-twitter_username:
+show_social_icons: true
+github_username:  e30chris
+twitter_username:  e30chris
 google_plus_id:
 linkedin_username:
-bitcoin_url:
+bitcoin_url: 
 paypal_url:
 flattr_button:
 

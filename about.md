@@ -1,8 +1,12 @@
 ---
 layout: page
-title: About Pixyll
+title: About Sandors Systems Scribbles
 permalink: /about/
 ---
+
+This webpage serves as a HowTo notebook full of notes taken by Sandor, the chief mechanic on the Argo. They should be simple notes with simple copy and paste instuctions to build systems.
+
+The theme is Pixyll and the blog is built with Jekyll. Links below.
 
 This Jekyll theme was crafted with <3 by [John Otander](http://johnotander.com)
 ([@4lpine](https://twitter.com/4lpine)).
