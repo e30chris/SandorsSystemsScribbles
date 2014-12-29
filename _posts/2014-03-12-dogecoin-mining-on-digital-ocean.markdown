@@ -11,7 +11,7 @@ categories: coins
 
 Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.
 
-{% img https://dl.dropboxusercontent.com/u/6735750/dogecoinsuchlogo.png %}
+![doge](https://dl.dropboxusercontent.com/u/6735750/dogecoinsuchlogo.png)
 
 
 

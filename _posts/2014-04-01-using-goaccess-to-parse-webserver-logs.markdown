@@ -59,7 +59,7 @@ GoAccess now parses the log and outputs the results in a configurable format.  Y
 
 Here is a screenshot that shows how many times an IP has hit the webserver.
 
-{% img https://s3.amazonaws.com/sandorssystemsscribbles/GoAccessScreen.png %}
+![goscreen](https://s3.amazonaws.com/sandorssystemsscribbles/GoAccessScreen.png)
 
 
 To keep it simple install Apache rotatelog and set the logs to rollover on the hour.  Then GoAccess can parse the logs by the hour.
