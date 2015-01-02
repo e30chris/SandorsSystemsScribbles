@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deploy Wordpress to AWS Beanstalk using eb"
+title: "Deploy PHP to AWS Beanstalk using eb"
 date: 2014-11-30 22:42
 comments: false
 summary: The Problem - Wordpress has lots of hosting options all of which cost money to be on a shared hosting server.  I need a autoscaling & auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS.  AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.
@@ -12,7 +12,7 @@ Wordpress has lots of hosting options all of which cost money to be on a shared 
 
 # The Goal
 
-Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the 'eb' cli tool.  
+Deploy an autoscaling, auto-healing PHP example website on AWS Beanstalk using the 'eb' cli tool.  The next post will HowTo going from a PHP example page to a Wordpress install.
 
 
 # The Links
@@ -143,21 +143,7 @@ Navigate to the EIP - http://54.149.45.218 and you should see the Beanstalk PHP 
 
 ![AWS Congrats Page Screenshot](https://dl.dropboxusercontent.com/u/6735750/WebHostPics/AWSCongratsScreen.png)
 
-Now that we know everything is setup correctly to deploy a test PHP environment we will deploy a full on Wordpress install.
-
-## HowTo - Deploy Wordpress to Beanstalk
-
-First goal is to get a bare bones Wordpress setup working.  There are two ways to deploy to Beanstalk, hand it a docker container of your app or do a git push.  For this example we are going with a Docker container because in 2 years that will be the way it is and I dont want to go back and read how retarded I was in 2014 deploying with git.
-
-This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.  The HowTo of migrating an existing Wordpress will be a separate post.
-
-Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above. 
-
-~~~
-sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
-~~~
-
-
+Now that we know everything is setup correctly to deploy a test PHP environment we will deploy a full on Wordpress install in the next HowTo.
 
 
 
