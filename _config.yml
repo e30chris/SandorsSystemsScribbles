@@ -1,0 +1,33 @@
+# Site settings
+title:       Sandors Systems Scribbles
+email:       sandor@sandorsscribbl.es
+author:      Sandor
+description: "Sandors HowTo notes to keep the Argo purring."
+baseurl:     ""
+url:         "http://sandorsscribbl.es"
+sitemap: sitemap.xml
+
+# Google analytics
+google_analytics: UA-38590178-1
+
+# Optional features
+animated:           false
+show_related_posts: false
+show_post_footers:  false
+
+# Social icons
+show_social_icons: true
+github_username:  e30chris
+twitter_username:  e30chris
+google_plus_id:
+linkedin_username: chris325i
+bitcoin_url: https://onename.io/chrisl
+paypal_url:
+flattr_button:
+
+# Build settings
+markdown:     kramdown
+permalink:    pretty
+paginate:     3
+sass:
+compressed: true
