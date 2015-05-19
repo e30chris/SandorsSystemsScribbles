@@ -14,6 +14,9 @@ You have a brand new fresh install of OSX on your MacBook and you need to get up
 Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.
 
 
+[GitHub - e30chris/Ansible-MacDeploy](https://github.com/e30chris/Ansible-MacDeploy)
+
+
 ### Backstory:
 Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.
 
