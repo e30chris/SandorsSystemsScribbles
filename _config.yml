@@ -15,6 +15,10 @@ animated:           false
 show_related_posts: false
 show_post_footers:  false
 
+# Disqus post comments
+# (leave blank to disable Disqus)
+disqus_shortname:
+
 # Social icons
 show_social_icons: true
 github_username:  e30chris
@@ -22,11 +26,29 @@ twitter_username:  e30chris
 google_plus_id:
 linkedin_username: chris325i
 bitcoin_url: https://onename.io/chrisl
+stackoverflow_id:
+angellist_username:
 paypal_url:
 flattr_button:
 
+# Post sharing icons
+show_sharing_icons: false
+share_text: 'Share this post!'
+# Change to 'true' to enable individual icons
+share_facebook: false
+share_twitter: false
+share_googleplus: false
+share_linkedin: false
+share_digg: false
+share_tumblr: false
+share_reddit: false
+share_stumbleupon: false
+share_hackernews: false
+
 # Build settings
-markdown:     kramdown
+markdown:     redcarpet
+redcarpet:
+  extensions: ['smart', 'tables', 'with_toc_data']
 permalink:    pretty
 paginate:     3
 sass:
