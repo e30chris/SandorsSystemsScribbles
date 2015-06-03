@@ -1,7 +1,9 @@
-<<<<<<< HEAD
 SandorsSystemsScribbles
-=======================
-=======
+
+A Jekyll blog using a fork of the excellent Pixyll design.
+
+---
+
 # Pixyll
 
 [pixyll.com](http://www.pixyll.com)
@@ -178,4 +180,3 @@ There may be merge conflicts, so be sure to fix the files that git lists if they
 * [Refills](http://refills.bourbon.io/)
 * [Solarized](http://ethanschoonover.com/solarized)
 * [Animate.css](http://daneden.github.io/animate.css/)
->>>>>>> upstream/master
