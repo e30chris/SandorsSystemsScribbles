@@ -88,7 +88,7 @@ This avoids annoying brew errors on lookups.
 
 [All hail Holmans .dotfiles](https://github.com/holman/dotfiles)
 
-[Explained by Holman(http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/)
+[Explained by Holman](http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/)
 
 
 ### Download and run the playbook
