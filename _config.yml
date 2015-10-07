@@ -3,18 +3,20 @@ title:       Sandors Systems Scribbles
 email:       sandor@sandorsscribbl.es
 author:      Sandor
 description: "Sandors HowTo notes to keep the Argo purring."
-baseurl:     ""
+baseurl:     "http://sandorsscribbl.es"
 url:         "http://sandorsscribbl.es"
+date_format: "%b %-d, %Y"
 sitemap: sitemap.xml
 
 # Google analytics
 google_analytics: UA-38590178-1
 
 # Optional features
-animated:           false
-show_related_posts: false
-show_post_footers:  false
-show_social_icons:  false
+animated:             false
+show_related_posts:   false
+show_post_footers:    false
+show_social_icons:    false
+ajaxify_contact_form: false
 
 # Disqus post comments
 # (leave blank to disable Disqus)
@@ -24,6 +26,8 @@ disqus_shortname:
 show_social_icons: true
 github_username:  e30chris
 twitter_username:  e30chris
+bitbucket_username:
+stackoverflow_id:
 google_plus_id:
 linkedin_username: chris325i
 bitcoin_url: https://onename.io/chrisl
