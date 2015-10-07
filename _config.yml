@@ -14,6 +14,7 @@ google_analytics: UA-38590178-1
 animated:           false
 show_related_posts: false
 show_post_footers:  false
+show_social_icons:  false
 
 # Disqus post comments
 # (leave blank to disable Disqus)
@@ -28,6 +29,7 @@ linkedin_username: chris325i
 bitcoin_url: https://onename.io/chrisl
 stackoverflow_id:
 angellist_username:
+medium_id:
 paypal_url:
 flattr_button:
 
@@ -35,21 +37,23 @@ flattr_button:
 show_sharing_icons: false
 share_text: 'Share this post!'
 # Change to 'true' to enable individual icons
-share_facebook: false
-share_twitter: false
-share_googleplus: false
-share_linkedin: false
-share_digg: false
-share_tumblr: false
-share_reddit: false
+share_facebook: true
+share_twitter: true
+share_googleplus: true
+share_linkedin: true
+share_digg: true
+share_tumblr: true
+share_reddit: true
 share_stumbleupon: false
-share_hackernews: false
+share_hackernews: true
 
 # Build settings
-markdown:     redcarpet
+markdown:     kramdown
 redcarpet:
   extensions: ['smart', 'tables', 'with_toc_data']
 permalink:    pretty
-paginate:     3
+paginate:     4
 sass:
-compressed: true
+  compressed: true
+gems:
+  - jekyll-sitemap
