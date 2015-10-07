@@ -1,9 +1,3 @@
-SandorsSystemsScribbles
-
-A Jekyll blog using a fork of the excellent Pixyll design.
-
----
-
 # Pixyll
 
 [pixyll.com](http://www.pixyll.com)
@@ -140,7 +134,6 @@ More setup instructions and advanced options can be found at [http://formspree.i
 To configure Disqus, set up a [Disqus site](https://disqus.com/admin/create/) with the same name as your site. Once that is complete,
 go to the admin page for your site. Under the "Settings" tab there is a button called "Universal Code". Take that code and replace it
 in the `_layouts/post.html` file between the `{% if site.disqus_shortname %}` and `{% endif %}` tags.
-
 
 ### Customizing the CSS
 

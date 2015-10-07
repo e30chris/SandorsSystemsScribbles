@@ -2,22 +2,25 @@
   -webkit-text-size-adjust: none;
 }
 
-
+.highlight .c,
+.highlight .cs,
+.highlight .cm,
+.highlight .cp,
 .highlight .c1 {
   color: $hljs-comment;
   font-style: italic;
 }
 
 .highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kr,
+.highlight .kt,
 .highlight .kp {
   color: $hljs-keyword;
 }
 
-.highlight .mi {
-  color: $hljs-number;
-}
-
-=======
 .highlight .na,
 .highlight .nb,
 .highlight .nc,
