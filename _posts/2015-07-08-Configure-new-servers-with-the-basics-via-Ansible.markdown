@@ -18,10 +18,10 @@ This Ansible playbook that is simple and to the point.  It updates yum or apt, a
 
 
 ### Backstory:
-After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured, and easy to login to without any manual steps.  This playbook takes care of both requirements.
+After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured and easy to login to without any manual steps.  This playbook takes care of both requirements.
 
 ### ToDo:
-  - Add a role to this playbook to kick off the droplet creation and then register the names/ips for the new servers before handing off to this current playbook config.
+  - Add a role to this playbook to kick off the droplet creation and then register the names and IP's for the new servers before handing off to this current playbook config.
 
 ---
 

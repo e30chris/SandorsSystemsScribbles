@@ -5,51 +5,55 @@ author:      Sandor
 description: "Sandors HowTo notes to keep the Argo purring."
 baseurl:     ""
 url:         "http://sandorsscribbl.es"
-sitemap: sitemap.xml
+date_format: "%b %-d, %Y"
 
-# Google analytics
+# Google services
 google_analytics: UA-38590178-1
+google_verification:
 
 # Optional features
-animated:           false
-show_related_posts: false
-show_post_footers:  false
+animated:             false
+show_related_posts:   false
+show_post_footers:    false
+show_social_icons:    true
+ajaxify_contact_form: true
 
 # Disqus post comments
 # (leave blank to disable Disqus)
 disqus_shortname:
 
 # Social icons
-show_social_icons: true
-github_username:  e30chris
-twitter_username:  e30chris
+github_username: e30chris
+bitbucket_username:
+stackoverflow_id:
+twitter_username: e30chris
 google_plus_id:
 linkedin_username: chris325i
-bitcoin_url: https://onename.io/chrisl
-stackoverflow_id:
 angellist_username:
+medium_id:
+bitcoin_url: https://onename.io/chrisl
 paypal_url:
 flattr_button:
 
 # Post sharing icons
-show_sharing_icons: false
-share_text: 'Share this post!'
+show_sharing_icons: true
+share_text: 'Share this post'
 # Change to 'true' to enable individual icons
-share_facebook: false
-share_twitter: false
-share_googleplus: false
-share_linkedin: false
-share_digg: false
-share_tumblr: false
-share_reddit: false
-share_stumbleupon: false
-share_hackernews: false
+share_facebook: true
+share_twitter: true
+share_googleplus: true
+share_linkedin: true
+share_digg: true
+share_tumblr: true
+share_reddit: true
+share_stumbleupon: true
+share_hackernews: true
 
 # Build settings
-markdown:     redcarpet
+markdown:     kramdown
 redcarpet:
   extensions: ['smart', 'tables', 'with_toc_data']
 permalink:    pretty
-paginate:     3
+paginate:     4
 sass:
-compressed: true
+  compressed: true

@@ -1,4 +1,4 @@
-Copyright (c) 2014 Sandor Chief Mechanic - Argo
+Copyright (c) 2014-2015 John Otander
 
 MIT License
 
