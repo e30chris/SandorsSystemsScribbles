@@ -1,5 +1,17 @@
-baseurl: http://sandorsscribbl.es
+baseurl: "http://sandorsscribbl.es"
+title: "Sandors Systems Scribbles"
+permalinks:
+  post: /:category/:title/
+params:
+  Subtitle: "System Notes from Sandor"
+  AuthorName: "Sandor"
+  GitHubUser: "e30chris"
+  ListOfFoo:
+    - "foo1"
+    - "foo2"
+  SidebarRecentLimit: 5
 disablePathToLower: true
 languageCode: en-us
-title: Sandors Systems Scribbles
+googleAnalytics:
+theme: hyde
 ...
