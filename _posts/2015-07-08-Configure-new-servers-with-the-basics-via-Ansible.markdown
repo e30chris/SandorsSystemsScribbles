@@ -73,10 +73,9 @@ Host *
 {% highlight bash %}
 sandor@pineApplez$ › cat ~/.ansible/hosts
 # All Servers
-bloggindroplet
-servcent
-servdeb
-servfed
+docks
+cent7
+fed22
 
 # App servers
 [app]
@@ -164,7 +163,8 @@ sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
 which returns lots of cows:
 
 {% highlight bash %}
-sandor@pineApplez$ ansible-playbook site.yml --ask-vault-pass
+2.2.3 in ServerDelivery/ on dev
+› ansible-playbook -i "docks,cent7,fed22," site.yml --ask-vault-pass
 Vault password:
  ____________
 < PLAY [all] >
@@ -186,12 +186,15 @@ Vault password:
                 ||     ||
 
 
-ok: [servdeb]
-ok: [servfed]
-ok: [servcent]
- ___________________________________________________
-< TASK: update all YUM packages to latest on Centos >
- ---------------------------------------------------
+ok: [fed22]
+ok: [cent7]
+ok: [docks]
+docks: importing group_vars/Ubuntu.yml
+cent7: importing group_vars/CentOS.yml
+fed22: importing group_vars/Fedora.yml
+ _____________________________________
+< TASK: update all packages on CentOS >
+ -------------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -199,12 +202,12 @@ ok: [servcent]
                 ||     ||
 
 
-skipping: [servdeb]
-skipping: [servfed]
-ok: [servcent]
- ___________________________________________________
-< TASK: update all DNF packages to latest on Fedora >
- ---------------------------------------------------
+skipping: [docks]
+skipping: [fed22]
+skipping: [cent7]
+ _______________________________
+< TASK: install EPEL for CentOS >
+ -------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -212,12 +215,12 @@ ok: [servcent]
                 ||     ||
 
 
-skipping: [servcent]
-skipping: [servdeb]
-ok: [servfed]
- ___________________________________________________
-< TASK: update all Apt packages to latest on Debian >
- ---------------------------------------------------
+skipping: [cent7]
+skipping: [fed22]
+skipping: [docks]
+ ________________________________________
+< TASK: add the must have apps on CentOS >
+ ----------------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -225,12 +228,12 @@ ok: [servfed]
                 ||     ||
 
 
-skipping: [servcent]
-skipping: [servfed]
-ok: [servdeb]
- ___________________________________________________
-< TASK: add sudoers package to Debian for new users >
- ---------------------------------------------------
+skipping: [cent7]
+skipping: [docks]
+skipping: [fed22]
+ ____________________________________________
+< TASK: update all packages on Ubuntu family >
+ --------------------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -238,9 +241,48 @@ ok: [servdeb]
                 ||     ||
 
 
-skipping: [servfed]
-skipping: [servcent]
-ok: [servdeb]
+skipping: [cent7]
+skipping: [fed22]
+ok: [docks]
+ ________________________________________
+< TASK: add the must have apps on Ubuntu >
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+ok: [docks] => (item=sudo,vim,htop,tmux,unzip,fail2ban)
+ _____________________________________
+< TASK: update all packages on Fedora >
+ -------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [cent7]
+ok: [fed22]
+ ________________________________________
+< TASK: add the must have apps on Fedora >
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [cent7]
+ok: [fed22] => (item=sudo,vim,htop,tmux,unzip,fail2ban)
  _______________________________
 < TASK: adding users to servers >
  -------------------------------
@@ -251,21 +293,15 @@ ok: [servdeb]
                 ||     ||
 
 
-ok: [servcent] => (item=chrisl)
-ok: [servdeb] => (item=chrisl)
-ok: [servfed] => (item=chrisl)
-ok: [servcent] => (item=copper)
-ok: [servfed] => (item=copper)
-ok: [servdeb] => (item=copper)
-ok: [servcent] => (item=lucy)
-ok: [servdeb] => (item=lucy)
-ok: [servfed] => (item=lucy)
-ok: [servfed] => (item=kami)
-ok: [servdeb] => (item=kami)
-ok: [servcent] => (item=kami)
-ok: [servfed] => (item=bimmer)
-ok: [servcent] => (item=bimmer)
-ok: [servdeb] => (item=bimmer)
+ok: [docks] => (item=chrisl)
+ok: [fed22] => (item=chrisl)
+ok: [cent7] => (item=chrisl)
+ok: [docks] => (item=dpr)
+ok: [fed22] => (item=dpr)
+ok: [cent7] => (item=dpr)
+ok: [cent7] => (item=weev)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
  _________________________________
 < TASK: add users ssh public keys >
  ---------------------------------
@@ -276,21 +312,15 @@ ok: [servdeb] => (item=bimmer)
                 ||     ||
 
 
-ok: [servfed] => (item=chrisl)
-ok: [servdeb] => (item=chrisl)
-ok: [servcent] => (item=chrisl)
-ok: [servfed] => (item=copper)
-ok: [servdeb] => (item=copper)
-ok: [servcent] => (item=copper)
-ok: [servfed] => (item=lucy)
-ok: [servdeb] => (item=lucy)
-ok: [servcent] => (item=lucy)
-ok: [servfed] => (item=kami)
-ok: [servdeb] => (item=kami)
-ok: [servcent] => (item=kami)
-ok: [servdeb] => (item=bimmer)
-ok: [servfed] => (item=bimmer)
-ok: [servcent] => (item=bimmer)
+ok: [fed22] => (item=chrisl)
+ok: [cent7] => (item=chrisl)
+ok: [docks] => (item=chrisl)
+ok: [fed22] => (item=dpr)
+ok: [docks] => (item=dpr)
+ok: [cent7] => (item=dpr)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
+ok: [cent7] => (item=weev)
  _______________________
 < TASK: add admin group >
  -----------------------
@@ -301,9 +331,9 @@ ok: [servcent] => (item=bimmer)
                 ||     ||
 
 
-ok: [servcent]
-ok: [servdeb]
-ok: [servfed]
+ok: [docks]
+ok: [fed22]
+ok: [cent7]
  ________________________________
 < TASK: add users to admin group >
  --------------------------------
@@ -314,21 +344,15 @@ ok: [servfed]
                 ||     ||
 
 
-ok: [servdeb] => (item=chrisl)
-ok: [servcent] => (item=chrisl)
-ok: [servfed] => (item=chrisl)
-ok: [servdeb] => (item=copper)
-ok: [servdeb] => (item=lucy)
-ok: [servcent] => (item=copper)
-ok: [servfed] => (item=copper)
-ok: [servdeb] => (item=kami)
-ok: [servfed] => (item=lucy)
-ok: [servcent] => (item=lucy)
-ok: [servdeb] => (item=bimmer)
-ok: [servcent] => (item=kami)
-ok: [servfed] => (item=kami)
-ok: [servcent] => (item=bimmer)
-ok: [servfed] => (item=bimmer)
+ok: [cent7] => (item=chrisl)
+ok: [fed22] => (item=chrisl)
+ok: [docks] => (item=chrisl)
+ok: [cent7] => (item=dpr)
+ok: [fed22] => (item=dpr)
+ok: [docks] => (item=dpr)
+ok: [cent7] => (item=weev)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
  ______________________________
 < TASK: add users sudoers file >
  ------------------------------
@@ -339,24 +363,18 @@ ok: [servfed] => (item=bimmer)
                 ||     ||
 
 
-ok: [servdeb] => (item=chrisl)
-ok: [servfed] => (item=chrisl)
-ok: [servcent] => (item=chrisl)
-ok: [servdeb] => (item=copper)
-ok: [servfed] => (item=copper)
-ok: [servcent] => (item=copper)
-ok: [servdeb] => (item=lucy)
-ok: [servfed] => (item=lucy)
-ok: [servcent] => (item=lucy)
-ok: [servdeb] => (item=kami)
-ok: [servcent] => (item=kami)
-ok: [servfed] => (item=kami)
-ok: [servdeb] => (item=bimmer)
-ok: [servcent] => (item=bimmer)
-ok: [servfed] => (item=bimmer)
- ____________________________________________________
-< TASK: secure SSH with a sane sshd_config on RedHat >
- ----------------------------------------------------
+ok: [cent7] => (item=chrisl)
+ok: [fed22] => (item=chrisl)
+ok: [docks] => (item=chrisl)
+ok: [cent7] => (item=dpr)
+ok: [fed22] => (item=dpr)
+ok: [docks] => (item=dpr)
+ok: [cent7] => (item=weev)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
+ __________________________________________
+< TASK: secure SSH with a sane sshd_config >
+ ------------------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -364,12 +382,12 @@ ok: [servfed] => (item=bimmer)
                 ||     ||
 
 
-skipping: [servdeb]
-ok: [servfed]
-ok: [servcent]
- ____________________________________________________
-< TASK: secure SSH with a sane sshd_config on Debian >
- ----------------------------------------------------
+ok: [docks]
+ok: [cent7]
+ok: [fed22]
+ _______________________
+< TASK: restarting sshd >
+ -----------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -377,22 +395,9 @@ ok: [servcent]
                 ||     ||
 
 
-skipping: [servfed]
-skipping: [servcent]
-ok: [servdeb]
- ____________________________________
-< TASK: restart sshd with new config >
- ------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-changed: [servfed]
-changed: [servdeb]
-changed: [servcent]
+changed: [cent7]
+changed: [fed22]
+changed: [docks]
  ____________
 < PLAY RECAP >
  ------------
@@ -403,10 +408,8 @@ changed: [servcent]
                 ||     ||
 
 
-servcent                   : ok=9    changed=1    unreachable=0    failed=0
-servdeb                    : ok=10   changed=1    unreachable=0    failed=0
-servfed                    : ok=9    changed=1    unreachable=0    failed=0
-
-
+cent7                      : ok=8    changed=1    unreachable=0    failed=0
+docks                      : ok=10   changed=1    unreachable=0    failed=0
+fed22                      : ok=10   changed=1    unreachable=0    failed=0
 
 {% endhighlight %}

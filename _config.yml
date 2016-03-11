@@ -50,10 +50,11 @@ share_stumbleupon: true
 share_hackernews: true
 
 # Build settings
-markdown:     kramdown
+markdown: redcarpet
+highlight: rogue
 redcarpet:
   extensions: ['smart', 'tables', 'with_toc_data']
-permalink:    pretty
-paginate:     4
+permalink:  pretty
+paginate: 4
 sass:
   compressed: true
