@@ -1,3 +1,4 @@
 baseurl = "http://theargo.io/"
 languageCode = "en-us"
 title = "Sandors Systems Scribbles"
+description = "Notes about Systems"
