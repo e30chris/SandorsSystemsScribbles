@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The problem
@@ -11,7 +15,7 @@ Configure Ansible playbooks to execute through the pmksh shell on the targeted s
 
 
 
-## Shells & Ansible 
+## Shells & Ansible
 Currently Ansible & Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using 'command' can move to using the full suite of modules.  
 
 The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.

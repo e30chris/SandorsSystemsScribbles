@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -57,8 +61,3 @@ What that does:
 - SSH into the VM
   - Must have Cygwin or Git installed
   - You can also use PuTTY
-
-
-
-
-

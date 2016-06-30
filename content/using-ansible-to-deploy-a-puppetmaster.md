@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Problem
@@ -41,7 +45,7 @@ os_family: debian
 os_version: 7
 os_arch: amd64
 
-# pe installer 
+# pe installer
 pe_installer: puppet-enterprise-{{ pe_version }}-{{ os_family }}-{{ os_version }}-{{ os_arch }}
 
 # hostnames
@@ -141,4 +145,3 @@ Here is the PuppetMasters install-
   command: /root/puppetinstall/{{ pe_installer }}/puppet-enterprise-installer -a /root/puppetinstall/pupmaster.answer -l /root/puppetinstall/pupmaster_install.log
 
 ~~~
-

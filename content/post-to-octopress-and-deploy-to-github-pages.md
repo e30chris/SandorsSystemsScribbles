@@ -1,9 +1,13 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
-Use Jekyll & octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are [now](http://sandorsscribbl.es/post-to-octopress-and-deploy-to-github-pages/)) 
+Use Jekyll & octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are [now](http://sandorsscribbl.es/post-to-octopress-and-deploy-to-github-pages/))
 
 _not anymore, Sandors HowTo notebook has been moved to Amazon AWS_
 

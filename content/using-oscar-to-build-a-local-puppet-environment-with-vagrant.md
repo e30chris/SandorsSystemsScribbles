@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -57,14 +61,14 @@ Set the download_root or manually add the installer with
 sandor@pineApplez> vagrant pe-build copy puppet-enterprise-3.1.3-el-6-x86_64.tar.gz
 ~~~
 
-~~~ 
+~~~
 sandor@pineApplez> vagrant oscar init
 ~~~
 
 ~~~
 sandor@pineApplez> vagrant oscar init-vms \
                    --master master=centosPupLabs \
-                   --agent firstagent=centosPupLabs 
+                   --agent firstagent=centosPupLabs
                    --agent secondagent=centosPupLabs
 ~~~
 
@@ -76,7 +80,7 @@ What that does:
 
 - Creates a Vagrantfile that is customized by Oscar
 - Adds a PuppetMaster and 2 agents to the Vagrant environment
-- Uses the PuppetLabs Centos box as the OS for all 3 VMsgs 
+- Uses the PuppetLabs Centos box as the OS for all 3 VMsgs
 - Starts the group of VMs
 
 
@@ -94,5 +98,4 @@ sandor@pineApplez> vagrant ssh secondagent
 
 - 3 running VMs with a PuppetMaster and 2 agents
 - Both Agents are authenticated with the Master
-- You can now run your Puppet code 
-
+- You can now run your Puppet code

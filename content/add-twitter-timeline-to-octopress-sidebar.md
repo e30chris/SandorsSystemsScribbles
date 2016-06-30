@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -42,7 +46,7 @@ twitter_tweet_button: true
 
 ## rake generate | deploy
 
-~~~ 
+~~~
 spudBud@pineApplez> rake generate
 spudBud@pineApplez> rake deploy
 ~~~

@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 # The Problem
@@ -63,7 +67,7 @@ To keep it simple install Apache rotatelog and set the logs to rollover on the h
 Apache rotatelog setting for hourly logs:
 
 ~~~
-CustomLog "|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600" common 
+CustomLog "|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600" common
 ~~~
 
 Parsing a specific hours logs with GoAccess
@@ -73,6 +77,3 @@ Example - Logs for 8am April, 2 2014.
 ~~~
 sandor@argo:/var/log/apache2$ goaccess -f apache2.2014-04-02-08
 ~~~
-
-
-

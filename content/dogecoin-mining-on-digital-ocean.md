@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 # The Goal
@@ -19,10 +23,10 @@ Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.
  - Dogecoin Resources - [sources](https://github.com/ummjackson/dogecoin-resources)
  - Dogecoin Foundation - [now found](http://foundation.dogecoin.com/)
  - Digital Ocean - [awesome drops](https://www.digitalocean.com)
- - TugBoat - [command line ocean](https://www.digitalocean.com/community/articles/how-to-use-tugboat-to-manage-digitalocean-droplets-from-a-terminal) 
- 
- 
- 
+ - TugBoat - [command line ocean](https://www.digitalocean.com/community/articles/how-to-use-tugboat-to-manage-digitalocean-droplets-from-a-terminal)
+
+
+
 # Create a droplet
 
 ~~~
@@ -50,7 +54,7 @@ root@lucydoge:~# passwd lucy
 root@lucydoge:~# adduser lucy sudo
 ~~~
 
- 
+
 ## Update Debian
 
 ~~~
@@ -76,8 +80,8 @@ lucy@lucydoge:~# mkdir ~/miner2049er
 ~~~
 lucy@lucydoge:~# cd miner2049er
 lucy@lucydoge:~# git clone https://github.com/pooler/cpuminer.git
-lucy@lucydoge:~# cd cpuminer 
-lucy@lucydoge:~# ./autogen.sh 
+lucy@lucydoge:~# cd cpuminer
+lucy@lucydoge:~# ./autogen.sh
 lucy@lucydoge:~# CFLAGS="-O3 -Wall -msse2" ./configure
 lucy@lucydoge:~# make
 ~~~
@@ -88,8 +92,8 @@ lucy@lucydoge:~# make
 
  - Create a new address for mining deposits
  - Add that mining address to your pool profile
- 
- 
+
+
 # Start mining
 
 ~~~
@@ -97,4 +101,3 @@ lucy@lucydoge:~# ./minerd --url stratum+tcp://server:port --userpass worker.name
 ~~~
 
 enjoy much coins
- 

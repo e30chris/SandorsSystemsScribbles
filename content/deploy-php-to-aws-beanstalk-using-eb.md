@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 # The Problem
@@ -17,7 +21,7 @@ Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the
   - AWS Regions & Endpoints - [link](http://docs.aws.amazon.com/general/latest/gr/rande.html)
   - Wordpress - [link](https://wordpress.org)
   - Wordpress on GitHub [link](https://github.com/WordPress/WordPress)
-  
+
 # HowTos
 
 ## HowTo - Setup the eb tool
@@ -146,28 +150,8 @@ First goal is to get a bare bones Wordpress setup working.  There are two ways t
 
 This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.  The HowTo of migrating an existing Wordpress will be a separate post.
 
-Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above. 
+Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above.
 
 ~~~
 sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
 ~~~
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

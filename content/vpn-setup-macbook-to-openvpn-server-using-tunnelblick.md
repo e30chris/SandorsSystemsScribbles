@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -23,7 +27,7 @@ Categories = []
 
 - Goto OpenVPN web client
 - Login with new user
-- Choose to download cert 
+- Choose to download cert
 
 
 ## Modify Client Config File for Tunnelblick
@@ -49,7 +53,7 @@ sandor@pineAplez> cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunn
 
 ## The Test
 
-- Verify IP using Tunnelblick 
+- Verify IP using Tunnelblick
 - Verify IP with Tunnelblick off
 - [IP Chicken](http://ipchicken.com/)
 
@@ -58,4 +62,3 @@ sandor@pineAplez> cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunn
 ## The Result
 
 - Using a VPN your nets are safe from all prying eyes except the NSAs
-

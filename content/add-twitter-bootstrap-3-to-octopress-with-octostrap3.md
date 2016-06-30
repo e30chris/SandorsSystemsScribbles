@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -47,7 +51,7 @@ default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twi
 
 ## rake generate | deploy
 
-~~~ 
+~~~
 spudBud@pineApplez> rake generate
 spudBud@pineApplez> rake deploy
 ~~~

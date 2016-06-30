@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -35,7 +39,7 @@ This downloads the VM image into the /boxes dir:
 
 ~~~
 spudBud@pineApplez> ~/Codestuff/vagrants/PuppetMaster $la ~/.vagrant.d/boxes/
-total 
+total
 drwxr-xr-x  7 spudBud  staff   238B Aug 27 17:38 ./
 drwxr-xr-x  7 spudBud  staff   340B Aug 14 16:46 ../
 drwxr-xr-x  3 spudBud  staff   102B Aug 27 17:38 centos6min/
@@ -58,7 +62,7 @@ drwxr-xr-x  3 spudBud  staff   102B Aug 27 17:38 ../
 -rw-------  1 spudBud  staff    13K Aug 27 17:38 box.ovf
 -rw-r--r--  1 spudBud  staff    25B Aug 27 17:38 metadata.json
 ~~~
-Once you download a box the base image stays in this directory even if you destroy the VM you create.  The only way to completely remove a box from your puter (and remove it totally from the ~/.vagrant.d/boxes dir) is by running 
+Once you download a box the base image stays in this directory even if you destroy the VM you create.  The only way to completely remove a box from your puter (and remove it totally from the ~/.vagrant.d/boxes dir) is by running
 
 ~~~
 spudBud@pineApplez> vagrant box remove precise64 virtualbox
@@ -107,4 +111,4 @@ spudBud@pineApplez> ~/Codestuff/vagrants/precise32 $vagrant up
 spudBud@pineApplez> ~/Codestuff/vagrants/precise32 $vagrant ssh
 ~~~
 
-You are now logged into a Vanilla Vagrant box. 
+You are now logged into a Vanilla Vagrant box.

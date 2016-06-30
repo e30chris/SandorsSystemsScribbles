@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Goal
@@ -23,7 +27,7 @@ Categories = []
 |Asia Pacific (Singapore)| ami-3c9bce6e
 |Asia Pacific (Tokyo)| ami-172d4916
 |Asia Pacific (Sydney)| ami-db73efe1
-|South America (Sao Paulo)| ami-6d4ee870 
+|South America (Sao Paulo)| ami-6d4ee870
 
 
 

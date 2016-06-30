@@ -1,5 +1,9 @@
 +++
-Categories = []
+title = ""
+date = "2013-10-23"
+tags = [ "", "" ]
+categories = [ "" ]
+image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 
 ## The Problem:
@@ -38,11 +42,11 @@ sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 91583
 That equals:
 
   -s size (66 = 512 mb)
-  
+
   -i image (Centos 7 x64)
-  
+
   -r region (San Francisco)
-  
+
   -k ssh public key (mine)
 
 ### Add new droplet to SSH config
@@ -103,7 +107,7 @@ servfed | success >> {
     "changed": false,
     "ping": "pong"
 }
-sandor@pineApplez$ 
+sandor@pineApplez$
 {{< / highlight >}}
 
 
