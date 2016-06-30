@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/Configure-new-servers-with-the-basics-via-Ansible/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/MacBook-Setup-using-Ansible-and-Homebrew/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/add-twitter-timeline-to-octopress-sidebar/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/add-webproxy-cert-to-fedora/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/ansible-on-hp-ux-11-dot-31/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/ansible-on-redhat-5-dot-x/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/deploy-php-to-aws-beanstalk-using-eb/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/dogecoin-mining-on-digital-ocean/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/installing-ansible/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/post-to-octopress-and-deploy-to-github-pages/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/puppet-vim-setup/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/run-ansible-through-pmksh/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/using-ansible-to-align-passwords-on-servers/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/using-ansible-to-deploy-a-puppetmaster/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/using-goaccess-to-parse-webserver-logs/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/using-oscar-to-build-a-local-puppet-environment-with-vagrant/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/using-vagrant-on-windows/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/vanilla-vagrant-setup/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/vpn-setup-openvpn-server-deploy-on-aws/</loc>
+  </url>
+  
+</urlset>
