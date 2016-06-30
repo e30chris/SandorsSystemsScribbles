@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "VPN Setup - MacBook to OpenVPN Server using Tunnelblick"
+date = "2013-12-10"
+tags = [ "security", "mac" ]
+categories = [ "workstation" ]
+image = ""
 +++
 
 ## The Goal

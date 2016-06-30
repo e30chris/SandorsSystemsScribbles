@@ -1,8 +1,8 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
+title = "Using Vagrant on Windows"
+date = "2013-12-17"
+tags = [ "vagrant", "winders" ]
+categories = [ "workstation" ]
 image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 

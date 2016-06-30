@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Using Oscar to Build a Local Puppet Environment with Vagrant"
+date = "2013-12-20"
+tags = [ "puppet", "vagrant" ]
+categories = [ "workstation" ]
+image = ""
 +++
 
 ## The Goal
