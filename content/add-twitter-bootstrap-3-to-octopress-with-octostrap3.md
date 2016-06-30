@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Add Twitter Bootstrap 3 to OctoPress with OctoStrap3"
+date = "2013-11-26"
+tags = [ "webstuff", "octopress" ]
+categories = [ "webstuff" ]
+image = ""
 +++
 
 ## The Goal

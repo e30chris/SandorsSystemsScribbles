@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Add WebProxy Cert to Fedora"
+date = "2013-11-29"
+tags = [ "fedora", ,"linux", "bullshit", "workstation", "techdebt", "oldcorp" ]
+categories = [ "linux" ]
+image = ""
 +++
 
 ## The Goal

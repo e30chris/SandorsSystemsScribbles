@@ -1,8 +1,8 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
+title = "Ansible on RedHat 5.x"
+date = "2013-09-03"
+tags = [ "ansible", "redhat", "linux" ]
+categories = [ "linux" ]
 image = "MIWG_2013_Kirkland_Concours_14.jpg"
 +++
 

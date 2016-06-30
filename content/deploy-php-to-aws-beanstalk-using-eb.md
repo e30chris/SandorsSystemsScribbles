@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Deploy Wordpress to AWS Beanstalk using eb"
+date = "2014-11-30"
+tags = [ "aws", "beanstalk" ]
+categories = [ "aws" ]
+image = ""
 +++
 
 # The Problem

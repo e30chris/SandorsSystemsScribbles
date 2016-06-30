@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform"
+date = "2015-05-01"
+tags = [ "aws", "redshift", "vpc" ]
+categories = [ "aws" ]
+image = ""
 +++
 
 ## The Problem:

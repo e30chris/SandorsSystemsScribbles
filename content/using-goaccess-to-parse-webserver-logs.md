@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Using GoAccess to parse webserver logs"
+date = "2014-04-01"
+tags = [ "go", "ansible" ]
+categories = [ "ansible" ]
+image = ""
 +++
 
 # The Problem

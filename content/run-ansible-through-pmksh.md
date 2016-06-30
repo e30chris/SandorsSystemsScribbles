@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Run Ansible through pmksh"
+date = "2014-09-03"
+tags = [ "ansible", "bullshit", "techdebt", "oldcorp" ]
+categories = [ "ansible" ]
+image = ""
 +++
 
 ## The problem

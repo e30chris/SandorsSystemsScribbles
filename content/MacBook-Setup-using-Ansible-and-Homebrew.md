@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "MacBook Setup Using Ansible and Homebrew"
+date = "2015-05-18"
+tags = [ "ansible", "mac", "homebrew"]
+categories = [ "ansible" ]
+image = ""
 +++
 
 ## The Problem:

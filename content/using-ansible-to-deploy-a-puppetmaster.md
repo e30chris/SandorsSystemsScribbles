@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Using Ansible to deploy a PuppetMaster"
+date = "2014-06-13"
+tags = [ "ansible", "puppet" ]
+categories = [ "ansible" ]
+image = ""
 +++
 
 ## The Problem

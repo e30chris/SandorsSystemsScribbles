@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Post to octopress and deploy to Github pages"
+date = "2013-11-12"
+tags = [ "webstuff", "octopress", "github" ]
+categories = [ "octopress" ]
+image = ""
 +++
 
 ## The Goal

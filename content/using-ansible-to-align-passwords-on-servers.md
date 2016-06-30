@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Using Ansible to Align Passwords on Servers"
+date = "2014-07-17"
+tags = [ "ansible", "security", "bullshit", "techdebt", "oldcorp" ]
+categories = [ "ansible" ]
+image = ""
 +++
 
 ## The Problem:

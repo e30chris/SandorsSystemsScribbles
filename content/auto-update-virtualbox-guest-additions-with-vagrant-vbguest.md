@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Auto Update VirtualBox Guest Additions with vagrant-vbguest"
+date = "2013-11-12"
+tags = [ "vagrant", "workstation" ]
+categories = [ "workstation" ]
+image = ""
 +++
 
 ## The Goal

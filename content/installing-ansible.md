@@ -1,9 +1,9 @@
 +++
-title = ""
-date = "2013-10-23"
-tags = [ "", "" ]
-categories = [ "" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title = "Installing Ansible"
+date = "2014-06-16"
+tags = [ "ansible", "workstation" ]
+categories = [ "ansible" ]
+image = ""
 +++
 
 ## The Problem
