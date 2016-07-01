@@ -1,10 +1,10 @@
-+++
+---
 title = "Using Oscar to Build a Local Puppet Environment with Vagrant"
 date = "2013-12-20"
 tags = [ "puppet", "vagrant" ]
 categories = [ "workstation" ]
 image = ""
-+++
+---
 
 ## The Goal
 
@@ -48,7 +48,7 @@ Give Vagrant a Puppet Enterprise installer location & version.
 ~~~
 sandor@pineApplez> vim config/pe_build.yaml
 
-+++
+---
  pe_build:
    version: "3.1.3"
    #download_root: 'http://s3.amazonpebucket.com'

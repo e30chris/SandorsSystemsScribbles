@@ -1,10 +1,10 @@
-+++
+---
 title = "Installing Ansible"
 date = "2014-06-16"
 tags = [ "ansible", "workstation" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The Problem
 Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.  
@@ -17,7 +17,7 @@ Create an Ansible Controller directory that will run the latest version via git 
 
 
 
-+++
+---
 
 ## Clone the Ansible repo
 Go to the GitHub project page [github/ansible](https://github.com/ansible/ansible)

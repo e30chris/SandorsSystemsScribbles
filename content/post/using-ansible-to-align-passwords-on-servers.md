@@ -1,10 +1,10 @@
-+++
+---
 title = "Using Ansible to Align Passwords on Servers"
 date = "2014-07-17"
 tags = [ "ansible", "security", "bullshit", "techdebt", "oldcorp" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The Problem:
 A group of servers get their passwords updated every 3 months with a new shared password.  The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.  

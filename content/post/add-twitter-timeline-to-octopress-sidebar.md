@@ -1,10 +1,10 @@
-+++
+---
 title = "Add Twitter Timeline to OctoPress Sidebar"
 date = "2013-11-26"
 tags = [ "webstuff", "octopress" ]
 categories = [ "webstuff" ]
 image = ""
-+++
+---
 
 ## The Goal
 - Add a Twitter timeline to the sidebar of an Octopress blog

@@ -1,10 +1,10 @@
-+++
+---
 title = "Using GoAccess to parse webserver logs"
 date = "2014-04-01"
 tags = [ "go", "ansible" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 # The Problem
 

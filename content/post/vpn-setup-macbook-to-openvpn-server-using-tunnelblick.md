@@ -1,10 +1,10 @@
-+++
+---
 title = "VPN Setup - MacBook to OpenVPN Server using Tunnelblick"
 date = "2013-12-10"
 tags = [ "security", "mac" ]
 categories = [ "workstation" ]
 image = ""
-+++
+---
 
 ## The Goal
 

@@ -1,10 +1,10 @@
-+++
+---
 title = "Configure new servers with the basics via Ansible"
 date = "2015-07-08"
 tags = [ "ansible", "infrastructure culture" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The Problem:
 You have a throw away server that you only need for the next couple of hours to try something out.  You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.
@@ -22,7 +22,7 @@ After pitching Ansible as a great solution to infrastructure automation I wanted
 ### ToDo:
   - Add a role to this playbook to kick off the droplet creation and then register the names and IP's for the new servers before handing off to this current playbook config.
 
-+++
+---
 
 ### Pre-Requisites
   - Servers booted and running
@@ -126,7 +126,7 @@ via the variables in group_vars/main.yml
 *delivered_users: this is the user accounts you want created on the new server, each with sudo access.*
 
 {{< highlight yaml >}}
-+++
+---
 # vars file for ServerDelivery
 delivered_users:
   - chrisl
@@ -145,7 +145,7 @@ _this file will need to be created with ansible-vault_
 
 {{< highlight bash >}}
 sandor@pineApplez$ ansible-vault create group_vars/passes.yml
-+++
+---
 # vars file for ServerDelivery encrypted via ansible-vault
 users_ssh_key_pass: stallman was right
 {{< / highlight >}}

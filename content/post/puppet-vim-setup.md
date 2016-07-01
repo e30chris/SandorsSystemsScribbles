@@ -1,10 +1,10 @@
-+++
+---
 title = "Puppet vim setup"
 date = "2013-11-12"
 tags = [ "puppet", "vim" ]
 categories = [ "workstation" ]
 image = ""
-+++
+---
 
 ## The Goal
 Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.

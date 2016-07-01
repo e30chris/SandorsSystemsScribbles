@@ -1,10 +1,10 @@
-+++
+---
 title = "Run Ansible through pmksh"
 date = "2014-09-03"
 tags = [ "ansible", "bullshit", "techdebt", "oldcorp" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The problem
 Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.  

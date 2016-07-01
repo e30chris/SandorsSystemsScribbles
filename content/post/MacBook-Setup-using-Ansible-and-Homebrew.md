@@ -1,10 +1,10 @@
-+++
+---
 title = "MacBook Setup Using Ansible and Homebrew"
 date = "2015-05-18"
 tags = [ "ansible", "mac", "homebrew"]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The Problem:
 You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew & Cask and OSX setup with goodies like zsh and .dotfiles.
@@ -22,7 +22,7 @@ Everything infrastructure is code according to proper DevOps and the MacBook tha
 ### ToDo:
   - Bring in OSX user settings like desktop backgrounds and other System Preferences.
 
-+++
+---
 
 ### Pre-Requisites:
   - Fresh OSX install

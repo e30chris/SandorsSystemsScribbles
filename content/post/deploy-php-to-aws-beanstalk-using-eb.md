@@ -1,10 +1,10 @@
-+++
+---
 title = "Deploy Wordpress to AWS Beanstalk using eb"
 date = "2014-11-30"
 tags = [ "aws", "beanstalk" ]
 categories = [ "aws" ]
 image = ""
-+++
+---
 
 # The Problem
 Wordpress has lots of hosting options all of which cost money to be on a shared hosting server.  I need a autoscaling & auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS.  AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.

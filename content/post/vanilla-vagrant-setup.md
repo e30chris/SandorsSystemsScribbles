@@ -1,10 +1,10 @@
-+++
+---
 title = "Vanilla Vagrant Setup"
 date = "2013-11-12"
 tags = [ "vagrant", "workstation" ]
 categories = [ "workstation" ]
 image = ""
-+++
+---
 
 ## The Goal
 - Setup Vagrant

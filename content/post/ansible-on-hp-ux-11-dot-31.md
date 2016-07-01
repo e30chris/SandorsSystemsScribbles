@@ -1,10 +1,10 @@
-+++
+---
 title = "Ansible on HP-UX 11.31"
 date = "2014-09-03"
 tags = [ "ansible", "hp-ux", "techdebt", "oldcorp" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The problem
 Old corporations that are running ancient OS'es desperately need configuration management and automation to keep the dinosaurs efficient.      

@@ -1,10 +1,10 @@
-+++
+---
 title = "VPN Setup - OpenVPN Server Deploy on AWS"
 date = "2013-12-10"
 tags = [ "aws", "security" ]
 categories = [ "aws" ]
 image = ""
-+++
+---
 
 ## The Goal
 - Deploy an OpenVPN Server on AWS

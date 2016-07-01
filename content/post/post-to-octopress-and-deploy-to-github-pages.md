@@ -1,10 +1,10 @@
-+++
+---
 title = "Post to octopress and deploy to Github pages"
 date = "2013-11-12"
 tags = [ "webstuff", "octopress", "github" ]
 categories = [ "octopress" ]
 image = ""
-+++
+---
 
 ## The Goal
 Use Jekyll & octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are [now](http://sandorsscribbl.es/post-to-octopress-and-deploy-to-github-pages/))

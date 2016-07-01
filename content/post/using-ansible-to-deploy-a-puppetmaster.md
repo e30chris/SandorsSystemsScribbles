@@ -1,10 +1,10 @@
-+++
+---
 title = "Using Ansible to deploy a PuppetMaster"
 date = "2014-06-13"
 tags = [ "ansible", "puppet" ]
 categories = [ "ansible" ]
 image = ""
-+++
+---
 
 ## The Problem
 Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations.  Also need to deploy to several environments using a consistent configuration.
@@ -18,13 +18,13 @@ A repeatable and documented way to deploy the very finicky Puppet installer in a
 #### Note: this playbook is still a work in progress.  Most of the issues are fighting Puppets insane complexity of getting installed correctly with a few small Ansible bugs sprinkled in.
 
 
-+++
+---
 
 ## GitHub Repo
 [github.com/e30chris/Ansible-PuppetEnterpriseDeploy](https://github.com/e30chris/Ansible-PuppetEnterpriseDeploy)
 
 
-+++
+---
 ## Playbook notes
 
 ## Setting the variables for each environment
@@ -32,7 +32,7 @@ A repeatable and documented way to deploy the very finicky Puppet installer in a
 ~~~
 sandor@pineapplez:$ cd ~/Ansible-PuppetEnterpriseDeploy/
 sandor@pineapplez:$ cat group_vars/all
-+++
+---
 # common variables for PuppetMaster Deployment
 # format for this file
 # variable: fact
@@ -73,7 +73,7 @@ db_root_pass: arandompasswordthatneedschangedhere
 
 To keep it simple only the values that should be changed are assigned variables.  Everything else is left with the Puppet defaults in the answer files.
 
-+++
+---
 
 ## Tasks to be run on all servers
 
@@ -118,7 +118,7 @@ When you download the PE tarball you can grab the download url from S3.  This gr
     dest=/root/puppetinstall
 
 ~~~
-+++
+---
 
 ## Tasks that run on each server role
 
@@ -127,7 +127,7 @@ Each server then runs the same basic installer command with a few things named f
 Here is the PuppetMasters install-
 
 ~~~
-+++
+---
 # Tasks for PupMaster
 - name: Ensure install log present
   file:

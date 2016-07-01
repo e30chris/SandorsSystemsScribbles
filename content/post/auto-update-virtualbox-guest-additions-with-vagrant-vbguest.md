@@ -1,10 +1,10 @@
-+++
+---
 title = "Auto Update VirtualBox Guest Additions with vagrant-vbguest"
 date = "2013-11-12"
 tags = [ "vagrant", "workstation" ]
 categories = [ "workstation" ]
 image = ""
-+++
+---
 
 ## The Goal
 
