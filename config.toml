@@ -1,3 +1,60 @@
-baseurl = "http://replace-this-with-your-hugo-site.com/"
-languageCode = "en-us"
-title = "My New Hugo Site"
+baseurl = "http://theargo.io"
+title = "Sandors Systems Scribbles"
+author = "Sandor"
+# Shown in the side menu
+copyright = "&copy; 2016. All rights reserved."
+canonifyurls = true
+paginate = 10
+
+[indexes]
+  tag = "tags"
+  topic = "topics"
+
+[params]
+  # Shown in the home page
+  subtitle = "Notes about Systems & Infrastructure Culture"
+  brand = "Scribbles"
+  googleAnalytics = "UA-80255618-1"
+  disqus = ""
+  # CSS name for highlight.js
+  highlightjs = "androidstudio"
+  dateFormat = "02 Jan 2006, 15:04"
+
+[menu]
+  # Shown in the side menu.
+  [[menu.main]]
+    name = "Home"
+    pre = "<i class='fa fa-home fa-fw'></i>"
+    weight = 0
+    identifier = "home"
+    url = "/"
+  [[menu.main]]
+    name = "Posts"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "post"
+    url = "/post/"
+  [[menu.main]]
+    name = "About"
+    pre = "<i class='fa fa-user fa-fw'></i>"
+    weight = 2
+    identifier = "about"
+    url = "/about/"
+
+[social]
+  # Link your social networking accouns to the side menu
+  # by entering your username or ID.
+
+  # SNS microblogging
+  twitter = "e30chris"
+  gnusocial = "https://quitter.se/e30chris" # Specify href (e.g. https://quitter.se/yourusername)
+
+  # SNS career oriented
+  linkedin = "clivermore"
+
+  # Techie
+  github = "e30chris"
+  gitlab = "e30chris"
+
+  # Other
+  keybase = "e30chris"

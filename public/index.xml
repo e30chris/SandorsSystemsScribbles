@@ -1,0 +1,1384 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>http://replace-this-with-your-hugo-site.com/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://replace-this-with-your-hugo-site.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/Configure-new-servers-with-the-basics-via-Ansible/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/Configure-new-servers-with-the-basics-via-Ansible/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;You have a throw away server that you only need for the next couple of hours to try something out.  You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;The solution:&lt;/h2&gt;
+
+&lt;p&gt;This Ansible playbook that is simple and to the point.  It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-ServerDelivery&#34;&gt;GitHub - e30chris/ServerDelivery&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;backstory:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Backstory:&lt;/h3&gt;
+
+&lt;p&gt;After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured and easy to login to without any manual steps.  This playbook takes care of both requirements.&lt;/p&gt;
+
+&lt;h3 id=&#34;todo:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;ToDo:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add a role to this playbook to kick off the droplet creation and then register the names and IP&amp;rsquo;s for the new servers before handing off to this current playbook config.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;+++&lt;/p&gt;
+
+&lt;h3 id=&#34;pre-requisites:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Pre-Requisites&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Servers booted and running&lt;/li&gt;
+&lt;li&gt;SSH access&lt;/li&gt;
+&lt;li&gt;SSH public keys for each user in files/&lt;/li&gt;
+&lt;li&gt;Server OS is in the Debian family or the RedHat family.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;create-the-new-droplets:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Create the new droplets&lt;/h3&gt;
+
+&lt;p&gt;Using the excellent Digital Ocean cli tool - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;TugBoat - GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;tugboat create bloggindroplet -s &lt;span style=&#34;color: #ae81ff&#34;&gt;66&lt;/span&gt; -i &lt;span style=&#34;color: #ae81ff&#34;&gt;10322623&lt;/span&gt; -r &lt;span style=&#34;color: #ae81ff&#34;&gt;3&lt;/span&gt; -k 915832
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That equals:&lt;/p&gt;
+
+&lt;p&gt;-s size (66 = 512 mb)&lt;/p&gt;
+
+&lt;p&gt;-i image (Centos 7 x64)&lt;/p&gt;
+
+&lt;p&gt;-r region (San Francisco)&lt;/p&gt;
+
+&lt;p&gt;-k ssh public key (mine)&lt;/p&gt;
+
+&lt;h3 id=&#34;add-new-droplet-to-ssh-config:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Add new droplet to SSH config&lt;/h3&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;cat ~/.ssh/config
+&lt;span style=&#34;color: #75715e&#34;&gt;#SSH Stuff&lt;/span&gt;
+Host bloggindroplet
+  Hostname 45.55.7.178
+  User root
+Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 30
+  ControlMaster auto
+  ControlPath ~/.ssh/connections/ssh-%r@%h:%p
+  ControlPersist 4h
+  StrictHostKeyChecking no
+  IdentityFile ~/.ssh/id_rsa
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id=&#34;add-new-droplet-to-ansible-hosts-file:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Add new droplet to Ansible hosts file&lt;/h3&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;› cat ~/.ansible/hosts
+&lt;span style=&#34;color: #75715e&#34;&gt;# All Servers&lt;/span&gt;
+docks
+cent7
+fed22
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# App servers&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;app&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# DB servers&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;db&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Group &amp;#39;multi&amp;#39; with all servers&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;multi:children&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Variables applied to all servers&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;multi:vars&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id=&#34;test-ssh-login:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Test ssh login&lt;/h3&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ssh bloggindroplet
+Last login: Thu Jul  &lt;span style=&#34;color: #ae81ff&#34;&gt;9&lt;/span&gt; 00:34:41 &lt;span style=&#34;color: #ae81ff&#34;&gt;2015&lt;/span&gt; from 67.135.32.227
+&lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;root@bloggindroplet ~&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;#&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id=&#34;test-ansible:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Test Ansible&lt;/h3&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ansible bloggindroplet -m ping
+servfed &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; success &amp;gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;changed&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #f8f8f2&#34;&gt;false&lt;/span&gt;,
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;ping&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;pong&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;git-clone-the-playbook:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;git clone the playbook&lt;/h3&gt;
+
+&lt;p&gt;Download:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;create-the-user-accounts:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Create the user accounts&lt;/h3&gt;
+
+&lt;p&gt;via the variables in group_vars/main.yml&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;delivered_users: this is the user accounts you want created on the new server, each with sudo access.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;+++&lt;/span&gt;
+&lt;span style=&#34;color: #ae81ff&#34;&gt;# vars file for ServerDelivery&lt;/span&gt;
+&lt;span style=&#34;color: #ae81ff&#34;&gt;delivered_users&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;chrisl&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;dpr&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;weev&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;give-each-users-ssh-key-a-password:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Give each users ssh key a password&lt;/h3&gt;
+
+&lt;h4 id=&#34;and-encrypt-it-with-ansible-vault:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;and encrypt it with Ansible Vault&lt;/h4&gt;
+
+&lt;p&gt;via group_vars/passes.yml&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;this file will need to be created with ansible-vault&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ansible-vault create group_vars/passes.yml
++++
+&lt;span style=&#34;color: #75715e&#34;&gt;# vars file for ServerDelivery encrypted via ansible-vault&lt;/span&gt;
+users_ssh_key_pass: stallman was right
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;run-the-playbook:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Run the playbook&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;This will run with &amp;lsquo;hosts: all&amp;rsquo; which will put every server in your Ansible hosts file in this state.  This should be ok since all this playbook does is ensure sane security, adds users and updates packages.  Because Ansible is idempotent if these setting have not changed then nothing will be done.  If you do not want to run on all your hosts then specify that with either a group in the Ansible hosts file or with a cli switch.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ansible-playbook site.yml -vv --ask-vault-pass
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;which returns lots of cows:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;2.2.3 in ServerDelivery/ on dev
+› ansible-playbook -i &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;docks,cent7,fed22,&amp;quot;&lt;/span&gt; site.yml --ask-vault-pass
+Vault password:
+ ____________
+&amp;lt; PLAY &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;all&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &amp;gt;
+ ------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ _________________
+&amp;lt; GATHERING FACTS &amp;gt;
+ -----------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+docks: importing group_vars/Ubuntu.yml
+cent7: importing group_vars/CentOS.yml
+fed22: importing group_vars/Fedora.yml
+ _____________________________________
+&amp;lt; TASK: update all packages on CentOS &amp;gt;
+ -------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ _______________________________
+&amp;lt; TASK: install EPEL &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; CentOS &amp;gt;
+ -------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ ________________________________________
+&amp;lt; TASK: add the must have apps on CentOS &amp;gt;
+ ----------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ ____________________________________________
+&amp;lt; TASK: update all packages on Ubuntu family &amp;gt;
+ --------------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ ________________________________________
+&amp;lt; TASK: add the must have apps on Ubuntu &amp;gt;
+ ----------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;sudo,vim,htop,tmux,unzip,fail2ban&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ _____________________________________
+&amp;lt; TASK: update all packages on Fedora &amp;gt;
+ -------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ ________________________________________
+&amp;lt; TASK: add the must have apps on Fedora &amp;gt;
+ ----------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+skipping: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;sudo,vim,htop,tmux,unzip,fail2ban&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ _______________________________
+&amp;lt; TASK: adding users to servers &amp;gt;
+ -------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ _________________________________
+&amp;lt; TASK: add users ssh public keys &amp;gt;
+ ---------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ _______________________
+&amp;lt; TASK: add admin group &amp;gt;
+ -----------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ ________________________________
+&amp;lt; TASK: add users to admin group &amp;gt;
+ --------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ ______________________________
+&amp;lt; TASK: add users sudoers file &amp;gt;
+ ------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;chrisl&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;dpr&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&amp;gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;item&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;weev&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+ __________________________________________
+&amp;lt; TASK: secure SSH with a sane sshd_config &amp;gt;
+ ------------------------------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ok: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ _______________________
+&amp;lt; TASK: restarting sshd &amp;gt;
+ -----------------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+changed: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;cent7&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+changed: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;fed22&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+changed: &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;docks&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt;
+ ____________
+&amp;lt; PLAY RECAP &amp;gt;
+ ------------
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;  ^__^
+         &lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;oo&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\_&lt;/span&gt;______
+            &lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;__&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\ &lt;/span&gt;      &lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\/\&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;----w &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;
+                &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;     &lt;span style=&#34;color: #f92672&#34;&gt;||&lt;/span&gt;
+
+
+cent7                      : &lt;span style=&#34;color: #f8f8f2&#34;&gt;ok&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;8&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;changed&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;unreachable&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;failed&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;0
+docks                      : &lt;span style=&#34;color: #f8f8f2&#34;&gt;ok&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;10&lt;/span&gt;   &lt;span style=&#34;color: #f8f8f2&#34;&gt;changed&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;unreachable&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;failed&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;0
+fed22                      : &lt;span style=&#34;color: #f8f8f2&#34;&gt;ok&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;10&lt;/span&gt;   &lt;span style=&#34;color: #f8f8f2&#34;&gt;changed&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;unreachable&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color: #f8f8f2&#34;&gt;failed&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:b597a30638b8696bdde043a22b2068f6&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;The Problem - By default new AWS accounts are based on the EC2-VPC platform.  If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:b597a30638b8696bdde043a22b2068f6&#34;&gt;The solution:&lt;/h2&gt;
+
+&lt;p&gt;Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.&lt;/p&gt;
+
+&lt;h3 id=&#34;backstory:b597a30638b8696bdde043a22b2068f6&#34;&gt;Backstory:&lt;/h3&gt;
+
+&lt;p&gt;As the SRE team we manage each teams AWS environment.  To keep it simple all teams are in their own VPC with the default VPC being left unused.  Launching a Redshift cluster for the Data Analytics team and trying to put that Redshift cluster into the Data Analytics VPC presented the problem of not being able to select anything other than the default VPC.  Reading the AWS documentation does not address launching Redshift into a non-default VPC.  This Sandors notebook note does.&lt;/p&gt;
+
+&lt;p&gt;+++&lt;/p&gt;
+
+&lt;h3 id=&#34;pre-requisites:b597a30638b8696bdde043a22b2068f6&#34;&gt;Pre-Requisites:&lt;/h3&gt;
+
+&lt;p&gt;Create a VPC with subnets for the Redshift cluster to be deployed.&lt;/p&gt;
+
+&lt;h2 id=&#34;cli:b597a30638b8696bdde043a22b2068f6&#34;&gt;CLI&lt;/h2&gt;
+
+&lt;p&gt;Create the Cluster Subnet Group&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default).&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;aws redshift create-cluster-subnet-group
+
+  --cluster-subnet-group-name argodataanalyticsredshiftsubnet
+
+  --description &amp;quot;Argo Data Analytics Redshift Subnet&amp;quot;
+
+  --subnet-ids subnet-382fee1w
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html&#34;&gt;AWS CLI Documentation create=cluster-subnet-group&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;aws-console:b597a30638b8696bdde043a22b2068f6&#34;&gt;AWS Console&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Open RDS Dashboard&lt;/li&gt;
+&lt;li&gt;Security&lt;/li&gt;
+&lt;li&gt;Subnet Groups
+
+&lt;ul&gt;
+&lt;li&gt;Click &lt;em&gt;Create Cluster Subnet Group&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Give the Subnet a name &amp;amp; description&lt;/li&gt;
+&lt;li&gt;Select the VPC you want to launch Redshift into&lt;/li&gt;
+&lt;li&gt;Select the Availability Zone you want the subnet in&lt;/li&gt;
+&lt;li&gt;Select the subnet for that AZ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-subnet-group-console.html&#34;&gt;AWS Console Documentation&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/MacBook-Setup-using-Ansible-and-Homebrew/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/MacBook-Setup-using-Ansible-and-Homebrew/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;The solution:&lt;/h2&gt;
+
+&lt;p&gt;Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-MacDeploy&#34;&gt;GitHub - e30chris/Ansible-MacDeploy&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;backstory:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Backstory:&lt;/h3&gt;
+
+&lt;p&gt;Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.&lt;/p&gt;
+
+&lt;h3 id=&#34;todo:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;ToDo:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Bring in OSX user settings like desktop backgrounds and other System Preferences.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;+++&lt;/p&gt;
+
+&lt;h3 id=&#34;pre-requisites:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Pre-Requisites:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Fresh OSX install&lt;/li&gt;
+&lt;li&gt;Homebrew installed&lt;/li&gt;
+&lt;li&gt;Ansible installed via Homebrew&lt;/li&gt;
+&lt;li&gt;GitHub Authenticated&lt;/li&gt;
+&lt;li&gt;GitHub API token set&lt;/li&gt;
+&lt;li&gt;.dotfiles forked and customized to your liking&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;fresh-osx-install:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Fresh OSX Install&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://osxdaily.com/2014/10/16/make-os-x-yosemite-boot-install-drive/&#34;&gt;USB install OSX&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;homebrew-installed:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Homebrew installed&lt;/h4&gt;
+
+&lt;p&gt;Follow the SysAdmin Bible and read the script before you run it:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/Homebrew/install/master/install&#34;&gt;Github Raw of Homebrew install script&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Run the script once verified that you know what it will be doing:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;ruby -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Verify Homebrew is correct:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;brew doctor
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;install-ansible-via-homebrew:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Install Ansible via Homebrew&lt;/h4&gt;
+
+&lt;p&gt;Installing the latest from dev:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;brew install ansible --HEAD
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;github-authenticated:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;GitHub Authenticated&lt;/h4&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;git config --global user.name &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;sandor&amp;quot;&lt;/span&gt;
+sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;git config --global user.email &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;chris@e30chris.me&amp;quot;&lt;/span&gt;
+sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ssh-keygen -t rsa -b &lt;span style=&#34;color: #ae81ff&#34;&gt;4096&lt;/span&gt; -C &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;sandor@macbook&amp;quot;&lt;/span&gt;
+sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ssh-add ~/.ssh/id_rsa
+sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;pbcopy &amp;lt; ~/.ssh/id_rsa.pub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Add your SSH Public Key to GitHub -&amp;gt; Settings.&lt;/p&gt;
+
+&lt;h4 id=&#34;github-api-token-set:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;GitHub API Token Set&lt;/h4&gt;
+
+&lt;p&gt;This avoids annoying brew errors on lookups.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20130681/setting-github-api-token-for-homebrew#20130816&#34;&gt;stackoverflow&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;dotfile-forked:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;.dotfile forked&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/holman/dotfiles&#34;&gt;All hail Holmans .dotfiles&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/&#34;&gt;Explained by Holman&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;download-and-run-the-playbook:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Download and run the playbook&lt;/h3&gt;
+
+&lt;p&gt;Download:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Edit:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Set the OSX username that is running the playbook in vars/main.yml&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Run:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ansible-playbook -i hosts site.yml --ask-sudo-pass
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Then run the .dotfiles bootstrap script&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;~/.dotfiles/script/bootstrap
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:3a163784462320d30fbf9980d70d96eb&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Use awesome Twitter Bootstrap 3 on Octopress&lt;/li&gt;
+&lt;li&gt;Setup OctoStrap3 to do that&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-links:3a163784462320d30fbf9980d70d96eb&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;p&gt;OctoPress - &lt;a href=&#34;http://octopress.org&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;OctoStrap3 - &lt;a href=&#34;http://kaworu.github.io/octopress/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;octopress-setup:3a163784462320d30fbf9980d70d96eb&#34;&gt;Octopress Setup&lt;/h2&gt;
+
+&lt;p&gt;Go &lt;a href=&#34;http://octopress.org/docs/setup/&#34;&gt;here&lt;/a&gt; and do all of that&lt;/p&gt;
+
+&lt;h2 id=&#34;octostrap3-setup:3a163784462320d30fbf9980d70d96eb&#34;&gt;OctoStrap3 Setup&lt;/h2&gt;
+
+&lt;p&gt;Instructions &lt;a href=&#34;http://kaworu.github.io/octopress/setup/install/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;From the base OctoPress dir&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; git clone https://github.com/kAworu/octostrap3 .themes/octostrap3
+spudBud@pineApplez&amp;gt; rake &amp;quot;install[octostrap3]&amp;quot;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;category-list-aside:3a163784462320d30fbf9980d70d96eb&#34;&gt;Category List Aside&lt;/h2&gt;
+
+&lt;p&gt;Add a category list html page to &lt;code&gt;source/_includes/custom/asides&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;{% gist 7669102 %}&lt;/p&gt;
+
+&lt;p&gt;Add the new aside in the _config.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# list each of the sidebar modules you want to include, in the order you want them to appear.
+# To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like &#39;custom/asides/custom_aside_name.html&#39;
+default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;rake-generate-deploy:3a163784462320d30fbf9980d70d96eb&#34;&gt;rake generate | deploy&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; rake generate
+spudBud@pineApplez&amp;gt; rake deploy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You should now have a Twitter Bootstrapped UI on your OctoPress blog.  You should also have an aside that list each category, the number of posts for each and have a highlight if you are on that categories page.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/add-twitter-timeline-to-octopress-sidebar/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/add-twitter-timeline-to-octopress-sidebar/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add a Twitter timeline to the sidebar of an Octopress blog&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-links:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;The links&lt;/h2&gt;
+
+&lt;p&gt;Octopress - &lt;a href=&#34;http://octopress.org/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Acqui-hire.me - &lt;a href=&#34;http://acqui-hire.me/blog/2012/11/07/octopress-and-twitter-timelines/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;create-a-twitter-widget:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;Create a Twitter widget&lt;/h2&gt;
+
+&lt;p&gt;Goto the Twitter widget settings page &lt;a href=&#34;https://twitter.com/settings/widgets&#34;&gt;here&lt;/a&gt; and create your timeline.&lt;/p&gt;
+
+&lt;h2 id=&#34;twitter-aside:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;Twitter Aside&lt;/h2&gt;
+
+&lt;p&gt;Add a twitter html page to &lt;code&gt;source/_include/custom/asides&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;{% gist 7669257 %}&lt;/p&gt;
+
+&lt;p&gt;Add that aside in your _config.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# list each of the sidebar modules you want to include, in the order you want them to appear.
+# To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like &#39;custom/asides/custom_aside_name.html&#39;
+default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and update the Twitter settings&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Twitter Embed Timeline
+twitter_user: tweety_username
+twitter_widget_id: widget_id_from_twitter_widget_code_blob
+twitter_tweet_button: true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;rake-generate-deploy:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;rake generate | deploy&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; rake generate
+spudBud@pineApplez&amp;gt; rake deploy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-results:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;The results&lt;/h2&gt;
+
+&lt;p&gt;You should now have your Twitter timeline embedded on the sidebar of your OctoPress blog.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/add-webproxy-cert-to-fedora/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/add-webproxy-cert-to-fedora/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:a0e49e276022f3b3190edaab7a642089&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Make Fedora work behind a restrictive idiotic corporate web proxy&lt;/li&gt;
+&lt;li&gt;Install a corporate cert to make that happen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;get-the-cert:a0e49e276022f3b3190edaab7a642089&#34;&gt;Get the cert&lt;/h2&gt;
+
+&lt;h2 id=&#34;install-the-cert:a0e49e276022f3b3190edaab7a642089&#34;&gt;Install the cert&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-result:a0e49e276022f3b3190edaab7a642089&#34;&gt;The result&lt;/h2&gt;
+
+&lt;p&gt;Your corporate overlord has now man in the middled your personal gmail, have fun.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/ansible-on-hp-ux-11-dot-31/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/ansible-on-hp-ux-11-dot-31/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Install Python on HP-UX so Ansible can manage and automate the ancient servers.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/ansible-on-redhat-5-dot-x/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/ansible-on-redhat-5-dot-x/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:d11181a5e22ff96f7a517d62c5459f5e&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Older Pythons that live on older RedHats do not have json support.  Old corporations still use old OS&amp;rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:d11181a5e22ff96f7a517d62c5459f5e&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto:d11181a5e22ff96f7a517d62c5459f5e&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Using Ansible Raw&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;yum -y install python-simplejson&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:3c29a18f80a8919b08706590f02670eb&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Keep the VirtualBox guest additions at the latest version using vagrant-vbguest built by dotless-de.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-links:3c29a18f80a8919b08706590f02670eb&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Vagrant vbguest - &lt;a href=&#34;https://github.com/dotless-de/vagrant-vbguest&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;dotless-de - &lt;a href=&#34;https://github.com/dotless-de&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;vagrant-vbguest:3c29a18f80a8919b08706590f02670eb&#34;&gt;vagrant-vbguest&lt;/h2&gt;
+
+&lt;p&gt;A beautifully simple Vagrant plugin to manage the guest additions on VirtualBox.&lt;/p&gt;
+
+&lt;h2 id=&#34;install:3c29a18f80a8919b08706590f02670eb&#34;&gt;install&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/PuppetMaster $vagrant plugin install vagrant-vbguest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;bootup-usage:3c29a18f80a8919b08706590f02670eb&#34;&gt;bootup usage&lt;/h2&gt;
+
+&lt;p&gt;vagrant-vbguest will run on every &lt;code&gt;vagrant up&lt;/code&gt; or on a &lt;code&gt;vagrant reload&lt;/code&gt; unless you specifically tell it not to.&lt;/p&gt;
+
+&lt;h2 id=&#34;running-vm-usage:3c29a18f80a8919b08706590f02670eb&#34;&gt;running VM usage&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; vagrant vbguest --status
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/deploy-php-to-aws-beanstalk-using-eb/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/deploy-php-to-aws-beanstalk-using-eb/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-problem:7007eb0642939258d2468a1267c3c666&#34;&gt;The Problem&lt;/h1&gt;
+
+&lt;p&gt;Wordpress has lots of hosting options all of which cost money to be on a shared hosting server.  I need a autoscaling &amp;amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS.  AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-goal:7007eb0642939258d2468a1267c3c666&#34;&gt;The Goal&lt;/h1&gt;
+
+&lt;p&gt;Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the &amp;lsquo;eb&amp;rsquo; cli tool.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-links:7007eb0642939258d2468a1267c3c666&#34;&gt;The Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWS Beanstalk - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;eb - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-get-started.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AWS Regions &amp;amp; Endpoints - &lt;a href=&#34;http://docs.aws.amazon.com/general/latest/gr/rande.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wordpress - &lt;a href=&#34;https://wordpress.org&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wordpress on GitHub &lt;a href=&#34;https://github.com/WordPress/WordPress&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;howtos:7007eb0642939258d2468a1267c3c666&#34;&gt;HowTos&lt;/h1&gt;
+
+&lt;h2 id=&#34;howto-setup-the-eb-tool:7007eb0642939258d2468a1267c3c666&#34;&gt;HowTo - Setup the eb tool&lt;/h2&gt;
+
+&lt;p&gt;On your MacBook create a file to host your AWS creds.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ vim ~/.awscreds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;AWSAccessKeyId=Your AWS access ID
+AWSSecretKey=Your AWS secret key
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set the permissions&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ chmod 0600 ~/.awscreds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install &lt;em&gt;all&lt;/em&gt; the AWS tools using Homebrew&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install awscli
+brew install aws-elasticbeanstalk
+brew install aws-as
+brew install aws-cfn-tools
+brew install aws-cloudsearch
+brew install aws-elasticcache
+brew install aws-mon
+brew install aws-sns-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some of those installs need stuff added to the bash|zsh profile&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# aws stuff
+export AWS_ACCESS_KEY=&amp;quot;Your AWS access ID&amp;quot;
+export AWS_SECRET_KEY=&amp;quot;Your AWS secret key&amp;quot;
+export AWS_CLOUDFORMATION_HOME=&amp;quot;/usr/local/Cellar/aws-cfn-tools/1.0.12/libexec&amp;quot;
+export AWS_CLOUDWATCH_HOME=&amp;quot;/usr/local/Cellar/cloud-watch/1.0.20.0/libexec&amp;quot;
+export AWS_ELASTICACHE_HOME=&amp;quot;/usr/local/Cellar/aws-elasticache/1.9.000/libexec&amp;quot;
+export CS_HOME=/usr/local/Cellar/aws-cloudsearch/1.0.1.4-2013.01.11
+export EC2_HOME=&amp;quot;/usr/local/Cellar/ec2-api-tools/1.7.1.0/libexec&amp;quot;
+export AWS_SNS_HOME=&amp;quot;/usr/local/Cellar/aws-sns-cli/2013-09-27/libexec&amp;quot;
+export JAVA_HOME=&amp;quot;$(/usr/libexec/java_home)&amp;quot;
+export AWS_CREDENTIAL_FILE=/Users/sandor/.awscreds
+export ELASTICBEANSTALK_URL=&amp;quot;https://elasticbeanstalk.us-west-2.amazonaws.com&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Planning ahead for the eventual &lt;a href=&#34;https://en.wikipedia.org/wiki/Cascadia_%28independence_movement%29&#34;&gt;Cascadia&lt;/a&gt; so Oregon is my AWS home&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto-setup-a-beanstalk-environment:7007eb0642939258d2468a1267c3c666&#34;&gt;HowTo - Setup a BeanStalk Environment&lt;/h2&gt;
+
+&lt;p&gt;Setup a basic PHP BeanStalk to verify everything is working.  The end results is you should see a PHP test page.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb init
+sandor@pineApplez$ To get your AWS Access Key ID and Secret Access Key,
+  visit &amp;quot;https://aws-portal.amazon.com/gp/aws/securityCredentials&amp;quot;.
+Enter your AWS Access Key ID: Your AWS Access Key
+Enter your AWS Secret Access Key: Your AWS Secret Access Key
+Select an AWS Elastic Beanstalk service region.
+Available service regions are:
+…
+2) US West (Oregon)
+...
+Select (1 to 9): 2
+Enter an AWS Elastic Beanstalk application name (auto-generated value is &amp;quot;testapp&amp;quot;):
+Enter an AWS Elastic Beanstalk environment name (auto-generated value is &amp;quot;testapp-env&amp;quot;):
+Select an environment tier.
+Available environment tiers are:
+1) WebServer::Standard::1.0
+...
+Select (1 to 2): 1
+Select a solution stack.
+Available solution stacks are:
+1) 64bit Amazon Linux 2014.09 v1.0.9 running PHP 5.5
+…
+Select (1 to 49): 1
+Select an environment type.
+Available environment types are:
+...
+2) SingleInstance
+Select (1 to 2): 2
+Create an RDS DB Instance? [y/n]: y
+Create an RDS BD Instance from (current value is &amp;quot;[No snapshot]&amp;quot;):
+1) [No snapshot]
+...
+Select (1 to 2): 1
+Enter an RDS DB master password:
+Retype password to confirm:
+If you terminate your environment, your RDS DB Instance will be deleted and you will lose your data.
+Create snapshot? [y/n]: n
+Attach an instance profile (current value is &amp;quot;[Create a default instance profile]&amp;quot;):
+You IAM user does not have sufficient permission. User: arn:aws:iam::246173154382:user/smbec2r is not authorized to perform: iam:ListInstanceProfiles on resource: arn:aws:iam::246173154382:instance-profile/
+Do you want to proceed without attaching an instance profile? [y/n]: y
+Updated AWS Credential file at &amp;quot;/Users/sandor/.elasticbeanstalk/aws_credential_file&amp;quot;.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now start the test BeanStalk&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb start
+Starting application &amp;quot;testapp&amp;quot;.
+Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
+2014-12-01 00:01:10	INFO	createEnvironment is starting.
+2014-12-01 00:01:12	INFO	Using elasticbeanstalk-us-west-2-246133154382 as Amazon S3 storage bucket for environment data.
+2014-12-01 00:01:47	INFO	Created EIP: 54.149.45.218
+2014-12-01 00:01:50	INFO	Created security group named: awseb-e-97v6vazrp7-stack-AWSEBSecurityGroup-1AECQMWSW2P6H
+2014-12-01 00:02:00	INFO	Creating RDS database named: ab1e1p73zy1ede2. This may take a few minutes.
+2014-12-01 00:11:27	INFO	Created RDS database named: aa1e1p73zv1ede2
+2014-12-01 00:12:23	INFO	Waiting for EC2 instances to launch. This may take a few minutes.
+2014-12-01 00:14:05	INFO	Successfully launched environment: testapp-env
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Navigate to the EIP - &lt;a href=&#34;http://54.149.45.218&#34;&gt;http://54.149.45.218&lt;/a&gt; and you should see the Beanstalk PHP congrats page.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/WebHostPics/AWSCongratsScreen.png&#34; alt=&#34;AWS Congrats Page Screenshot&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that we know everything is setup correctly to deploy a test PHP environment we will deploy a full on Wordpress install.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto-deploy-wordpress-to-beanstalk:7007eb0642939258d2468a1267c3c666&#34;&gt;HowTo - Deploy Wordpress to Beanstalk&lt;/h2&gt;
+
+&lt;p&gt;First goal is to get a bare bones Wordpress setup working.  There are two ways to deploy to Beanstalk, hand it a docker container of your app or do a git push.  For this example we are going with a Docker container because in 2 years that will be the way it is and I dont want to go back and read how retarded I was in 2014 deploying with git.&lt;/p&gt;
+
+&lt;p&gt;This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.  The HowTo of migrating an existing Wordpress will be a separate post.&lt;/p&gt;
+
+&lt;p&gt;Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/dogecoin-mining-on-digital-ocean/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/dogecoin-mining-on-digital-ocean/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-goal:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;The Goal&lt;/h1&gt;
+
+&lt;p&gt;Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/dogecoinsuchlogo.png&#34; alt=&#34;doge&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;the-links:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;The Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Dogecoin - &lt;a href=&#34;http://dogecoin.com/&#34;&gt;very link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;/r/dogecoin - &lt;a href=&#34;http://www.reddit.com/r/dogecoin&#34;&gt;so reddit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;/r/dogemining - &lt;a href=&#34;http://www.reddit.com/r/dogemining&#34;&gt;many mines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dogecoin Mining Pools - &lt;a href=&#34;http://www.doktorrf.com/dogecoin/pools.html&#34;&gt;much swim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dogecoin Resources - &lt;a href=&#34;https://github.com/ummjackson/dogecoin-resources&#34;&gt;sources&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dogecoin Foundation - &lt;a href=&#34;http://foundation.dogecoin.com/&#34;&gt;now found&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com&#34;&gt;awesome drops&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TugBoat - &lt;a href=&#34;https://www.digitalocean.com/community/articles/how-to-use-tugboat-to-manage-digitalocean-droplets-from-a-terminal&#34;&gt;command line ocean&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;create-a-droplet:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Create a droplet&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@argo&amp;gt; tugboat create lucydoge -s 62 -i 308287 -r 3 -k 44888
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;Name:             lucydoge
+Status:           active
+Region ID:        3
+Image ID:         308287
+Size ID:          62
+Backups Active:   false
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;create-user:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Create user&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# history
+root@lucydoge:~# ls -al
+root@lucydoge:~# useradd -m lucy
+root@lucydoge:~# passwd lucy
+root@lucydoge:~# adduser lucy sudo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;update-debian:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Update Debian&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# apt-get -y update &amp;amp;&amp;amp; apt-get -y upgrade
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;install-screen:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Install Screen&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# apt-get install screen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;install-a-cpu-miner:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Install a CPU Miner&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# sudo apt-get install git build-essential autotools-dev libcurl4-gnutls-dev autoconf automake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# mkdir ~/miner2049er
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# cd miner2049er
+lucy@lucydoge:~# git clone https://github.com/pooler/cpuminer.git
+lucy@lucydoge:~# cd cpuminer 
+lucy@lucydoge:~# ./autogen.sh 
+lucy@lucydoge:~# CFLAGS=&amp;quot;-O3 -Wall -msse2&amp;quot; ./configure
+lucy@lucydoge:~# make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;find-a-mining-pool:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Find a Mining Pool&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.doktorrf.com/dogecoin/pools.html&#34;&gt;Mining Pools&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a new address for mining deposits&lt;/li&gt;
+&lt;li&gt;Add that mining address to your pool profile&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;start-mining:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;Start mining&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# ./minerd --url stratum+tcp://server:port --userpass worker.name:password
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;enjoy much coins&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/installing-ansible/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/installing-ansible/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:7e387656cdc813df3deec634e1be7585&#34;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:7e387656cdc813df3deec634e1be7585&#34;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;Install Ansible from the latest release on GitHub.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:7e387656cdc813df3deec634e1be7585&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.&lt;/p&gt;
+
+&lt;p&gt;+++&lt;/p&gt;
+
+&lt;h2 id=&#34;clone-the-ansible-repo:7e387656cdc813df3deec634e1be7585&#34;&gt;Clone the Ansible repo&lt;/h2&gt;
+
+&lt;p&gt;Go to the GitHub project page &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;github/ansible&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Choose a release version or the dev branch and clone.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController &amp;lt;-- Ansible runs from here
+sandor@pineapplez:$ mkdir ~/Codestuff/ansibles &amp;lt;-- Playbooks go here
+sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts &amp;lt;-- Server inventory goes here
+sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
+sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;run-the-environment-script:7e387656cdc813df3deec634e1be7585&#34;&gt;Run the environment script&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ./hacking/env-setup
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.&lt;/p&gt;
+
+&lt;p&gt;You are now setup to run Ansible from the Controller.  Because the inventory file is inside the playbook dir or ~/Codestuff/ansibles/ansible_hosts it will not get overwritten if you change the AnsibleController dir.&lt;/p&gt;
+
+&lt;p&gt;Push some SSH public keys and start pushing playbooks!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/post-to-octopress-and-deploy-to-github-pages/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/post-to-octopress-and-deploy-to-github-pages/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;Use Jekyll &amp;amp; octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are &lt;a href=&#34;http://sandorsscribbl.es/post-to-octopress-and-deploy-to-github-pages/&#34;&gt;now&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;not anymore, Sandors HowTo notebook has been moved to Amazon AWS&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;the-links:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Jekyll - &lt;a href=&#34;http://jekyllrb.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;OctoPress - &lt;a href=&#34;http://octopress.org&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;GitHub Pages - &lt;a href=&#34;http://pages.github.com&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;create-a-new-post:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Create a new post&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake new_post
+Enter a title for your post: post to octopress and deploy to github pages
+mkdir -p source/_posts
+Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Write the post in markdown, save it.  &lt;a href=&#34;http://mouapp.com/&#34;&gt;Mou&lt;/a&gt; is a nice markdown editor for OS X.&lt;/p&gt;
+
+&lt;h2 id=&#34;generate-new-blog:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Generate new blog&lt;/h2&gt;
+
+&lt;p&gt;This throws away everything and recreates the static files from scratch.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake -v generate
+## Generating Site with Jekyll
+identical source/stylesheets/screen.css
+Configuration from /Users/Sandors/Codestuff/e30chris.github.io/_config.yml
+Building site: source -&amp;gt; public
+Successfully generated site: source -&amp;gt; public
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;deploy-new-blog:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Deploy new blog&lt;/h2&gt;
+
+&lt;p&gt;This does a bunch of stuff to move the new blog content in the &amp;lsquo;source&amp;rsquo; branch to the &amp;lsquo;master&amp;rsquo; branch on GitHub which then updates the GitHub Pages content.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake -v deploy
+## Deploying branch to Github Pages
+## Pulling any updates from Github Pages
+cd _deploy
+remote: Counting objects: 7, done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 5 (delta 2), reused 5 (delta 2)
+Unpacking objects: 100% (5/5), done.
+From github.com:e30chris/e30chris.github.io
+   d6ed173..281b573  source     -&amp;gt; origin/source
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details
+
+    git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt;
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream master origin/&amp;lt;branch&amp;gt;
+
+cd -
+rm -rf _deploy/CNAME
+rm -rf _deploy/assets
+rm -rf _deploy/atom.xml
+rm -rf _deploy/blog
+rm -rf _deploy/categories
+rm -rf _deploy/favicon.png
+rm -rf _deploy/images
+rm -rf _deploy/index.html
+rm -rf _deploy/javascripts
+rm -rf _deploy/robots.txt
+rm -rf _deploy/sitemap.xml
+rm -rf _deploy/stylesheets
+rm -rf _deploy/vanilla-vagrant-setup
+
+## Copying public to _deploy
+cp -r public/. _deploy
+cd _deploy
+
+## Commiting: Site updated at 2013-11-13 05:02:52 UTC
+[master 3df53cc] Site updated at 2013-11-13 05:02:52 UTC
+ 8 files changed, 484 insertions(+), 8 deletions(-)
+ create mode 100644 auto-update-virtualbox-guest-additions-with-vagrant-vbguest/index.html
+
+## Pushing generated _deploy website
+Counting objects: 29, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (16/16), 5.66 KiB, done.
+Total 16 (delta 8), reused 0 (delta 0)
+To git@github.com:e30chris/e30chris.github.io.git
+   02467a6..3df53cc  master -&amp;gt; master
+
+## Github Pages deploy complete
+cd -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;commit-the-new-post:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Commit the new post&lt;/h3&gt;
+
+&lt;p&gt;Now that the code is up on GitHub save it in the git repo.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $git add .
+pineApplez&amp;gt;e30chris.github.io $git commit -m &#39;post - post to octopress and deploy to github pages&#39;
+[source e200e58] post - post to octopress and deploy to github pages
+ 1 file changed, 52 insertions(+)
+ create mode 100644 source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
+pineApplez&amp;gt;e30chris.github.io $git push origin source
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now write more scribbles and make the nerd world even more lazyier.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/puppet-vim-setup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/puppet-vim-setup/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-links:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;PuppetLabs - &lt;a href=&#34;http://puppetlabs.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vim-puppet - &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vim tabular - &lt;a href=&#34;https://github.com/godlygeek/tabular&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vim syntastic - &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;vim-pathogen:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Vim-Pathogen&lt;/h2&gt;
+
+&lt;p&gt;Vim-Pathogen on &lt;a href=&#34;https://github.com/tpope/vim-pathogen&#34; title=&#34;vim-pathogen&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# mkdir -p ~/.vim/autoload ~/.vim/bundle
+[root@Argon ~]# cd ~/.vim/autoload
+[root@Argon ~]# curl -o pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add these settings to .vimrc&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;execute pathogen#infect()
+syntax on
+filetype plugin indent on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;vim-puppet:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Vim-Puppet&lt;/h2&gt;
+
+&lt;p&gt;Vim-Puppet on &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34; title=&#34;vim-puppet&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
+[root@Argon ~]# git clone git://github.com/rodjek/vim-puppet.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;tabular:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Tabular&lt;/h2&gt;
+
+&lt;p&gt;Tabular on &lt;a href=&#34;https://github.com/godlygeek/tabular&#34; title=&#34;tabular&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
+[root@Argon ~]# git clone git://github.com/godlygeek/tabular.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;syntastic:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Syntastic&lt;/h2&gt;
+
+&lt;p&gt;Syntastic on &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34; title=&#34;syntastic&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
+[root@Argon ~]# git clone https://github.com/scrooloose/syntastic.git
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/run-ansible-through-pmksh/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/run-ansible-through-pmksh/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.&lt;/p&gt;
+
+&lt;h2 id=&#34;shells-ansible:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;Shells &amp;amp; Ansible&lt;/h2&gt;
+
+&lt;p&gt;Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using &amp;lsquo;command&amp;rsquo; can move to using the full suite of modules.&lt;/p&gt;
+
+&lt;p&gt;The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.&lt;/p&gt;
+
+&lt;p&gt;Ansible Shells:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&#34;&gt;github repo - ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;p&gt;Current Workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m command -a &amp;quot;/opt/quest/bin/pmksh -c &#39;/bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;tasks:
+
+- name: run a command through pmksh
+  command: &amp;quot;/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;once ksh is added to the list of shells I will update this post&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
