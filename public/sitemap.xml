@@ -2,100 +2,129 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/</loc>
+    <loc>http://theargo.io/</loc>
+    <lastmod>2016-07-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/Configure-new-servers-with-the-basics-via-Ansible/</loc>
+    <loc>http://theargo.io/about/</loc>
+    <lastmod>2016-07-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</loc>
+    <loc>http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/</loc>
+    <lastmod>2015-07-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/MacBook-Setup-using-Ansible-and-Homebrew/</loc>
+    <loc>http://theargo.io/post/MacBook-Setup-using-Ansible-and-Homebrew/</loc>
+    <lastmod>2015-05-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</loc>
+    <loc>http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</loc>
+    <lastmod>2015-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/add-twitter-timeline-to-octopress-sidebar/</loc>
+    <loc>http://theargo.io/post/deploy-php-to-aws-beanstalk-using-eb/</loc>
+    <lastmod>2014-11-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/add-webproxy-cert-to-fedora/</loc>
+    <loc>http://theargo.io/post/ansible-on-hp-ux-11-dot-31/</loc>
+    <lastmod>2014-09-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/ansible-on-hp-ux-11-dot-31/</loc>
+    <loc>http://theargo.io/post/run-ansible-through-pmksh/</loc>
+    <lastmod>2014-09-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/ansible-on-redhat-5-dot-x/</loc>
+    <loc>http://theargo.io/post/using-ansible-to-align-passwords-on-servers/</loc>
+    <lastmod>2014-07-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</loc>
+    <loc>http://theargo.io/post/installing-ansible/</loc>
+    <lastmod>2014-06-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/deploy-php-to-aws-beanstalk-using-eb/</loc>
+    <loc>http://theargo.io/post/using-ansible-to-deploy-a-puppetmaster/</loc>
+    <lastmod>2014-06-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/dogecoin-mining-on-digital-ocean/</loc>
+    <loc>http://theargo.io/post/using-goaccess-to-parse-webserver-logs/</loc>
+    <lastmod>2014-04-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/installing-ansible/</loc>
+    <loc>http://theargo.io/post/dogecoin-mining-on-digital-ocean/</loc>
+    <lastmod>2014-03-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/post-to-octopress-and-deploy-to-github-pages/</loc>
+    <loc>http://theargo.io/post/using-oscar-to-build-a-local-puppet-environment-with-vagrant/</loc>
+    <lastmod>2013-12-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/puppet-vim-setup/</loc>
+    <loc>http://theargo.io/post/using-vagrant-on-windows/</loc>
+    <lastmod>2013-12-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/run-ansible-through-pmksh/</loc>
+    <loc>http://theargo.io/post/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/</loc>
+    <lastmod>2013-12-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/using-ansible-to-align-passwords-on-servers/</loc>
+    <loc>http://theargo.io/post/vpn-setup-openvpn-server-deploy-on-aws/</loc>
+    <lastmod>2013-12-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/using-ansible-to-deploy-a-puppetmaster/</loc>
+    <loc>http://theargo.io/post/add-webproxy-cert-to-fedora/</loc>
+    <lastmod>2013-11-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/using-goaccess-to-parse-webserver-logs/</loc>
+    <loc>http://theargo.io/post/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/using-oscar-to-build-a-local-puppet-environment-with-vagrant/</loc>
+    <loc>http://theargo.io/post/add-twitter-timeline-to-octopress-sidebar/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/using-vagrant-on-windows/</loc>
+    <loc>http://theargo.io/post/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</loc>
+    <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/vanilla-vagrant-setup/</loc>
+    <loc>http://theargo.io/post/post-to-octopress-and-deploy-to-github-pages/</loc>
+    <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/</loc>
+    <loc>http://theargo.io/post/puppet-vim-setup/</loc>
+    <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/vpn-setup-openvpn-server-deploy-on-aws/</loc>
+    <loc>http://theargo.io/post/vanilla-vagrant-setup/</loc>
+    <lastmod>2013-11-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://theargo.io/post/ansible-on-redhat-5-dot-x/</loc>
+    <lastmod>2013-09-03T00:00:00+00:00</lastmod>
   </url>
   
 </urlset>

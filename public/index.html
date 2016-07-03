@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.15" />
+
+  <title>Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Sandors Systems Scribbles" href="http://theargo.io/index.xml" />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://theargo.io/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Sandors Systems Scribbles</h1>
+  <h2>Notes about Systems &amp; Infrastructure Culture</h2>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/">Configure new servers with the basics via Ansible</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>08 Jul 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/infrastructure-culture">infrastructure culture</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem: You have a throw away server that you only need for the next couple of hours to try something out. You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it. The solution: This Ansible playbook that is simple and to the point. It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/MacBook-Setup-using-Ansible-and-Homebrew/">MacBook Setup Using Ansible and Homebrew</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>18 May 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/mac">mac</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/homebrew">homebrew</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem: You have a brand new fresh install of OSX on your MacBook and you need to get up and running. You want all your apps installed using Homebrew &amp; Cask and OSX setup with goodies like zsh and .dotfiles. The solution: Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask. Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/MacBook-Setup-using-Ansible-and-Homebrew/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/">Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>01 May 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/aws">aws</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/redshift">redshift</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/vpc">vpc</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem: The Problem - By default new AWS accounts are based on the EC2-VPC platform. If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet. The solution: Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/deploy-php-to-aws-beanstalk-using-eb/">Deploy Wordpress to AWS Beanstalk using eb</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>30 Nov 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/aws">aws</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/beanstalk">beanstalk</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem Wordpress has lots of hosting options all of which cost money to be on a shared hosting server. I need a autoscaling &amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS. AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/deploy-php-to-aws-beanstalk-using-eb/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/ansible-on-hp-ux-11-dot-31/">Ansible on HP-UX 11.31</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>03 Sep 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/hp-ux">hp-ux</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/techdebt">techdebt</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/oldcorp">oldcorp</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The problem Old corporations that are running ancient OS&rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient. The goal Install Python on HP-UX so Ansible can manage and automate the ancient servers. HowTo sandor@pineapplez:$ ansible -i hosts all -m raw -a &quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&quot;
+  </p>
+
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/run-ansible-through-pmksh/">Run Ansible through pmksh</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>03 Sep 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/bullshit">bullshit</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/techdebt">techdebt</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/oldcorp">oldcorp</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The problem Old corporations use shitty old software to do things that modern Linux is really good at doing itself. Using pmksh instead of a well laid out sudoers setup is what the problem is. The goal Configure Ansible playbooks to execute through the pmksh shell on the targeted servers. Shells &amp; Ansible Currently Ansible &amp; Python work together to take the output from bash and report back with formatting. Ansible does not understand ksh talk making running through pmksh a workaround for now.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/run-ansible-through-pmksh/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/using-ansible-to-align-passwords-on-servers/">Using Ansible to Align Passwords on Servers</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>17 Jul 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/security">security</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/bullshit">bullshit</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/techdebt">techdebt</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/oldcorp">oldcorp</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem: A group of servers get their passwords updated every 3 months with a new shared password. The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords. The Goal: Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it. The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/using-ansible-to-align-passwords-on-servers/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/installing-ansible/">Installing Ansible</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>16 Jun 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/workstation">workstation</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure. The Solution Install Ansible from the latest release on GitHub. The Goal Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts. Clone the Ansible repo Go to the GitHub project page github/ansible Choose a release version or the dev branch and clone.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/installing-ansible/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/using-ansible-to-deploy-a-puppetmaster/">Using Ansible to deploy a PuppetMaster</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 Jun 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/puppet">puppet</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations. Also need to deploy to several environments using a consistent configuration. The Solution Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key. The Goal A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/using-ansible-to-deploy-a-puppetmaster/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="http://theargo.io/post/using-goaccess-to-parse-webserver-logs/">Using GoAccess to parse webserver logs</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>01 Apr 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/go">go</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Problem Need the ability to track web traffic for a specific hours worth of logs. The Solution Using GoAccess to parse Apache logs that are rotated into hour chunks. The Goal Install GoAccess to parse webserver logs. Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers. Keep it simple by rotating logs on the hour. The Links GoAccess - real-time web log analyzer - allinurl/goaccess Ansible - Ansible Docs Apache rotatelogs - Hourly Rotated WebServer Logs Digital Ocean - My referral link, thanks!
+  </p>
+
+  
+  <footer>
+    <a href="http://theargo.io/post/using-goaccess-to-parse-webserver-logs/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+
+  
+
+
+<nav class="pagination" role="pagination">
+  
+  <i class="fa fa-chevron-left"></i>
+  
+  <span>&nbsp;1 / 3&nbsp;</span>
+  
+  <a href="http://theargo.io/page/2/"><i class="fa fa-chevron-right"></i></a>
+  
+</nav>
+
+
+
+</div>
+
+</div>
+</div>
+<script src="http://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

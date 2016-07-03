@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
-    <link>http://replace-this-with-your-hugo-site.com/</link>
-    <description>Recent content on My New Hugo Site</description>
+    <title>Sandors Systems Scribbles</title>
+    <link>http://theargo.io/</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <atom:link href="http://replace-this-with-your-hugo-site.com/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <lastBuildDate>Fri, 01 Jul 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://theargo.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/Configure-new-servers-with-the-basics-via-Ansible/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>About Me</title>
+      <link>http://theargo.io/about/</link>
+      <pubDate>Fri, 01 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/Configure-new-servers-with-the-basics-via-Ansible/</guid>
+      <guid>http://theargo.io/about/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Configure new servers with the basics via Ansible</title>
+      <link>http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/</link>
+      <pubDate>Wed, 08 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/</guid>
       <description>
 
 &lt;h2 id=&#34;the-problem:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;The Problem:&lt;/h2&gt;
@@ -36,7 +46,7 @@
 &lt;li&gt;Add a role to this playbook to kick off the droplet creation and then register the names and IP&amp;rsquo;s for the new servers before handing off to this current playbook config.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;+++&lt;/p&gt;
+&lt;hr /&gt;
 
 &lt;h3 id=&#34;pre-requisites:78bd343c0d90d633e7f04e5bfc273141&#34;&gt;Pre-Requisites&lt;/h3&gt;
 
@@ -120,7 +130,7 @@ servfed &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; success &amp;g
     &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;changed&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #f8f8f2&#34;&gt;false&lt;/span&gt;,
     &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;ping&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;pong&amp;quot;&lt;/span&gt;
 &lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
-sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;
+sandor@pineApplez&lt;span style=&#34;color: #960050; background-color: #1e0010&#34;&gt;$&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
@@ -138,8 +148,8 @@ sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;
 
 &lt;p&gt;&lt;em&gt;delivered_users: this is the user accounts you want created on the new server, each with sudo access.&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;+++&lt;/span&gt;
-&lt;span style=&#34;color: #ae81ff&#34;&gt;# vars file for ServerDelivery&lt;/span&gt;
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# vars file for ServerDelivery&lt;/span&gt;
 &lt;span style=&#34;color: #ae81ff&#34;&gt;delivered_users&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
   &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;chrisl&lt;/span&gt;
   &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;dpr&lt;/span&gt;
@@ -156,7 +166,7 @@ sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;
 &lt;p&gt;&lt;em&gt;this file will need to be created with ansible-vault&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;ansible-vault create group_vars/passes.yml
-+++
+---
 &lt;span style=&#34;color: #75715e&#34;&gt;# vars file for ServerDelivery encrypted via ansible-vault&lt;/span&gt;
 users_ssh_key_pass: stallman was right
 &lt;/pre&gt;&lt;/div&gt;
@@ -426,75 +436,11 @@ fed22                      : &lt;span style=&#34;color: #f8f8f2&#34;&gt;ok&lt;/s
     </item>
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>MacBook Setup Using Ansible and Homebrew</title>
+      <link>http://theargo.io/post/MacBook-Setup-using-Ansible-and-Homebrew/</link>
+      <pubDate>Mon, 18 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem:b597a30638b8696bdde043a22b2068f6&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;The Problem - By default new AWS accounts are based on the EC2-VPC platform.  If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution:b597a30638b8696bdde043a22b2068f6&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory:b597a30638b8696bdde043a22b2068f6&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;As the SRE team we manage each teams AWS environment.  To keep it simple all teams are in their own VPC with the default VPC being left unused.  Launching a Redshift cluster for the Data Analytics team and trying to put that Redshift cluster into the Data Analytics VPC presented the problem of not being able to select anything other than the default VPC.  Reading the AWS documentation does not address launching Redshift into a non-default VPC.  This Sandors notebook note does.&lt;/p&gt;
-
-&lt;p&gt;+++&lt;/p&gt;
-
-&lt;h3 id=&#34;pre-requisites:b597a30638b8696bdde043a22b2068f6&#34;&gt;Pre-Requisites:&lt;/h3&gt;
-
-&lt;p&gt;Create a VPC with subnets for the Redshift cluster to be deployed.&lt;/p&gt;
-
-&lt;h2 id=&#34;cli:b597a30638b8696bdde043a22b2068f6&#34;&gt;CLI&lt;/h2&gt;
-
-&lt;p&gt;Create the Cluster Subnet Group&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default).&lt;/em&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aws redshift create-cluster-subnet-group
-
-  --cluster-subnet-group-name argodataanalyticsredshiftsubnet
-
-  --description &amp;quot;Argo Data Analytics Redshift Subnet&amp;quot;
-
-  --subnet-ids subnet-382fee1w
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html&#34;&gt;AWS CLI Documentation create=cluster-subnet-group&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;aws-console:b597a30638b8696bdde043a22b2068f6&#34;&gt;AWS Console&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Open RDS Dashboard&lt;/li&gt;
-&lt;li&gt;Security&lt;/li&gt;
-&lt;li&gt;Subnet Groups
-
-&lt;ul&gt;
-&lt;li&gt;Click &lt;em&gt;Create Cluster Subnet Group&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Give the Subnet a name &amp;amp; description&lt;/li&gt;
-&lt;li&gt;Select the VPC you want to launch Redshift into&lt;/li&gt;
-&lt;li&gt;Select the Availability Zone you want the subnet in&lt;/li&gt;
-&lt;li&gt;Select the subnet for that AZ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-subnet-group-console.html&#34;&gt;AWS Console Documentation&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/MacBook-Setup-using-Ansible-and-Homebrew/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/MacBook-Setup-using-Ansible-and-Homebrew/</guid>
+      <guid>http://theargo.io/post/MacBook-Setup-using-Ansible-and-Homebrew/</guid>
       <description>
 
 &lt;h2 id=&#34;the-problem:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;The Problem:&lt;/h2&gt;
@@ -517,7 +463,7 @@ fed22                      : &lt;span style=&#34;color: #f8f8f2&#34;&gt;ok&lt;/s
 &lt;li&gt;Bring in OSX user settings like desktop backgrounds and other System Preferences.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;+++&lt;/p&gt;
+&lt;hr /&gt;
 
 &lt;h3 id=&#34;pre-requisites:b06f0edf5db1d7044a8c9a03ec3d69d0&#34;&gt;Pre-Requisites:&lt;/h3&gt;
 
@@ -615,247 +561,75 @@ sandor@pineApplez&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ &lt;/span&gt;pbcop
     </item>
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</title>
+      <link>http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</link>
+      <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</guid>
+      <guid>http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</guid>
       <description>
 
-&lt;h2 id=&#34;the-goal:3a163784462320d30fbf9980d70d96eb&#34;&gt;The Goal&lt;/h2&gt;
+&lt;h2 id=&#34;the-problem:b597a30638b8696bdde043a22b2068f6&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;The Problem - By default new AWS accounts are based on the EC2-VPC platform.  If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:b597a30638b8696bdde043a22b2068f6&#34;&gt;The solution:&lt;/h2&gt;
+
+&lt;p&gt;Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.&lt;/p&gt;
+
+&lt;h3 id=&#34;backstory:b597a30638b8696bdde043a22b2068f6&#34;&gt;Backstory:&lt;/h3&gt;
+
+&lt;p&gt;As the SRE team we manage each teams AWS environment.  To keep it simple all teams are in their own VPC with the default VPC being left unused.  Launching a Redshift cluster for the Data Analytics team and trying to put that Redshift cluster into the Data Analytics VPC presented the problem of not being able to select anything other than the default VPC.  Reading the AWS documentation does not address launching Redshift into a non-default VPC.  This Sandors notebook note does.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;pre-requisites:b597a30638b8696bdde043a22b2068f6&#34;&gt;Pre-Requisites:&lt;/h3&gt;
+
+&lt;p&gt;Create a VPC with subnets for the Redshift cluster to be deployed.&lt;/p&gt;
+
+&lt;h2 id=&#34;cli:b597a30638b8696bdde043a22b2068f6&#34;&gt;CLI&lt;/h2&gt;
+
+&lt;p&gt;Create the Cluster Subnet Group&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default).&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;aws redshift create-cluster-subnet-group
+
+  --cluster-subnet-group-name argodataanalyticsredshiftsubnet
+
+  --description &amp;quot;Argo Data Analytics Redshift Subnet&amp;quot;
+
+  --subnet-ids subnet-382fee1w
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html&#34;&gt;AWS CLI Documentation create=cluster-subnet-group&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;aws-console:b597a30638b8696bdde043a22b2068f6&#34;&gt;AWS Console&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Use awesome Twitter Bootstrap 3 on Octopress&lt;/li&gt;
-&lt;li&gt;Setup OctoStrap3 to do that&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-links:3a163784462320d30fbf9980d70d96eb&#34;&gt;The Links&lt;/h2&gt;
-
-&lt;p&gt;OctoPress - &lt;a href=&#34;http://octopress.org&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;OctoStrap3 - &lt;a href=&#34;http://kaworu.github.io/octopress/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;octopress-setup:3a163784462320d30fbf9980d70d96eb&#34;&gt;Octopress Setup&lt;/h2&gt;
-
-&lt;p&gt;Go &lt;a href=&#34;http://octopress.org/docs/setup/&#34;&gt;here&lt;/a&gt; and do all of that&lt;/p&gt;
-
-&lt;h2 id=&#34;octostrap3-setup:3a163784462320d30fbf9980d70d96eb&#34;&gt;OctoStrap3 Setup&lt;/h2&gt;
-
-&lt;p&gt;Instructions &lt;a href=&#34;http://kaworu.github.io/octopress/setup/install/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;From the base OctoPress dir&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; git clone https://github.com/kAworu/octostrap3 .themes/octostrap3
-spudBud@pineApplez&amp;gt; rake &amp;quot;install[octostrap3]&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;category-list-aside:3a163784462320d30fbf9980d70d96eb&#34;&gt;Category List Aside&lt;/h2&gt;
-
-&lt;p&gt;Add a category list html page to &lt;code&gt;source/_includes/custom/asides&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;{% gist 7669102 %}&lt;/p&gt;
-
-&lt;p&gt;Add the new aside in the _config.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# list each of the sidebar modules you want to include, in the order you want them to appear.
-# To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like &#39;custom/asides/custom_aside_name.html&#39;
-default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;rake-generate-deploy:3a163784462320d30fbf9980d70d96eb&#34;&gt;rake generate | deploy&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; rake generate
-spudBud@pineApplez&amp;gt; rake deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You should now have a Twitter Bootstrapped UI on your OctoPress blog.  You should also have an aside that list each category, the number of posts for each and have a highlight if you are on that categories page.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/add-twitter-timeline-to-octopress-sidebar/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/add-twitter-timeline-to-octopress-sidebar/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;The Goal&lt;/h2&gt;
+&lt;li&gt;Open RDS Dashboard&lt;/li&gt;
+&lt;li&gt;Security&lt;/li&gt;
+&lt;li&gt;Subnet Groups
 
 &lt;ul&gt;
-&lt;li&gt;Add a Twitter timeline to the sidebar of an Octopress blog&lt;/li&gt;
+&lt;li&gt;Click &lt;em&gt;Create Cluster Subnet Group&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Give the Subnet a name &amp;amp; description&lt;/li&gt;
+&lt;li&gt;Select the VPC you want to launch Redshift into&lt;/li&gt;
+&lt;li&gt;Select the Availability Zone you want the subnet in&lt;/li&gt;
+&lt;li&gt;Select the subnet for that AZ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;the-links:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;The links&lt;/h2&gt;
-
-&lt;p&gt;Octopress - &lt;a href=&#34;http://octopress.org/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Acqui-hire.me - &lt;a href=&#34;http://acqui-hire.me/blog/2012/11/07/octopress-and-twitter-timelines/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;create-a-twitter-widget:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;Create a Twitter widget&lt;/h2&gt;
-
-&lt;p&gt;Goto the Twitter widget settings page &lt;a href=&#34;https://twitter.com/settings/widgets&#34;&gt;here&lt;/a&gt; and create your timeline.&lt;/p&gt;
-
-&lt;h2 id=&#34;twitter-aside:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;Twitter Aside&lt;/h2&gt;
-
-&lt;p&gt;Add a twitter html page to &lt;code&gt;source/_include/custom/asides&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;{% gist 7669257 %}&lt;/p&gt;
-
-&lt;p&gt;Add that aside in your _config.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# list each of the sidebar modules you want to include, in the order you want them to appear.
-# To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like &#39;custom/asides/custom_aside_name.html&#39;
-default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;and update the Twitter settings&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Twitter Embed Timeline
-twitter_user: tweety_username
-twitter_widget_id: widget_id_from_twitter_widget_code_blob
-twitter_tweet_button: true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;rake-generate-deploy:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;rake generate | deploy&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; rake generate
-spudBud@pineApplez&amp;gt; rake deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;the-results:78be576df9b5fc155658c9f2742aa0b9&#34;&gt;The results&lt;/h2&gt;
-
-&lt;p&gt;You should now have your Twitter timeline embedded on the sidebar of your OctoPress blog.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-subnet-group-console.html&#34;&gt;AWS Console Documentation&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/add-webproxy-cert-to-fedora/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Deploy Wordpress to AWS Beanstalk using eb</title>
+      <link>http://theargo.io/post/deploy-php-to-aws-beanstalk-using-eb/</link>
+      <pubDate>Sun, 30 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/add-webproxy-cert-to-fedora/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal:a0e49e276022f3b3190edaab7a642089&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Make Fedora work behind a restrictive idiotic corporate web proxy&lt;/li&gt;
-&lt;li&gt;Install a corporate cert to make that happen&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;get-the-cert:a0e49e276022f3b3190edaab7a642089&#34;&gt;Get the cert&lt;/h2&gt;
-
-&lt;h2 id=&#34;install-the-cert:a0e49e276022f3b3190edaab7a642089&#34;&gt;Install the cert&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;the-result:a0e49e276022f3b3190edaab7a642089&#34;&gt;The result&lt;/h2&gt;
-
-&lt;p&gt;Your corporate overlord has now man in the middled your personal gmail, have fun.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/ansible-on-hp-ux-11-dot-31/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/ansible-on-hp-ux-11-dot-31/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Install Python on HP-UX so Ansible can manage and automate the ancient servers.&lt;/p&gt;
-
-&lt;h2 id=&#34;howto:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/ansible-on-redhat-5-dot-x/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/ansible-on-redhat-5-dot-x/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem:d11181a5e22ff96f7a517d62c5459f5e&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Older Pythons that live on older RedHats do not have json support.  Old corporations still use old OS&amp;rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal:d11181a5e22ff96f7a517d62c5459f5e&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.&lt;/p&gt;
-
-&lt;h2 id=&#34;howto:d11181a5e22ff96f7a517d62c5459f5e&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Using Ansible Raw&lt;/em&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;yum -y install python-simplejson&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal:3c29a18f80a8919b08706590f02670eb&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Keep the VirtualBox guest additions at the latest version using vagrant-vbguest built by dotless-de.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-links:3c29a18f80a8919b08706590f02670eb&#34;&gt;The Links&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Vagrant vbguest - &lt;a href=&#34;https://github.com/dotless-de/vagrant-vbguest&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;dotless-de - &lt;a href=&#34;https://github.com/dotless-de&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;vagrant-vbguest:3c29a18f80a8919b08706590f02670eb&#34;&gt;vagrant-vbguest&lt;/h2&gt;
-
-&lt;p&gt;A beautifully simple Vagrant plugin to manage the guest additions on VirtualBox.&lt;/p&gt;
-
-&lt;h2 id=&#34;install:3c29a18f80a8919b08706590f02670eb&#34;&gt;install&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/PuppetMaster $vagrant plugin install vagrant-vbguest
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;bootup-usage:3c29a18f80a8919b08706590f02670eb&#34;&gt;bootup usage&lt;/h2&gt;
-
-&lt;p&gt;vagrant-vbguest will run on every &lt;code&gt;vagrant up&lt;/code&gt; or on a &lt;code&gt;vagrant reload&lt;/code&gt; unless you specifically tell it not to.&lt;/p&gt;
-
-&lt;h2 id=&#34;running-vm-usage:3c29a18f80a8919b08706590f02670eb&#34;&gt;running VM usage&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; vagrant vbguest --status
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/deploy-php-to-aws-beanstalk-using-eb/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/deploy-php-to-aws-beanstalk-using-eb/</guid>
+      <guid>http://theargo.io/post/deploy-php-to-aws-beanstalk-using-eb/</guid>
       <description>
 
 &lt;h1 id=&#34;the-problem:7007eb0642939258d2468a1267c3c666&#34;&gt;The Problem&lt;/h1&gt;
@@ -1007,11 +781,428 @@ Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
     </item>
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/dogecoin-mining-on-digital-ocean/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Ansible on HP-UX 11.31</title>
+      <link>http://theargo.io/post/ansible-on-hp-ux-11-dot-31/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/dogecoin-mining-on-digital-ocean/</guid>
+      <guid>http://theargo.io/post/ansible-on-hp-ux-11-dot-31/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Install Python on HP-UX so Ansible can manage and automate the ancient servers.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto:c3018a207b4515c4ec36c96dc074ead0&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Run Ansible through pmksh</title>
+      <link>http://theargo.io/post/run-ansible-through-pmksh/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/run-ansible-through-pmksh/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.&lt;/p&gt;
+
+&lt;h2 id=&#34;shells-ansible:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;Shells &amp;amp; Ansible&lt;/h2&gt;
+
+&lt;p&gt;Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using &amp;lsquo;command&amp;rsquo; can move to using the full suite of modules.&lt;/p&gt;
+
+&lt;p&gt;The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.&lt;/p&gt;
+
+&lt;p&gt;Ansible Shells:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&#34;&gt;github repo - ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;p&gt;Current Workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m command -a &amp;quot;/opt/quest/bin/pmksh -c &#39;/bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;tasks:
+
+- name: run a command through pmksh
+  command: &amp;quot;/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;once ksh is added to the list of shells I will update this post&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Ansible to Align Passwords on Servers</title>
+      <link>http://theargo.io/post/using-ansible-to-align-passwords-on-servers/</link>
+      <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/using-ansible-to-align-passwords-on-servers/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:d4020d109b5c663a81f31c087ca2fc77&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;A group of servers get their passwords updated every 3 months with a new shared password.  The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:d4020d109b5c663a81f31c087ca2fc77&#34;&gt;The Goal:&lt;/h2&gt;
+
+&lt;p&gt;Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it.  The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;note - using the same root password on all your servers is a terrible idea and completely against the SysAdmin Bible.  Use random passwords and keys!&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto:d4020d109b5c663a81f31c087ca2fc77&#34;&gt;HowTo:&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download the playbook from
+
+&lt;ul&gt;
+&lt;li&gt;GitHub - &lt;a href=&#34;https://github.com/e30chris/Ansible-AlignPassword&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Galaxy - &lt;a href=&#34;https://galaxy.ansible.com/list#/roles/1134&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Create a branch to edit the variables for your environment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ cd ~/Codestuff/ansibles/Ansible-AlignPassword
+  sandor@pineapplez:$ git checkout -b qatenv    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ansible-vault the file that will contain the passwords.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault encrypt group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Edit the vars for the environment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault edit group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add the inventory to hosts&lt;/li&gt;
+&lt;li&gt;Verify Ansible connect with ping pong&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible -i hosts all -m ping
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Run the playbook&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-playbook -i hosts site.yml -vv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;common-task-actions:d4020d109b5c663a81f31c087ca2fc77&#34;&gt;Common Task Actions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Attempt to login to each server using all possible passwords&lt;/li&gt;
+&lt;li&gt;Register which passwords work on each server&lt;/li&gt;
+&lt;li&gt;Set a new shared password for every server&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;variables:d4020d109b5c663a81f31c087ca2fc77&#34;&gt;Variables&lt;/h2&gt;
+
+&lt;p&gt;Go here:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this format:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;variable: value
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing Ansible</title>
+      <link>http://theargo.io/post/installing-ansible/</link>
+      <pubDate>Mon, 16 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/installing-ansible/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:7e387656cdc813df3deec634e1be7585&#34;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:7e387656cdc813df3deec634e1be7585&#34;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;Install Ansible from the latest release on GitHub.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:7e387656cdc813df3deec634e1be7585&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;clone-the-ansible-repo:7e387656cdc813df3deec634e1be7585&#34;&gt;Clone the Ansible repo&lt;/h2&gt;
+
+&lt;p&gt;Go to the GitHub project page &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;github/ansible&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Choose a release version or the dev branch and clone.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController &amp;lt;-- Ansible runs from here
+sandor@pineapplez:$ mkdir ~/Codestuff/ansibles &amp;lt;-- Playbooks go here
+sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts &amp;lt;-- Server inventory goes here
+sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
+sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;run-the-environment-script:7e387656cdc813df3deec634e1be7585&#34;&gt;Run the environment script&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ./hacking/env-setup
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.&lt;/p&gt;
+
+&lt;p&gt;You are now setup to run Ansible from the Controller.  Because the inventory file is inside the playbook dir or ~/Codestuff/ansibles/ansible_hosts it will not get overwritten if you change the AnsibleController dir.&lt;/p&gt;
+
+&lt;p&gt;Push some SSH public keys and start pushing playbooks!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Ansible to deploy a PuppetMaster</title>
+      <link>http://theargo.io/post/using-ansible-to-deploy-a-puppetmaster/</link>
+      <pubDate>Fri, 13 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/using-ansible-to-deploy-a-puppetmaster/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem:b422ca8b8e456bb402a472e6875e7810&#34;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations.  Also need to deploy to several environments using a consistent configuration.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution:b422ca8b8e456bb402a472e6875e7810&#34;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal:b422ca8b8e456bb402a472e6875e7810&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.&lt;/p&gt;
+
+&lt;h4 id=&#34;note-this-playbook-is-still-a-work-in-progress-most-of-the-issues-are-fighting-puppets-insane-complexity-of-getting-installed-correctly-with-a-few-small-ansible-bugs-sprinkled-in:b422ca8b8e456bb402a472e6875e7810&#34;&gt;Note: this playbook is still a work in progress.  Most of the issues are fighting Puppets insane complexity of getting installed correctly with a few small Ansible bugs sprinkled in.&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;github-repo:b422ca8b8e456bb402a472e6875e7810&#34;&gt;GitHub Repo&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-PuppetEnterpriseDeploy&#34;&gt;github.com/e30chris/Ansible-PuppetEnterpriseDeploy&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;playbook-notes:b422ca8b8e456bb402a472e6875e7810&#34;&gt;Playbook notes&lt;/h2&gt;
+
+&lt;h2 id=&#34;setting-the-variables-for-each-environment:b422ca8b8e456bb402a472e6875e7810&#34;&gt;Setting the variables for each environment&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ cd ~/Ansible-PuppetEnterpriseDeploy/
+sandor@pineapplez:$ cat group_vars/all
+---
+# common variables for PuppetMaster Deployment
+# format for this file
+# variable: fact
+#
+# version of Puppet Enterprise
+pe_version: 3.2.3
+
+# os family
+os_family: debian
+os_version: 7
+os_arch: amd64
+
+# pe installer
+pe_installer: puppet-enterprise-{{ pe_version }}-{{ os_family }}-{{ os_version }}-{{ os_arch }}
+
+# hostnames
+pupmaster_hostname: pupmaster.argo.local
+pupdb_hostname: pupdb.argo.local
+pupconsole_hostname: pupconsole.argo.local
+
+# IP&#39;s
+pupmaster_ip: 10.0.0.10
+pupdb_ip: 10.0.0.11
+pupconsole_ip: 10.0.0.12
+
+# dns salt hostnames
+pupmaster_salt_hostnames: puppet,puppetmaster
+pupdb_salt_hostnames: puppetdb
+pupconsole_salt_hostname: pupconsole
+
+# passwords
+console_auth_db_pass: arandompasswordthatneedschangedhere
+console_db_pass: arandompasswordthatneedschangedhere
+pupdb_db_pass: arandompasswordthatneedschangedhere
+db_root_pass: arandompasswordthatneedschangedhere
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To keep it simple only the values that should be changed are assigned variables.  Everything else is left with the Puppet defaults in the answer files.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;tasks-to-be-run-on-all-servers:b422ca8b8e456bb402a472e6875e7810&#34;&gt;Tasks to be run on all servers&lt;/h2&gt;
+
+&lt;p&gt;Puppet needs very perfect name resolution between all agents and the PuppetMaster.  Having a &lt;strong&gt;perfect&lt;/strong&gt; hosts file on each server is required.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- name: Ensure common etc hosts file
+  template:
+    src=&amp;quot;../templates/hosts.j2&amp;quot;
+    dest=/etc/hosts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To keep things simple all the installation tasks will run out of a /puppetinstall directory.  This should be in the user home dir that is running the installer.  The examples here use root but the SysAdmin Bible states never use root always use &lt;strong&gt;sudo&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- name: Ensure Puppet installer directory present
+  file:
+    path=/root/puppetinstall
+    state=directory
+
+- name: Ensure install log present
+  file:
+    path=/root/puppetinstall/pupconsole_install.log
+    owner=root
+    state=touch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When you download the PE tarball you can grab the download url from S3.  This grabs the version you need and extracts it into the installer dir.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- name: Ensure PE tarball present
+  get_url:
+    url=https://s3.amazonaws.com/pe-builds/released/{{ pe_version }}/{{ pe_installer }}.tar.gz
+    dest=/root/peinstaller.tar.gz
+    force=no
+
+- name: Ensure Puppet untar&#39;d to install directory
+  unarchive:
+    copy=no
+    src=/root/peinstaller.tar.gz
+    dest=/root/puppetinstall
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;tasks-that-run-on-each-server-role:b422ca8b8e456bb402a472e6875e7810&#34;&gt;Tasks that run on each server role&lt;/h2&gt;
+
+&lt;p&gt;Each server then runs the same basic installer command with a few things named for each role like the installer log.&lt;/p&gt;
+
+&lt;p&gt;Here is the PuppetMasters install-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+# Tasks for PupMaster
+- name: Ensure install log present
+  file:
+    path=/root/puppetinstall/pupmaster_install.log
+    owner=root
+    state=touch
+
+- name: answer file for PupMaster
+  template:
+    src=&amp;quot;../templates/pupmaster.answer.j2&amp;quot;
+    dest=/root/puppetinstall/pupmaster.answer
+    owner=root
+
+- name: run the pe installer
+  command: /root/puppetinstall/{{ pe_installer }}/puppet-enterprise-installer -a /root/puppetinstall/pupmaster.answer -l /root/puppetinstall/pupmaster_install.log
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using GoAccess to parse webserver logs</title>
+      <link>http://theargo.io/post/using-goaccess-to-parse-webserver-logs/</link>
+      <pubDate>Tue, 01 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/using-goaccess-to-parse-webserver-logs/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-problem:8a845157701a130ee802c0dd3d60f25d&#34;&gt;The Problem&lt;/h1&gt;
+
+&lt;p&gt;Need the ability to track web traffic for a specific hours worth of logs.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-solution:8a845157701a130ee802c0dd3d60f25d&#34;&gt;The Solution&lt;/h1&gt;
+
+&lt;p&gt;Using GoAccess to parse Apache logs that are rotated into hour chunks.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-goal:8a845157701a130ee802c0dd3d60f25d&#34;&gt;The Goal&lt;/h1&gt;
+
+&lt;p&gt;Install GoAccess to parse webserver logs.  Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers.  Keep it simple by rotating logs on the hour.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-links:8a845157701a130ee802c0dd3d60f25d&#34;&gt;The Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GoAccess - &lt;a href=&#34;https://github.com/allinurl/goaccess/&#34;&gt;real-time web log analyzer - allinurl/goaccess&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ansible - &lt;a href=&#34;http://docs.ansible.com/&#34;&gt;Ansible Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Apache rotatelogs - &lt;a href=&#34;https://httpd.apache.org/docs/2.2/programs/rotatelogs.html&#34;&gt;Hourly Rotated WebServer Logs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com/?refcode=980586449ebd&#34;&gt;My referral link, thanks!&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TugBoat - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;CLI for DO - pearkes/tugboat&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;ansible-playbook-install-goaccess:8a845157701a130ee802c0dd3d60f25d&#34;&gt;Ansible Playbook - Install GoAccess&lt;/h1&gt;
+
+&lt;p&gt;Create the GoAccess Playbook.  This installs GoAccess using Apt on Debian.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/e30chris/9929303.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Run the playbook with Ansible.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible-playbook ~/playbooks/goaccess/goaccess.yml -vvvv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;goaccess-usage:8a845157701a130ee802c0dd3d60f25d&#34;&gt;GoAccess Usage&lt;/h1&gt;
+
+&lt;p&gt;Now that GoAccess is installed on the server we can login and parse the webserver logs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.log
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GoAccess now parses the log and outputs the results in a configurable format.  You can also export the results into various file formats.&lt;/p&gt;
+
+&lt;p&gt;Here is a screenshot that shows how many times an IP has hit the webserver.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://s3.amazonaws.com/sandorssystemsscribbles/GoAccessScreen.png&#34; alt=&#34;goscreen&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To keep it simple install Apache rotatelog and set the logs to rollover on the hour.  Then GoAccess can parse the logs by the hour.&lt;/p&gt;
+
+&lt;p&gt;Apache rotatelog setting for hourly logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CustomLog &amp;quot;|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600&amp;quot; common
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Parsing a specific hours logs with GoAccess&lt;/p&gt;
+
+&lt;p&gt;Example - Logs for 8am April, 2 2014.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.2014-04-02-08
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Dogecoin mining on Digital Ocean</title>
+      <link>http://theargo.io/post/dogecoin-mining-on-digital-ocean/</link>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/dogecoin-mining-on-digital-ocean/</guid>
       <description>
 
 &lt;h1 id=&#34;the-goal:5df6c89e438e37de6f3ff896dc06435e&#34;&gt;The Goal&lt;/h1&gt;
@@ -1076,8 +1267,8 @@ root@lucydoge:~# adduser lucy sudo
 
 &lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# cd miner2049er
 lucy@lucydoge:~# git clone https://github.com/pooler/cpuminer.git
-lucy@lucydoge:~# cd cpuminer 
-lucy@lucydoge:~# ./autogen.sh 
+lucy@lucydoge:~# cd cpuminer
+lucy@lucydoge:~# ./autogen.sh
 lucy@lucydoge:~# CFLAGS=&amp;quot;-O3 -Wall -msse2&amp;quot; ./configure
 lucy@lucydoge:~# make
 &lt;/code&gt;&lt;/pre&gt;
@@ -1101,282 +1292,245 @@ lucy@lucydoge:~# make
     </item>
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/installing-ansible/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Using Oscar to Build a Local Puppet Environment with Vagrant</title>
+      <link>http://theargo.io/post/using-oscar-to-build-a-local-puppet-environment-with-vagrant/</link>
+      <pubDate>Fri, 20 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/installing-ansible/</guid>
+      <guid>http://theargo.io/post/using-oscar-to-build-a-local-puppet-environment-with-vagrant/</guid>
       <description>
 
-&lt;h2 id=&#34;the-problem:7e387656cdc813df3deec634e1be7585&#34;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution:7e387656cdc813df3deec634e1be7585&#34;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;Install Ansible from the latest release on GitHub.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal:7e387656cdc813df3deec634e1be7585&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.&lt;/p&gt;
-
-&lt;p&gt;+++&lt;/p&gt;
-
-&lt;h2 id=&#34;clone-the-ansible-repo:7e387656cdc813df3deec634e1be7585&#34;&gt;Clone the Ansible repo&lt;/h2&gt;
-
-&lt;p&gt;Go to the GitHub project page &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;github/ansible&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Choose a release version or the dev branch and clone.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController &amp;lt;-- Ansible runs from here
-sandor@pineapplez:$ mkdir ~/Codestuff/ansibles &amp;lt;-- Playbooks go here
-sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts &amp;lt;-- Server inventory goes here
-sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
-sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;run-the-environment-script:7e387656cdc813df3deec634e1be7585&#34;&gt;Run the environment script&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ./hacking/env-setup
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.&lt;/p&gt;
-
-&lt;p&gt;You are now setup to run Ansible from the Controller.  Because the inventory file is inside the playbook dir or ~/Codestuff/ansibles/ansible_hosts it will not get overwritten if you change the AnsibleController dir.&lt;/p&gt;
-
-&lt;p&gt;Push some SSH public keys and start pushing playbooks!&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/post-to-octopress-and-deploy-to-github-pages/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/post-to-octopress-and-deploy-to-github-pages/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Use Jekyll &amp;amp; octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are &lt;a href=&#34;http://sandorsscribbl.es/post-to-octopress-and-deploy-to-github-pages/&#34;&gt;now&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;not anymore, Sandors HowTo notebook has been moved to Amazon AWS&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;the-links:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;The Links&lt;/h2&gt;
+&lt;h2 id=&#34;the-goal:f425891b1860d23a93278dbe002c8890&#34;&gt;The Goal&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Jekyll - &lt;a href=&#34;http://jekyllrb.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;OctoPress - &lt;a href=&#34;http://octopress.org&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;GitHub Pages - &lt;a href=&#34;http://pages.github.com&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Install Oscar&lt;/li&gt;
+&lt;li&gt;Use Oscar to build a local PuppetMaster &amp;amp; Agent config&lt;/li&gt;
+&lt;li&gt;Use Vagrant to start the PuppetMaster &amp;amp; Agent&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;create-a-new-post:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Create a new post&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake new_post
-Enter a title for your post: post to octopress and deploy to github pages
-mkdir -p source/_posts
-Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Write the post in markdown, save it.  &lt;a href=&#34;http://mouapp.com/&#34;&gt;Mou&lt;/a&gt; is a nice markdown editor for OS X.&lt;/p&gt;
-
-&lt;h2 id=&#34;generate-new-blog:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Generate new blog&lt;/h2&gt;
-
-&lt;p&gt;This throws away everything and recreates the static files from scratch.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake -v generate
-## Generating Site with Jekyll
-identical source/stylesheets/screen.css
-Configuration from /Users/Sandors/Codestuff/e30chris.github.io/_config.yml
-Building site: source -&amp;gt; public
-Successfully generated site: source -&amp;gt; public
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;deploy-new-blog:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Deploy new blog&lt;/h2&gt;
-
-&lt;p&gt;This does a bunch of stuff to move the new blog content in the &amp;lsquo;source&amp;rsquo; branch to the &amp;lsquo;master&amp;rsquo; branch on GitHub which then updates the GitHub Pages content.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake -v deploy
-## Deploying branch to Github Pages
-## Pulling any updates from Github Pages
-cd _deploy
-remote: Counting objects: 7, done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 5 (delta 2), reused 5 (delta 2)
-Unpacking objects: 100% (5/5), done.
-From github.com:e30chris/e30chris.github.io
-   d6ed173..281b573  source     -&amp;gt; origin/source
-There is no tracking information for the current branch.
-Please specify which branch you want to merge with.
-See git-pull(1) for details
-
-    git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt;
-
-If you wish to set tracking information for this branch you can do so with:
-
-    git branch --set-upstream master origin/&amp;lt;branch&amp;gt;
-
-cd -
-rm -rf _deploy/CNAME
-rm -rf _deploy/assets
-rm -rf _deploy/atom.xml
-rm -rf _deploy/blog
-rm -rf _deploy/categories
-rm -rf _deploy/favicon.png
-rm -rf _deploy/images
-rm -rf _deploy/index.html
-rm -rf _deploy/javascripts
-rm -rf _deploy/robots.txt
-rm -rf _deploy/sitemap.xml
-rm -rf _deploy/stylesheets
-rm -rf _deploy/vanilla-vagrant-setup
-
-## Copying public to _deploy
-cp -r public/. _deploy
-cd _deploy
-
-## Commiting: Site updated at 2013-11-13 05:02:52 UTC
-[master 3df53cc] Site updated at 2013-11-13 05:02:52 UTC
- 8 files changed, 484 insertions(+), 8 deletions(-)
- create mode 100644 auto-update-virtualbox-guest-additions-with-vagrant-vbguest/index.html
-
-## Pushing generated _deploy website
-Counting objects: 29, done.
-Delta compression using up to 2 threads.
-Compressing objects: 100% (11/11), done.
-Writing objects: 100% (16/16), 5.66 KiB, done.
-Total 16 (delta 8), reused 0 (delta 0)
-To git@github.com:e30chris/e30chris.github.io.git
-   02467a6..3df53cc  master -&amp;gt; master
-
-## Github Pages deploy complete
-cd -
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;commit-the-new-post:1ebe2de554dbb9c37b56e815415b1c49&#34;&gt;Commit the new post&lt;/h3&gt;
-
-&lt;p&gt;Now that the code is up on GitHub save it in the git repo.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $git add .
-pineApplez&amp;gt;e30chris.github.io $git commit -m &#39;post - post to octopress and deploy to github pages&#39;
-[source e200e58] post - post to octopress and deploy to github pages
- 1 file changed, 52 insertions(+)
- create mode 100644 source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
-pineApplez&amp;gt;e30chris.github.io $git push origin source
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now write more scribbles and make the nerd world even more lazyier.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/puppet-vim-setup/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://replace-this-with-your-hugo-site.com/puppet-vim-setup/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-links:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;The Links&lt;/h2&gt;
+&lt;h2 id=&#34;install:f425891b1860d23a93278dbe002c8890&#34;&gt;Install&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;PuppetLabs - &lt;a href=&#34;http://puppetlabs.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;vim-puppet - &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;vim tabular - &lt;a href=&#34;https://github.com/godlygeek/tabular&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;vim syntastic - &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;VirtualBox - &lt;a href=&#34;https://www.virtualbox.org/wiki/Downloads&#34;&gt;https://www.virtualbox.org/wiki/Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Vagrant - Oscar works with Vagrant version 1.3.4 - &lt;a href=&#34;http://downloads.vagrantup.com/tags/v1.3.4&#34;&gt;http://downloads.vagrantup.com/tags/v1.3.4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Oscar - &lt;a href=&#34;https://github.com/adrienthebo/oscar&#34;&gt;https://github.com/adrienthebo/oscar&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;vim-pathogen:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Vim-Pathogen&lt;/h2&gt;
-
-&lt;p&gt;Vim-Pathogen on &lt;a href=&#34;https://github.com/tpope/vim-pathogen&#34; title=&#34;vim-pathogen&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# mkdir -p ~/.vim/autoload ~/.vim/bundle
-[root@Argon ~]# cd ~/.vim/autoload
-[root@Argon ~]# curl -o pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant plugin install oscar
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Add these settings to .vimrc&lt;/p&gt;
+&lt;h2 id=&#34;add-a-vagrant-box:f425891b1860d23a93278dbe002c8890&#34;&gt;Add a Vagrant Box&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;execute pathogen#infect()
-syntax on
-filetype plugin indent on
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;vim-puppet:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Vim-Puppet&lt;/h2&gt;
+&lt;p&gt;What that does:&lt;/p&gt;
 
-&lt;p&gt;Vim-Puppet on &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34; title=&#34;vim-puppet&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
-[root@Argon ~]# git clone git://github.com/rodjek/vim-puppet.git
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant box add boxName http://url.box
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;tabular:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Tabular&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Downloads the .box file to the Vagrant boxes directory&lt;/li&gt;
+&lt;li&gt;nocm = No &amp;ldquo;configuration management&amp;rdquo; installed&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Tabular on &lt;a href=&#34;https://github.com/godlygeek/tabular&#34; title=&#34;tabular&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;create-a-vagrant-environment-with-oscar:f425891b1860d23a93278dbe002c8890&#34;&gt;Create a Vagrant environment with Oscar&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
-[root@Argon ~]# git clone git://github.com/godlygeek/tabular.git
+&lt;p&gt;Give Vagrant a Puppet Enterprise installer location &amp;amp; version.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vim config/pe_build.yaml
+
+---
+ pe_build:
+   version: &amp;quot;3.1.3&amp;quot;
+   #download_root: &#39;http://s3.amazonpebucket.com&#39;
+
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;syntastic:ab252e59568293b0b6b1fdab0661c3d9&#34;&gt;Syntastic&lt;/h2&gt;
+&lt;p&gt;Set the download_root or manually add the installer with&lt;/p&gt;
 
-&lt;p&gt;Syntastic on &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34; title=&#34;syntastic&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
-[root@Argon ~]# git clone https://github.com/scrooloose/syntastic.git
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant pe-build copy puppet-enterprise-3.1.3-el-6-x86_64.tar.gz
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant oscar init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant oscar init-vms \
+                   --master master=centosPupLabs \
+                   --agent firstagent=centosPupLabs
+                   --agent secondagent=centosPupLabs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant up
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What that does:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Creates a Vagrantfile that is customized by Oscar&lt;/li&gt;
+&lt;li&gt;Adds a PuppetMaster and 2 agents to the Vagrant environment&lt;/li&gt;
+&lt;li&gt;Uses the PuppetLabs Centos box as the OS for all 3 VMsgs&lt;/li&gt;
+&lt;li&gt;Starts the group of VMs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;login-to-the-vms:f425891b1860d23a93278dbe002c8890&#34;&gt;Login to the VMs&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant ssh master
+sandor@pineApplez&amp;gt; vagrant ssh firstagent
+sandor@pineApplez&amp;gt; vagrant ssh secondagent
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-result:f425891b1860d23a93278dbe002c8890&#34;&gt;The result&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;3 running VMs with a PuppetMaster and 2 agents&lt;/li&gt;
+&lt;li&gt;Both Agents are authenticated with the Master&lt;/li&gt;
+&lt;li&gt;You can now run your Puppet code&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
     <item>
-      <title></title>
-      <link>http://replace-this-with-your-hugo-site.com/run-ansible-through-pmksh/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Using Vagrant on Windows</title>
+      <link>http://theargo.io/post/using-vagrant-on-windows/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/run-ansible-through-pmksh/</guid>
+      <guid>http://theargo.io/post/using-vagrant-on-windows/</guid>
       <description>
 
-&lt;h2 id=&#34;the-problem:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;The problem&lt;/h2&gt;
+&lt;h2 id=&#34;the-goal:0059beda1d25d31b6ff9a431aee404af&#34;&gt;The Goal&lt;/h2&gt;
 
-&lt;p&gt;Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Install and configure VirtualBox &amp;amp; Vagrant on your Windows dev box&lt;/li&gt;
+&lt;li&gt;Download and start a Linux &amp;amp; Windows Vagrant Box.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h2 id=&#34;the-goal:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;The goal&lt;/h2&gt;
+&lt;h2 id=&#34;install:0059beda1d25d31b6ff9a431aee404af&#34;&gt;Install&lt;/h2&gt;
 
-&lt;p&gt;Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;VirtualBox - &lt;a href=&#34;https://www.virtualbox.org/wiki/Downloads&#34;&gt;https://www.virtualbox.org/wiki/Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/downloads&#34;&gt;http://www.vagrantup.com/downloads&lt;/a&gt;
 
-&lt;h2 id=&#34;shells-ansible:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;Shells &amp;amp; Ansible&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Download the .msi&lt;/li&gt;
+&lt;li&gt;Right click and &lt;code&gt;Install as Administrator&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using &amp;lsquo;command&amp;rsquo; can move to using the full suite of modules.&lt;/p&gt;
+&lt;h2 id=&#34;add-a-vagrant-box:0059beda1d25d31b6ff9a431aee404af&#34;&gt;Add a Vagrant Box&lt;/h2&gt;
 
-&lt;p&gt;The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Open a Command Prompt and &lt;code&gt;Run as Administrator&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Ansible Shells:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&#34;&gt;github repo - ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;howto:078fd80704f8217e672a5c0e70db5d3a&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;p&gt;Current Workaround:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m command -a &amp;quot;/opt/quest/bin/pmksh -c &#39;/bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;pre&gt;&lt;code&gt;C:\Windows\system32\&amp;gt;vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;tasks:
+&lt;p&gt;What that does:&lt;/p&gt;
 
-- name: run a command through pmksh
-  command: &amp;quot;/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;pre&gt;&lt;code&gt;C:\Windows\system32\&amp;gt;vagrant box add boxName http://url.box
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;em&gt;once ksh is added to the list of shells I will update this post&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Downloads the .box file to the Vagrant boxes directory&lt;/li&gt;
+&lt;li&gt;nocm = No &amp;ldquo;configuration management&amp;rdquo; installed&lt;/li&gt;
+&lt;li&gt;We will use a Vagrant plugin called Oscar to install and configure the PuppetMaster and Agent in a separate post.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;start-the-vagrant-box:0059beda1d25d31b6ff9a431aee404af&#34;&gt;Start the Vagrant Box&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant init centosPupLabs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant up
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What that does:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Tells Vagrant to write a VagrantConfig file in &lt;code&gt;C:\stuff\vagrants\&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Vagrant then boots the centosPupLabs VirtualBox machine&lt;/li&gt;
+&lt;li&gt;SSH into the VM
+
+&lt;ul&gt;
+&lt;li&gt;Must have Cygwin or Git installed&lt;/li&gt;
+&lt;li&gt;You can also use PuTTY&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VPN Setup - MacBook to OpenVPN Server using Tunnelblick</title>
+      <link>http://theargo.io/post/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/</link>
+      <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://theargo.io/post/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal:94f751d306e4718abefcecc16a2a4341&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Get MacBook to connect to a OpenVPN Server&lt;/li&gt;
+&lt;li&gt;Install Tunnelblick to make that happen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;setup-the-openvpn-server:94f751d306e4718abefcecc16a2a4341&#34;&gt;Setup the OpenVPN Server&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow this - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws/&#34;&gt;sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;install-tunnelblick:94f751d306e4718abefcecc16a2a4341&#34;&gt;Install Tunnelblick&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://code.google.com/p/tunnelblick/&#34;&gt;Tunnelblick Google Code&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;download-openvpn-client-config-file:94f751d306e4718abefcecc16a2a4341&#34;&gt;Download OpenVPN Client Config file&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Goto OpenVPN web client&lt;/li&gt;
+&lt;li&gt;Login with new user&lt;/li&gt;
+&lt;li&gt;Choose to download cert&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;modify-client-config-file-for-tunnelblick:94f751d306e4718abefcecc16a2a4341&#34;&gt;Modify Client Config File for Tunnelblick&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a folder for the new config / VPN connection&lt;/li&gt;
+&lt;li&gt;The $vpnname.tblk folder is where that VPN connection is saved&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; mkdir -p ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Copy the .ovpn client config file to that directory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;start-tunnelblick:94f751d306e4718abefcecc16a2a4341&#34;&gt;Start Tunnelblick&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Choose VPN from the tunnel&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-test:94f751d306e4718abefcecc16a2a4341&#34;&gt;The Test&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Verify IP using Tunnelblick&lt;/li&gt;
+&lt;li&gt;Verify IP with Tunnelblick off&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ipchicken.com/&#34;&gt;IP Chicken&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-result:94f751d306e4718abefcecc16a2a4341&#34;&gt;The Result&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Using a VPN your nets are safe from all prying eyes except the NSAs&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
