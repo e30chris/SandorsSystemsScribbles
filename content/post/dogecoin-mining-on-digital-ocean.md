@@ -1,9 +1,9 @@
 ---
-title = "Dogecoin mining on Digital Ocean"
-date = "2014-03-12"
-tags = [ "dogecoin", "coins", "digitaloceans" ]
-categories = [ "digitaloceans" ]
-image = "dogecoinsuchlogo.png"
+title: "Dogecoin mining on Digital Ocean"
+date: "2014-03-12"
+tags: [ "dogecoin", "coins", "digitaloceans" ]
+categories: [ "digitaloceans" ]
+image: "dogecoinsuchlogo.png"
 ---
 
 # The Goal

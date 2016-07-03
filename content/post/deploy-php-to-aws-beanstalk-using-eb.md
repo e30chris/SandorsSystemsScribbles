@@ -1,9 +1,9 @@
 ---
-title = "Deploy Wordpress to AWS Beanstalk using eb"
-date = "2014-11-30"
-tags = [ "aws", "beanstalk" ]
-categories = [ "aws" ]
-image = ""
+title: "Deploy Wordpress to AWS Beanstalk using eb"
+date: "2014-11-30"
+tags: [ "aws", "beanstalk" ]
+categories: [ "aws" ]
+image: ""
 ---
 
 # The Problem

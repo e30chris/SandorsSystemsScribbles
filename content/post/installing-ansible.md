@@ -1,9 +1,9 @@
 ---
-title = "Installing Ansible"
-date = "2014-06-16"
-tags = [ "ansible", "workstation" ]
-categories = [ "ansible" ]
-image = ""
+title: "Installing Ansible"
+date: "2014-06-16"
+tags: [ "ansible", "workstation" ]
+categories: [ "ansible" ]
+image: ""
 ---
 
 ## The Problem

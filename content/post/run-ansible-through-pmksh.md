@@ -1,9 +1,9 @@
 ---
-title = "Run Ansible through pmksh"
-date = "2014-09-03"
-tags = [ "ansible", "bullshit", "techdebt", "oldcorp" ]
-categories = [ "ansible" ]
-image = ""
+title: "Run Ansible through pmksh"
+date: "2014-09-03"
+tags: [ "ansible", "bullshit", "techdebt", "oldcorp" ]
+categories: [ "ansible" ]
+image: ""
 ---
 
 ## The problem

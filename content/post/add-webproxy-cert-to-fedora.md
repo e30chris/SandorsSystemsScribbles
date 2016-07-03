@@ -1,9 +1,9 @@
 ---
-title = "Add WebProxy Cert to Fedora"
-date = "2013-11-29"
-tags = [ "fedora", "linux", "bullshit", "workstation", "techdebt", "oldcorp" ]
-categories = [ "linux" ]
-image = ""
+title: "Add WebProxy Cert to Fedora"
+date: "2013-11-29"
+tags: [ "fedora", "linux", "bullshit", "workstation", "techdebt", "oldcorp" ]
+categories: [ "linux" ]
+image: ""
 ---
 
 ## The Goal

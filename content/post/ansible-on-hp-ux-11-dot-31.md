@@ -1,9 +1,9 @@
 ---
-title = "Ansible on HP-UX 11.31"
-date = "2014-09-03"
-tags = [ "ansible", "hp-ux", "techdebt", "oldcorp" ]
-categories = [ "ansible" ]
-image = ""
+title: "Ansible on HP-UX 11.31"
+date: "2014-09-03"
+tags: [ "ansible", "hp-ux", "techdebt", "oldcorp" ]
+categories: [ "ansible" ]
+image: ""
 ---
 
 ## The problem

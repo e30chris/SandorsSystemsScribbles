@@ -1,9 +1,9 @@
 ---
-title = "Add Twitter Bootstrap 3 to OctoPress with OctoStrap3"
-date = "2013-11-26"
-tags = [ "webstuff", "octopress" ]
-categories = [ "webstuff" ]
-image = ""
+title: "Add Twitter Bootstrap 3 to OctoPress with OctoStrap3"
+date: "2013-11-26"
+tags: [ "webstuff", "octopress" ]
+categories: [ "webstuff" ]
+image: ""
 ---
 
 ## The Goal

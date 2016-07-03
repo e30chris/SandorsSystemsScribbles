@@ -1,9 +1,9 @@
 ---
-title = "Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform"
-date = "2015-05-01"
-tags = [ "aws", "redshift", "vpc" ]
-categories = [ "aws" ]
-image = ""
+title: "Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform"
+date: "2015-05-01"
+tags: [ "aws", "redshift", "vpc" ]
+categories: [ "aws" ]
+image: ""
 ---
 
 ## The Problem:

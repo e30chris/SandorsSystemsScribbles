@@ -1,9 +1,9 @@
 ---
-title = "Ansible on RedHat 5.x"
-date = "2013-09-03"
-tags = [ "ansible", "redhat", "linux" ]
-categories = [ "linux" ]
-image = "MIWG_2013_Kirkland_Concours_14.jpg"
+title: "Ansible on RedHat 5.x"
+date: "2013-09-03"
+tags: [ "ansible", "redhat", "linux" ]
+categories: [ "linux" ]
+image: "MIWG_2013_Kirkland_Concours_14.jpg"
 ---
 
 ## The problem

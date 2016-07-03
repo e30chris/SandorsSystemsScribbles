@@ -1,9 +1,9 @@
 ---
-title = "Using Oscar to Build a Local Puppet Environment with Vagrant"
-date = "2013-12-20"
-tags = [ "puppet", "vagrant" ]
-categories = [ "workstation" ]
-image = ""
+title: "Using Oscar to Build a Local Puppet Environment with Vagrant"
+date: "2013-12-20"
+tags: [ "puppet", "vagrant" ]
+categories: [ "workstation" ]
+image: ""
 ---
 
 ## The Goal

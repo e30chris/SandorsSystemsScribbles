@@ -1,9 +1,9 @@
 ---
-title = "MacBook Setup Using Ansible and Homebrew"
-date = "2015-05-18"
-tags = [ "ansible", "mac", "homebrew"]
-categories = [ "ansible" ]
-image = ""
+title: "MacBook Setup Using Ansible and Homebrew"
+date: "2015-05-18"
+tags: [ "ansible", "mac", "homebrew"]
+categories: [ "ansible" ]
+image: ""
 ---
 
 ## The Problem:

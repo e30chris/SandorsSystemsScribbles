@@ -1,9 +1,9 @@
 ---
-title = "Puppet vim setup"
-date = "2013-11-12"
-tags = [ "puppet", "vim" ]
-categories = [ "workstation" ]
-image = ""
+title: "Puppet vim setup"
+date: "2013-11-12"
+tags: [ "puppet", "vim" ]
+categories: [ "workstation" ]
+image: ""
 ---
 
 ## The Goal

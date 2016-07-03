@@ -1,4 +1,4 @@
-baseurl = "http://theargo.io/"
+baseurl = "http://theargo.io"
 title = "Sandors Systems Scribbles"
 author = "Sandor"
 # Shown in the side menu
@@ -14,8 +14,8 @@ paginate = 10
   # Shown in the home page
   subtitle = "Notes about Systems & Infrastructure Culture"
   brand = "Scribbles"
-  googleAnalytics = "Your Google Analytics tracking ID"
-  disqus = "Your Disqus shortname"
+  googleAnalytics = "UA-80255618-1"
+  disqus = ""
   # CSS name for highlight.js
   highlightjs = "androidstudio"
   dateFormat = "02 Jan 2006, 15:04"
@@ -40,11 +40,6 @@ paginate = 10
     weight = 2
     identifier = "about"
     url = "/about/"
-  [[menu.main]]
-    name = "Contact"
-    pre = "<i class='fa fa-phone fa-fw'></i>"
-    weight = 3
-    url = "/contact/"
 
 [social]
   # Link your social networking accouns to the side menu
@@ -52,32 +47,14 @@ paginate = 10
 
   # SNS microblogging
   twitter = "e30chris"
-  gnusocial = "*" # Specify href (e.g. https://quitter.se/yourusername)
-  facebook = "*"
-  googleplus = "*"
-  weibo = "*"
-
-  # SNS photo/video sharing
-  instagram = "*"
-  flickr = "*"
-  pinterest = "*"
-  youtube = "*"
-  vimeo = "*"
-  vine = "*"
-  slideshare = "*"
+  gnusocial = "https://quitter.se/e30chris" # Specify href (e.g. https://quitter.se/yourusername)
 
   # SNS career oriented
-  linkedin = "*"
-  xing = "*"
-
-  # SNS news
-  reddit = "*"
-  hackernews = "*"
+  linkedin = "clivermore"
 
   # Techie
   github = "e30chris"
   gitlab = "e30chris"
-  stackoverflow = "e30chris"
 
   # Other
   keybase = "e30chris"

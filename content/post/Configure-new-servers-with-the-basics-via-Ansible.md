@@ -1,9 +1,9 @@
 ---
-title = "Configure new servers with the basics via Ansible"
-date = "2015-07-08"
-tags = [ "ansible", "infrastructure culture" ]
-categories = [ "ansible" ]
-image = ""
+title: "Configure new servers with the basics via Ansible"
+date: "2015-07-08"
+tags: [ "ansible", "infrastructure culture" ]
+categories: [ "ansible" ]
+image: ""
 ---
 
 ## The Problem:
