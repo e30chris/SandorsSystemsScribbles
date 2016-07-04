@@ -13,117 +13,117 @@
   </url>
   
   <url>
-    <loc>http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/</loc>
+    <loc>http://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</loc>
     <lastmod>2015-07-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/MacBook-Setup-using-Ansible-and-Homebrew/</loc>
+    <loc>http://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</loc>
     <lastmod>2015-05-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/</loc>
+    <loc>http://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</loc>
     <lastmod>2015-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/deploy-php-to-aws-beanstalk-using-eb/</loc>
+    <loc>http://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/</loc>
     <lastmod>2014-11-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/ansible-on-hp-ux-11-dot-31/</loc>
+    <loc>http://theargo.io/post/ansible_on_hp_ux_11_dot_31/</loc>
     <lastmod>2014-09-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/run-ansible-through-pmksh/</loc>
+    <loc>http://theargo.io/post/run_ansible_through_pmksh/</loc>
     <lastmod>2014-09-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/using-ansible-to-align-passwords-on-servers/</loc>
+    <loc>http://theargo.io/post/using_ansible_to_align_passwords_on_servers/</loc>
     <lastmod>2014-07-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/installing-ansible/</loc>
+    <loc>http://theargo.io/post/installing_ansible/</loc>
     <lastmod>2014-06-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/using-ansible-to-deploy-a-puppetmaster/</loc>
+    <loc>http://theargo.io/post/using_ansible_to_deploy_a_puppetmaster/</loc>
     <lastmod>2014-06-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/using-goaccess-to-parse-webserver-logs/</loc>
+    <loc>http://theargo.io/post/using_goaccess_to_parse_webserver_logs/</loc>
     <lastmod>2014-04-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/dogecoin-mining-on-digital-ocean/</loc>
+    <loc>http://theargo.io/post/dogecoin_mining_on_digital_ocean/</loc>
     <lastmod>2014-03-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/using-oscar-to-build-a-local-puppet-environment-with-vagrant/</loc>
+    <loc>http://theargo.io/post/using_oscar_to_build_a_local_puppet_environment_with_vagrant/</loc>
     <lastmod>2013-12-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/using-vagrant-on-windows/</loc>
+    <loc>http://theargo.io/post/using_vagrant_on_windows/</loc>
     <lastmod>2013-12-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/</loc>
+    <loc>http://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/</loc>
     <lastmod>2013-12-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/vpn-setup-openvpn-server-deploy-on-aws/</loc>
+    <loc>http://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/</loc>
     <lastmod>2013-12-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/add-webproxy-cert-to-fedora/</loc>
+    <loc>http://theargo.io/post/add_webproxy_cert_to_fedora/</loc>
     <lastmod>2013-11-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/add-twitter-bootstrap-3-to-octopress-with-octostrap3/</loc>
+    <loc>http://theargo.io/post/add_twitter_bootstrap_3_to_octopress_with_octostrap3/</loc>
     <lastmod>2013-11-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/add-twitter-timeline-to-octopress-sidebar/</loc>
+    <loc>http://theargo.io/post/add_twitter_timeline_to_octopress_sidebar/</loc>
     <lastmod>2013-11-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/auto-update-virtualbox-guest-additions-with-vagrant-vbguest/</loc>
+    <loc>http://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/</loc>
     <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/post-to-octopress-and-deploy-to-github-pages/</loc>
+    <loc>http://theargo.io/post/post_to_octopress_and_deploy_to_github_pages/</loc>
     <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/puppet-vim-setup/</loc>
+    <loc>http://theargo.io/post/puppet_vim_setup/</loc>
     <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/vanilla-vagrant-setup/</loc>
+    <loc>http://theargo.io/post/vanilla_vagrant_setup/</loc>
     <lastmod>2013-11-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://theargo.io/post/ansible-on-redhat-5-dot-x/</loc>
+    <loc>http://theargo.io/post/ansible_on_redhat_5_dot_x/</loc>
     <lastmod>2013-09-03T00:00:00+00:00</lastmod>
   </url>
   
