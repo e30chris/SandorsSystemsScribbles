@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.17" />
+
+  <title>Configure new servers with the basics via Ansible &middot; Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Configure new servers with the basics via Ansible</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>08 Jul 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/infrastructure-culture">infrastructure culture</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h2 id="the-problem">The Problem:</h2>
+
+<p>You have a throw away server that you only need for the next couple of hours to try something out.  You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.</p>
+
+<h2 id="the-solution">The solution:</h2>
+
+<p>This Ansible playbook that is simple and to the point.  It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.</p>
+
+<p><a href="https://github.com/e30chris/Ansible-ServerDelivery">GitHub - e30chris/ServerDelivery</a></p>
+
+<h3 id="backstory">Backstory:</h3>
+
+<p>After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured and easy to login to without any manual steps.  This playbook takes care of both requirements.</p>
+
+<h3 id="todo">ToDo:</h3>
+
+<ul>
+<li>Add a role to this playbook to kick off the droplet creation and then register the names and IP&rsquo;s for the new servers before handing off to this current playbook config.</li>
+</ul>
+
+<hr />
+
+<h3 id="pre-requisites">Pre-Requisites</h3>
+
+<ul>
+<li>Servers booted and running</li>
+<li>SSH access</li>
+<li>SSH public keys for each user in files/</li>
+<li>Server OS is in the Debian family or the RedHat family.</li>
+</ul>
+
+<h3 id="create-the-new-droplets">Create the new droplets</h3>
+
+<p>Using the excellent Digital Ocean cli tool - <a href="https://github.com/pearkes/tugboat">TugBoat - GitHub</a></p>
+
+
+sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 915832
+
+
+<p>That equals:</p>
+
+<p>-s size (66 = 512 mb)</p>
+
+<p>-i image (Centos 7 x64)</p>
+
+<p>-r region (San Francisco)</p>
+
+<p>-k ssh public key (mine)</p>
+
+<h3 id="add-new-droplet-to-ssh-config">Add new droplet to SSH config</h3>
+
+
+sandor@pineApplez$ cat ~/.ssh/config
+#SSH Stuff
+Host bloggindroplet
+  Hostname 45.55.7.178
+  User root
+Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 30
+  ControlMaster auto
+  ControlPath ~/.ssh/connections/ssh-%r@%h:%p
+  ControlPersist 4h
+  StrictHostKeyChecking no
+  IdentityFile ~/.ssh/id_rsa
+
+
+<h3 id="add-new-droplet-to-ansible-hosts-file">Add new droplet to Ansible hosts file</h3>
+
+
+sandor@pineApplez$ › cat ~/.ansible/hosts
+# All Servers
+docks
+cent7
+fed22
+
+# App servers
+[app]
+
+# DB servers
+[db]
+
+# Group 'multi' with all servers
+[multi:children]
+
+# Variables applied to all servers
+[multi:vars]
+
+
+
+<h3 id="test-ssh-login">Test ssh login</h3>
+
+
+sandor@pineApplez$ ssh bloggindroplet
+Last login: Thu Jul  9 00:34:41 2015 from 67.135.32.227
+[root@bloggindroplet ~]#
+
+
+<h3 id="test-ansible">Test Ansible</h3>
+
+
+sandor@pineApplez$ ansible bloggindroplet -m ping
+servfed | success >> {
+    "changed": false,
+    "ping": "pong"
+}
+sandor@pineApplez$
+
+
+<h3 id="git-clone-the-playbook">git clone the playbook</h3>
+
+<p>Download:</p>
+
+
+sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
+
+
+<h3 id="create-the-user-accounts">Create the user accounts</h3>
+
+<p>via the variables in group_vars/main.yml</p>
+
+<p><em>delivered_users: this is the user accounts you want created on the new server, each with sudo access.</em></p>
+
+
+---
+# vars file for ServerDelivery
+delivered_users:
+  - chrisl
+  - dpr
+  - weev
+
+
+<h3 id="give-each-users-ssh-key-a-password">Give each users ssh key a password</h3>
+
+<h4 id="and-encrypt-it-with-ansible-vault">and encrypt it with Ansible Vault</h4>
+
+<p>via group_vars/passes.yml</p>
+
+<p><em>this file will need to be created with ansible-vault</em></p>
+
+
+sandor@pineApplez$ ansible-vault create group_vars/passes.yml
+---
+# vars file for ServerDelivery encrypted via ansible-vault
+users_ssh_key_pass: stallman was right
+
+
+<h3 id="run-the-playbook">Run the playbook</h3>
+
+<p><em>This will run with &lsquo;hosts: all&rsquo; which will put every server in your Ansible hosts file in this state.  This should be ok since all this playbook does is ensure sane security, adds users and updates packages.  Because Ansible is idempotent if these setting have not changed then nothing will be done.  If you do not want to run on all your hosts then specify that with either a group in the Ansible hosts file or with a cli switch.</em></p>
+
+
+sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
+
+
+<p>which returns lots of cows:</p>
+
+
+2.2.3 in ServerDelivery/ on dev
+› ansible-playbook -i "docks,cent7,fed22," site.yml --ask-vault-pass
+Vault password:
+ ____________
+< PLAY [all] >
+ ------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ _________________
+< GATHERING FACTS >
+ -----------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [fed22]
+ok: [cent7]
+ok: [docks]
+docks: importing group_vars/Ubuntu.yml
+cent7: importing group_vars/CentOS.yml
+fed22: importing group_vars/Fedora.yml
+ _____________________________________
+< TASK: update all packages on CentOS >
+ -------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [fed22]
+skipping: [cent7]
+ _______________________________
+< TASK: install EPEL for CentOS >
+ -------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+skipping: [docks]
+ ________________________________________
+< TASK: add the must have apps on CentOS >
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [docks]
+skipping: [fed22]
+ ____________________________________________
+< TASK: update all packages on Ubuntu family >
+ --------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+ok: [docks]
+ ________________________________________
+< TASK: add the must have apps on Ubuntu >
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+ok: [docks] => (item=sudo,vim,htop,tmux,unzip,fail2ban)
+ _____________________________________
+< TASK: update all packages on Fedora >
+ -------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [cent7]
+ok: [fed22]
+ ________________________________________
+< TASK: add the must have apps on Fedora >
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [cent7]
+ok: [fed22] => (item=sudo,vim,htop,tmux,unzip,fail2ban)
+ _______________________________
+< TASK: adding users to servers >
+ -------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [docks] => (item=chrisl)
+ok: [fed22] => (item=chrisl)
+ok: [cent7] => (item=chrisl)
+ok: [docks] => (item=dpr)
+ok: [fed22] => (item=dpr)
+ok: [cent7] => (item=dpr)
+ok: [cent7] => (item=weev)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
+ _________________________________
+< TASK: add users ssh public keys >
+ ---------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [fed22] => (item=chrisl)
+ok: [cent7] => (item=chrisl)
+ok: [docks] => (item=chrisl)
+ok: [fed22] => (item=dpr)
+ok: [docks] => (item=dpr)
+ok: [cent7] => (item=dpr)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
+ok: [cent7] => (item=weev)
+ _______________________
+< TASK: add admin group >
+ -----------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [docks]
+ok: [fed22]
+ok: [cent7]
+ ________________________________
+< TASK: add users to admin group >
+ --------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [cent7] => (item=chrisl)
+ok: [fed22] => (item=chrisl)
+ok: [docks] => (item=chrisl)
+ok: [cent7] => (item=dpr)
+ok: [fed22] => (item=dpr)
+ok: [docks] => (item=dpr)
+ok: [cent7] => (item=weev)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
+ ______________________________
+< TASK: add users sudoers file >
+ ------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [cent7] => (item=chrisl)
+ok: [fed22] => (item=chrisl)
+ok: [docks] => (item=chrisl)
+ok: [cent7] => (item=dpr)
+ok: [fed22] => (item=dpr)
+ok: [docks] => (item=dpr)
+ok: [cent7] => (item=weev)
+ok: [fed22] => (item=weev)
+ok: [docks] => (item=weev)
+ __________________________________________
+< TASK: secure SSH with a sane sshd_config >
+ ------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [docks]
+ok: [cent7]
+ok: [fed22]
+ _______________________
+< TASK: restarting sshd >
+ -----------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+changed: [cent7]
+changed: [fed22]
+changed: [docks]
+ ____________
+< PLAY RECAP >
+ ------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+cent7                      : ok=8    changed=1    unreachable=0    failed=0
+docks                      : ok=10   changed=1    unreachable=0    failed=0
+fed22                      : ok=10   changed=1    unreachable=0    failed=0
+
+
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/">MacBook Setup Using Ansible and Homebrew</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

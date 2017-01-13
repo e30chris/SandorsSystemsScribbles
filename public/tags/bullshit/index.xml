@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/bullshit/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/bullshit/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Run Ansible through pmksh</title>
+      <link>https://theargo.io/post/run_ansible_through_pmksh/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/run_ansible_through_pmksh/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.&lt;/p&gt;
+
+&lt;h2 id=&#34;shells-ansible&#34;&gt;Shells &amp;amp; Ansible&lt;/h2&gt;
+
+&lt;p&gt;Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using &amp;lsquo;command&amp;rsquo; can move to using the full suite of modules.&lt;/p&gt;
+
+&lt;p&gt;The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.&lt;/p&gt;
+
+&lt;p&gt;Ansible Shells:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&#34;&gt;github repo - ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;p&gt;Current Workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m command -a &amp;quot;/opt/quest/bin/pmksh -c &#39;/bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;tasks:
+
+- name: run a command through pmksh
+  command: &amp;quot;/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325&#39;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;once ksh is added to the list of shells I will update this post&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Ansible to Align Passwords on Servers</title>
+      <link>https://theargo.io/post/using_ansible_to_align_passwords_on_servers/</link>
+      <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/using_ansible_to_align_passwords_on_servers/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;A group of servers get their passwords updated every 3 months with a new shared password.  The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal:&lt;/h2&gt;
+
+&lt;p&gt;Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it.  The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;note - using the same root password on all your servers is a terrible idea and completely against the SysAdmin Bible.  Use random passwords and keys!&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto&#34;&gt;HowTo:&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download the playbook from
+
+&lt;ul&gt;
+&lt;li&gt;GitHub - &lt;a href=&#34;https://github.com/e30chris/Ansible-AlignPassword&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Galaxy - &lt;a href=&#34;https://galaxy.ansible.com/list#/roles/1134&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Create a branch to edit the variables for your environment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ cd ~/Codestuff/ansibles/Ansible-AlignPassword
+  sandor@pineapplez:$ git checkout -b qatenv    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ansible-vault the file that will contain the passwords.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault encrypt group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Edit the vars for the environment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault edit group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add the inventory to hosts&lt;/li&gt;
+&lt;li&gt;Verify Ansible connect with ping pong&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible -i hosts all -m ping
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Run the playbook&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-playbook -i hosts site.yml -vv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;common-task-actions&#34;&gt;Common Task Actions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Attempt to login to each server using all possible passwords&lt;/li&gt;
+&lt;li&gt;Register which passwords work on each server&lt;/li&gt;
+&lt;li&gt;Set a new shared password for every server&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;variables&#34;&gt;Variables&lt;/h2&gt;
+
+&lt;p&gt;Go here:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this format:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;variable: value
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Add WebProxy Cert to Fedora</title>
+      <link>https://theargo.io/post/add_webproxy_cert_to_fedora/</link>
+      <pubDate>Fri, 29 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/add_webproxy_cert_to_fedora/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Make Fedora work behind a restrictive idiotic corporate web proxy&lt;/li&gt;
+&lt;li&gt;Install a corporate cert to make that happen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;get-the-cert&#34;&gt;Get the cert&lt;/h2&gt;
+
+&lt;h2 id=&#34;install-the-cert&#34;&gt;Install the cert&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
+
+&lt;p&gt;Your corporate overlord has now man in the middled your personal gmail, have fun.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

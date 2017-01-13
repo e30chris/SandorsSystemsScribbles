@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/beanstalk/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/beanstalk/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deploy Wordpress to AWS Beanstalk using eb</title>
+      <link>https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/</link>
+      <pubDate>Sun, 30 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
+
+&lt;p&gt;Wordpress has lots of hosting options all of which cost money to be on a shared hosting server.  I need a autoscaling &amp;amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS.  AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
+
+&lt;p&gt;Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the &amp;lsquo;eb&amp;rsquo; cli tool.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWS Beanstalk - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;eb - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-get-started.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AWS Regions &amp;amp; Endpoints - &lt;a href=&#34;http://docs.aws.amazon.com/general/latest/gr/rande.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wordpress - &lt;a href=&#34;https://wordpress.org&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wordpress on GitHub &lt;a href=&#34;https://github.com/WordPress/WordPress&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;howtos&#34;&gt;HowTos&lt;/h1&gt;
+
+&lt;h2 id=&#34;howto-setup-the-eb-tool&#34;&gt;HowTo - Setup the eb tool&lt;/h2&gt;
+
+&lt;p&gt;On your MacBook create a file to host your AWS creds.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ vim ~/.awscreds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;AWSAccessKeyId=Your AWS access ID
+AWSSecretKey=Your AWS secret key
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set the permissions&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ chmod 0600 ~/.awscreds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install &lt;em&gt;all&lt;/em&gt; the AWS tools using Homebrew&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install awscli
+brew install aws-elasticbeanstalk
+brew install aws-as
+brew install aws-cfn-tools
+brew install aws-cloudsearch
+brew install aws-elasticcache
+brew install aws-mon
+brew install aws-sns-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some of those installs need stuff added to the bash|zsh profile&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# aws stuff
+export AWS_ACCESS_KEY=&amp;quot;Your AWS access ID&amp;quot;
+export AWS_SECRET_KEY=&amp;quot;Your AWS secret key&amp;quot;
+export AWS_CLOUDFORMATION_HOME=&amp;quot;/usr/local/Cellar/aws-cfn-tools/1.0.12/libexec&amp;quot;
+export AWS_CLOUDWATCH_HOME=&amp;quot;/usr/local/Cellar/cloud-watch/1.0.20.0/libexec&amp;quot;
+export AWS_ELASTICACHE_HOME=&amp;quot;/usr/local/Cellar/aws-elasticache/1.9.000/libexec&amp;quot;
+export CS_HOME=/usr/local/Cellar/aws-cloudsearch/1.0.1.4-2013.01.11
+export EC2_HOME=&amp;quot;/usr/local/Cellar/ec2-api-tools/1.7.1.0/libexec&amp;quot;
+export AWS_SNS_HOME=&amp;quot;/usr/local/Cellar/aws-sns-cli/2013-09-27/libexec&amp;quot;
+export JAVA_HOME=&amp;quot;$(/usr/libexec/java_home)&amp;quot;
+export AWS_CREDENTIAL_FILE=/Users/sandor/.awscreds
+export ELASTICBEANSTALK_URL=&amp;quot;https://elasticbeanstalk.us-west-2.amazonaws.com&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Planning ahead for the eventual &lt;a href=&#34;https://en.wikipedia.org/wiki/Cascadia_%28independence_movement%29&#34;&gt;Cascadia&lt;/a&gt; so Oregon is my AWS home&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto-setup-a-beanstalk-environment&#34;&gt;HowTo - Setup a BeanStalk Environment&lt;/h2&gt;
+
+&lt;p&gt;Setup a basic PHP BeanStalk to verify everything is working.  The end results is you should see a PHP test page.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb init
+sandor@pineApplez$ To get your AWS Access Key ID and Secret Access Key,
+  visit &amp;quot;https://aws-portal.amazon.com/gp/aws/securityCredentials&amp;quot;.
+Enter your AWS Access Key ID: Your AWS Access Key
+Enter your AWS Secret Access Key: Your AWS Secret Access Key
+Select an AWS Elastic Beanstalk service region.
+Available service regions are:
+…
+2) US West (Oregon)
+...
+Select (1 to 9): 2
+Enter an AWS Elastic Beanstalk application name (auto-generated value is &amp;quot;testapp&amp;quot;):
+Enter an AWS Elastic Beanstalk environment name (auto-generated value is &amp;quot;testapp-env&amp;quot;):
+Select an environment tier.
+Available environment tiers are:
+1) WebServer::Standard::1.0
+...
+Select (1 to 2): 1
+Select a solution stack.
+Available solution stacks are:
+1) 64bit Amazon Linux 2014.09 v1.0.9 running PHP 5.5
+…
+Select (1 to 49): 1
+Select an environment type.
+Available environment types are:
+...
+2) SingleInstance
+Select (1 to 2): 2
+Create an RDS DB Instance? [y/n]: y
+Create an RDS BD Instance from (current value is &amp;quot;[No snapshot]&amp;quot;):
+1) [No snapshot]
+...
+Select (1 to 2): 1
+Enter an RDS DB master password:
+Retype password to confirm:
+If you terminate your environment, your RDS DB Instance will be deleted and you will lose your data.
+Create snapshot? [y/n]: n
+Attach an instance profile (current value is &amp;quot;[Create a default instance profile]&amp;quot;):
+You IAM user does not have sufficient permission. User: arn:aws:iam::246173154382:user/smbec2r is not authorized to perform: iam:ListInstanceProfiles on resource: arn:aws:iam::246173154382:instance-profile/
+Do you want to proceed without attaching an instance profile? [y/n]: y
+Updated AWS Credential file at &amp;quot;/Users/sandor/.elasticbeanstalk/aws_credential_file&amp;quot;.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now start the test BeanStalk&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb start
+Starting application &amp;quot;testapp&amp;quot;.
+Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
+2014-12-01 00:01:10	INFO	createEnvironment is starting.
+2014-12-01 00:01:12	INFO	Using elasticbeanstalk-us-west-2-246133154382 as Amazon S3 storage bucket for environment data.
+2014-12-01 00:01:47	INFO	Created EIP: 54.149.45.218
+2014-12-01 00:01:50	INFO	Created security group named: awseb-e-97v6vazrp7-stack-AWSEBSecurityGroup-1AECQMWSW2P6H
+2014-12-01 00:02:00	INFO	Creating RDS database named: ab1e1p73zy1ede2. This may take a few minutes.
+2014-12-01 00:11:27	INFO	Created RDS database named: aa1e1p73zv1ede2
+2014-12-01 00:12:23	INFO	Waiting for EC2 instances to launch. This may take a few minutes.
+2014-12-01 00:14:05	INFO	Successfully launched environment: testapp-env
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Navigate to the EIP - &lt;a href=&#34;http://54.149.45.218&#34;&gt;http://54.149.45.218&lt;/a&gt; and you should see the Beanstalk PHP congrats page.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/WebHostPics/AWSCongratsScreen.png&#34; alt=&#34;AWS Congrats Page Screenshot&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that we know everything is setup correctly to deploy a test PHP environment we will deploy a full on Wordpress install.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto-deploy-wordpress-to-beanstalk&#34;&gt;HowTo - Deploy Wordpress to Beanstalk&lt;/h2&gt;
+
+&lt;p&gt;First goal is to get a bare bones Wordpress setup working.  There are two ways to deploy to Beanstalk, hand it a docker container of your app or do a git push.  For this example we are going with a Docker container because in 2 years that will be the way it is and I dont want to go back and read how retarded I was in 2014 deploying with git.&lt;/p&gt;
+
+&lt;p&gt;This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.  The HowTo of migrating an existing Wordpress will be a separate post.&lt;/p&gt;
+
+&lt;p&gt;Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

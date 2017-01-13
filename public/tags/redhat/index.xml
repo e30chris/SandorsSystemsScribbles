@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/redhat/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/redhat/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ansible on RedHat 5.x</title>
+      <link>https://theargo.io/post/ansible_on_redhat_5_dot_x/</link>
+      <pubDate>Tue, 03 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/ansible_on_redhat_5_dot_x/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Older Pythons that live on older RedHats do not have json support.  Old corporations still use old OS&amp;rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
+
+&lt;p&gt;Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Using Ansible Raw&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;yum -y install python-simplejson&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

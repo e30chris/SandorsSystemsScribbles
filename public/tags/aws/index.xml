@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/aws/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</title>
+      <link>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</link>
+      <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;The Problem - By default new AWS accounts are based on the EC2-VPC platform.  If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
+
+&lt;p&gt;Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.&lt;/p&gt;
+
+&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
+
+&lt;p&gt;As the SRE team we manage each teams AWS environment.  To keep it simple all teams are in their own VPC with the default VPC being left unused.  Launching a Redshift cluster for the Data Analytics team and trying to put that Redshift cluster into the Data Analytics VPC presented the problem of not being able to select anything other than the default VPC.  Reading the AWS documentation does not address launching Redshift into a non-default VPC.  This Sandors notebook note does.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites:&lt;/h3&gt;
+
+&lt;p&gt;Create a VPC with subnets for the Redshift cluster to be deployed.&lt;/p&gt;
+
+&lt;h2 id=&#34;cli&#34;&gt;CLI&lt;/h2&gt;
+
+&lt;p&gt;Create the Cluster Subnet Group&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default).&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;aws redshift create-cluster-subnet-group
+
+  --cluster-subnet-group-name argodataanalyticsredshiftsubnet
+
+  --description &amp;quot;Argo Data Analytics Redshift Subnet&amp;quot;
+
+  --subnet-ids subnet-382fee1w
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html&#34;&gt;AWS CLI Documentation create=cluster-subnet-group&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;aws-console&#34;&gt;AWS Console&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Open RDS Dashboard&lt;/li&gt;
+&lt;li&gt;Security&lt;/li&gt;
+&lt;li&gt;Subnet Groups
+
+&lt;ul&gt;
+&lt;li&gt;Click &lt;em&gt;Create Cluster Subnet Group&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Give the Subnet a name &amp;amp; description&lt;/li&gt;
+&lt;li&gt;Select the VPC you want to launch Redshift into&lt;/li&gt;
+&lt;li&gt;Select the Availability Zone you want the subnet in&lt;/li&gt;
+&lt;li&gt;Select the subnet for that AZ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-subnet-group-console.html&#34;&gt;AWS Console Documentation&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Deploy Wordpress to AWS Beanstalk using eb</title>
+      <link>https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/</link>
+      <pubDate>Sun, 30 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
+
+&lt;p&gt;Wordpress has lots of hosting options all of which cost money to be on a shared hosting server.  I need a autoscaling &amp;amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS.  AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
+
+&lt;p&gt;Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the &amp;lsquo;eb&amp;rsquo; cli tool.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWS Beanstalk - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;eb - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-get-started.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AWS Regions &amp;amp; Endpoints - &lt;a href=&#34;http://docs.aws.amazon.com/general/latest/gr/rande.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wordpress - &lt;a href=&#34;https://wordpress.org&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wordpress on GitHub &lt;a href=&#34;https://github.com/WordPress/WordPress&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;howtos&#34;&gt;HowTos&lt;/h1&gt;
+
+&lt;h2 id=&#34;howto-setup-the-eb-tool&#34;&gt;HowTo - Setup the eb tool&lt;/h2&gt;
+
+&lt;p&gt;On your MacBook create a file to host your AWS creds.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ vim ~/.awscreds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;AWSAccessKeyId=Your AWS access ID
+AWSSecretKey=Your AWS secret key
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set the permissions&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ chmod 0600 ~/.awscreds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install &lt;em&gt;all&lt;/em&gt; the AWS tools using Homebrew&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install awscli
+brew install aws-elasticbeanstalk
+brew install aws-as
+brew install aws-cfn-tools
+brew install aws-cloudsearch
+brew install aws-elasticcache
+brew install aws-mon
+brew install aws-sns-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some of those installs need stuff added to the bash|zsh profile&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# aws stuff
+export AWS_ACCESS_KEY=&amp;quot;Your AWS access ID&amp;quot;
+export AWS_SECRET_KEY=&amp;quot;Your AWS secret key&amp;quot;
+export AWS_CLOUDFORMATION_HOME=&amp;quot;/usr/local/Cellar/aws-cfn-tools/1.0.12/libexec&amp;quot;
+export AWS_CLOUDWATCH_HOME=&amp;quot;/usr/local/Cellar/cloud-watch/1.0.20.0/libexec&amp;quot;
+export AWS_ELASTICACHE_HOME=&amp;quot;/usr/local/Cellar/aws-elasticache/1.9.000/libexec&amp;quot;
+export CS_HOME=/usr/local/Cellar/aws-cloudsearch/1.0.1.4-2013.01.11
+export EC2_HOME=&amp;quot;/usr/local/Cellar/ec2-api-tools/1.7.1.0/libexec&amp;quot;
+export AWS_SNS_HOME=&amp;quot;/usr/local/Cellar/aws-sns-cli/2013-09-27/libexec&amp;quot;
+export JAVA_HOME=&amp;quot;$(/usr/libexec/java_home)&amp;quot;
+export AWS_CREDENTIAL_FILE=/Users/sandor/.awscreds
+export ELASTICBEANSTALK_URL=&amp;quot;https://elasticbeanstalk.us-west-2.amazonaws.com&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Planning ahead for the eventual &lt;a href=&#34;https://en.wikipedia.org/wiki/Cascadia_%28independence_movement%29&#34;&gt;Cascadia&lt;/a&gt; so Oregon is my AWS home&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto-setup-a-beanstalk-environment&#34;&gt;HowTo - Setup a BeanStalk Environment&lt;/h2&gt;
+
+&lt;p&gt;Setup a basic PHP BeanStalk to verify everything is working.  The end results is you should see a PHP test page.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb init
+sandor@pineApplez$ To get your AWS Access Key ID and Secret Access Key,
+  visit &amp;quot;https://aws-portal.amazon.com/gp/aws/securityCredentials&amp;quot;.
+Enter your AWS Access Key ID: Your AWS Access Key
+Enter your AWS Secret Access Key: Your AWS Secret Access Key
+Select an AWS Elastic Beanstalk service region.
+Available service regions are:
+…
+2) US West (Oregon)
+...
+Select (1 to 9): 2
+Enter an AWS Elastic Beanstalk application name (auto-generated value is &amp;quot;testapp&amp;quot;):
+Enter an AWS Elastic Beanstalk environment name (auto-generated value is &amp;quot;testapp-env&amp;quot;):
+Select an environment tier.
+Available environment tiers are:
+1) WebServer::Standard::1.0
+...
+Select (1 to 2): 1
+Select a solution stack.
+Available solution stacks are:
+1) 64bit Amazon Linux 2014.09 v1.0.9 running PHP 5.5
+…
+Select (1 to 49): 1
+Select an environment type.
+Available environment types are:
+...
+2) SingleInstance
+Select (1 to 2): 2
+Create an RDS DB Instance? [y/n]: y
+Create an RDS BD Instance from (current value is &amp;quot;[No snapshot]&amp;quot;):
+1) [No snapshot]
+...
+Select (1 to 2): 1
+Enter an RDS DB master password:
+Retype password to confirm:
+If you terminate your environment, your RDS DB Instance will be deleted and you will lose your data.
+Create snapshot? [y/n]: n
+Attach an instance profile (current value is &amp;quot;[Create a default instance profile]&amp;quot;):
+You IAM user does not have sufficient permission. User: arn:aws:iam::246173154382:user/smbec2r is not authorized to perform: iam:ListInstanceProfiles on resource: arn:aws:iam::246173154382:instance-profile/
+Do you want to proceed without attaching an instance profile? [y/n]: y
+Updated AWS Credential file at &amp;quot;/Users/sandor/.elasticbeanstalk/aws_credential_file&amp;quot;.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now start the test BeanStalk&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb start
+Starting application &amp;quot;testapp&amp;quot;.
+Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
+2014-12-01 00:01:10	INFO	createEnvironment is starting.
+2014-12-01 00:01:12	INFO	Using elasticbeanstalk-us-west-2-246133154382 as Amazon S3 storage bucket for environment data.
+2014-12-01 00:01:47	INFO	Created EIP: 54.149.45.218
+2014-12-01 00:01:50	INFO	Created security group named: awseb-e-97v6vazrp7-stack-AWSEBSecurityGroup-1AECQMWSW2P6H
+2014-12-01 00:02:00	INFO	Creating RDS database named: ab1e1p73zy1ede2. This may take a few minutes.
+2014-12-01 00:11:27	INFO	Created RDS database named: aa1e1p73zv1ede2
+2014-12-01 00:12:23	INFO	Waiting for EC2 instances to launch. This may take a few minutes.
+2014-12-01 00:14:05	INFO	Successfully launched environment: testapp-env
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Navigate to the EIP - &lt;a href=&#34;http://54.149.45.218&#34;&gt;http://54.149.45.218&lt;/a&gt; and you should see the Beanstalk PHP congrats page.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/WebHostPics/AWSCongratsScreen.png&#34; alt=&#34;AWS Congrats Page Screenshot&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that we know everything is setup correctly to deploy a test PHP environment we will deploy a full on Wordpress install.&lt;/p&gt;
+
+&lt;h2 id=&#34;howto-deploy-wordpress-to-beanstalk&#34;&gt;HowTo - Deploy Wordpress to Beanstalk&lt;/h2&gt;
+
+&lt;p&gt;First goal is to get a bare bones Wordpress setup working.  There are two ways to deploy to Beanstalk, hand it a docker container of your app or do a git push.  For this example we are going with a Docker container because in 2 years that will be the way it is and I dont want to go back and read how retarded I was in 2014 deploying with git.&lt;/p&gt;
+
+&lt;p&gt;This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.  The HowTo of migrating an existing Wordpress will be a separate post.&lt;/p&gt;
+
+&lt;p&gt;Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VPN Setup - OpenVPN Server Deploy on AWS</title>
+      <link>https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/</link>
+      <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Deploy an OpenVPN Server on AWS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;launch-the-openvpn-access-server-ami&#34;&gt;Launch the OpenVPN Access Server AMI&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Set AMI to VPC network&lt;/li&gt;
+&lt;li&gt;Auto Assign Public Static IP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ami-ids&#34;&gt;AMI ids&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;AMI Location&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;ami id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;US East (Virginia)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-ff6b3096&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;US West (Oregon)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-c8039bf8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;US West (N California)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-6c0b3d29&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;EU West (Ireland)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-89d83afe&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Asia Pacific (Singapore)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-3c9bce6e&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Asia Pacific (Tokyo)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-172d4916&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Asia Pacific (Sydney)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-db73efe1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;South America (Sao Paulo)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-6d4ee870&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;set-user-data&#34;&gt;Set user-data&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Key&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;public_hostname&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;hostname that clients should use to contact the server&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;admin_user (default=openvpn)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Access Server administrative account name&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;license&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Access Server license key &lt;em&gt;without a license key only 2 connections allowed&lt;/em&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;reroute_gw default=0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;if 1, clients will route internet traffic through the VPN&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;reroute_dns default=0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;if 1, clients will route DNS queries through the VPN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;set-new-security-group&#34;&gt;Set New Security Group&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Protocol&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Type&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Port&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Source&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Role&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;SSH&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;22&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Linux Access&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;HTTPS&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;443&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;OpenVPN Client Web Server&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Custom TCP Rule&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;943&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;OpenVPN Web UI&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Custom UDP Rule&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UDP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1194&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Initiate UDP based VPN sessions&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;configure-openvpn-server&#34;&gt;Configure OpenVPN Server&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ovpn-init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;access-client-website&#34;&gt;Access Client Website&lt;/h2&gt;
+
+&lt;p&gt;https://&amp;ldquo;aws public ip&amp;rdquo;:943/admin/&lt;/p&gt;
+
+&lt;h2 id=&#34;change-default-openvpn-admin-password&#34;&gt;Change default OpenVPN Admin Password&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; passwd &#39;admin user set in user-data&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;add-a-new-vpn-user&#34;&gt;Add a new VPN user&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; useradd sandor
+spudBud@pineApplez&amp;gt; passwd sandor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Login with new user account to web to download client config files.&lt;/p&gt;
+
+&lt;p&gt;https://&amp;ldquo;aws public ip&amp;rdquo;:943/&lt;/p&gt;
+
+&lt;h2 id=&#34;configure-vpn-client&#34;&gt;Configure VPN client&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MacBook - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/&#34;&gt;sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fedora  - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server/&#34;&gt;sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
+
+&lt;p&gt;A running OpenVPN Server that you can connect a MacBook or Linux box too.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

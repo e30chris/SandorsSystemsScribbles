@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.17" />
 
-  <title>Sandors Systems Scribbles</title>
+  <title>Ansible &middot; Sandors Systems Scribbles</title>
 
   
   
@@ -37,7 +37,7 @@
 
   
   
-  <link rel="alternate" type="application/rss+xml" title="Sandors Systems Scribbles" href="https://theargo.io/index.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Sandors Systems Scribbles" href="https://theargo.io/tags/ansible/index.xml" />
   
 
   
@@ -94,7 +94,7 @@
 
     
     <li class="pure-menu-item">
-      <a class="pure-menu-link" href="https://theargo.io/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      <a class="pure-menu-link" href="https://theargo.io/tags/ansible/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
     </li>
     
 
@@ -159,8 +159,7 @@
 
 
 <div class="header">
-  <h1>Sandors Systems Scribbles</h1>
-  <h2>Notes about Systems &amp; Infrastructure Culture</h2>
+  <h1>Ansible</h1>
 </div>
 
 <div class="content">
@@ -254,99 +253,6 @@ The solution: Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.
   
   <footer>
     <a href="https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-  </footer>
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/">Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>01 May 2015, 00:00</time>
-  </div>
-
-  
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://theargo.io/tags/aws">aws</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://theargo.io/tags/redshift">redshift</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://theargo.io/tags/vpc">vpc</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  The Problem: The Problem - By default new AWS accounts are based on the EC2-VPC platform. If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.
-The solution: Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.
-  </p>
-
-  
-  <footer>
-    <a href="https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-  </footer>
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/">Deploy Wordpress to AWS Beanstalk using eb</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>30 Nov 2014, 00:00</time>
-  </div>
-
-  
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://theargo.io/tags/aws">aws</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://theargo.io/tags/beanstalk">beanstalk</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  The Problem Wordpress has lots of hosting options all of which cost money to be on a shared hosting server. I need a autoscaling &amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS. AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.
-  </p>
-
-  
-  <footer>
-    <a href="https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
   </footer>
   
 </article>
@@ -646,22 +552,52 @@ The Links  GoAccess - real-time web log analyzer - allinurl/goaccess Ansible - A
 </article>
 
   
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/ansible_on_redhat_5_dot_x/">Ansible on RedHat 5.x</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>03 Sep 2013, 00:00</time>
+  </div>
 
   
 
-
-<nav class="pagination" role="pagination">
   
-  <i class="fa fa-chevron-left"></i>
-  
-  <span>&nbsp;1 / 3&nbsp;</span>
-  
-  <a href="https://theargo.io/page/2/"><i class="fa fa-chevron-right"></i></a>
-  
-</nav>
 
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/redhat">redhat</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/linux">linux</a>
+    
+  </div>
+  
+  
 
+</div>
 
+  </header>
+
+  <p>
+   The problem Older Pythons that live on older RedHats do not have json support. Old corporations still use old OS&rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.
+The goal Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.
+HowTo Using Ansible Raw
+sandor@pineapplez:$ ansible -i hosts all -m raw -a &quot;yum -y install python-simplejson&quot;  
+  </p>
+
+  
+</article>
+
+  
 </div>
 
 </div>
@@ -684,4 +620,3 @@ The Links  GoAccess - real-time web log analyzer - allinurl/goaccess Ansible - A
 
 </body>
 </html>
-

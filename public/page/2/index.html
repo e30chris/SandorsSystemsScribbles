@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.17" />
+
+  <title>Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Sandors Systems Scribbles" href="https://theargo.io/index.xml" />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://theargo.io/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Sandors Systems Scribbles</h1>
+  <h2>Notes about Systems &amp; Infrastructure Culture</h2>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/dogecoin_mining_on_digital_ocean/">Dogecoin mining on Digital Ocean</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>12 Mar 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/dogecoin">dogecoin</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/coins">coins</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/digitaloceans">digitaloceans</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.
+The Links  Dogecoin - very link /r/dogecoin - so reddit /r/dogemining - many mines Dogecoin Mining Pools - much swim Dogecoin Resources - sources Dogecoin Foundation - now found Digital Ocean - awesome drops TugBoat - command line ocean  Create a droplet sandor@argo&gt; tugboat create lucydoge -s 62 -i 308287 -r 3 -k 44888  Name: lucydoge Status: active Region ID: 3 Image ID: 308287 Size ID: 62 Backups Active: false  Create user root@lucydoge:~# history root@lucydoge:~# ls -al root@lucydoge:~# useradd -m lucy root@lucydoge:~# passwd lucy root@lucydoge:~# adduser lucy sudo  Update Debian root@lucydoge:~# apt-get -y update &amp;&amp; apt-get -y upgrade  Install Screen root@lucydoge:~# apt-get install screen  Install a CPU Miner root@lucydoge:~# sudo apt-get install git build-essential autotools-dev libcurl4-gnutls-dev autoconf automake  lucy@lucydoge:~# mkdir ~/miner2049er  lucy@lucydoge:~# cd miner2049er lucy@lucydoge:~# git clone https://github.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/dogecoin_mining_on_digital_ocean/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/using_oscar_to_build_a_local_puppet_environment_with_vagrant/">Using Oscar to Build a Local Puppet Environment with Vagrant</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Dec 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/puppet">puppet</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/vagrant">vagrant</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Install Oscar Use Oscar to build a local PuppetMaster &amp; Agent config Use Vagrant to start the PuppetMaster &amp; Agent  Install  VirtualBox - https://www.virtualbox.org/wiki/Downloads Vagrant - Oscar works with Vagrant version 1.3.4 - http://downloads.vagrantup.com/tags/v1.3.4 Oscar - https://github.com/adrienthebo/oscar  sandor@pineApplez&gt; vagrant plugin install oscar  Add a Vagrant Box sandor@pineApplez&gt; vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box  What that does:
+sandor@pineApplez&gt; vagrant box add boxName http://url.box   Downloads the .
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/using_oscar_to_build_a_local_puppet_environment_with_vagrant/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/using_vagrant_on_windows/">Using Vagrant on Windows</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>17 Dec 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/winders">winders</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Install and configure VirtualBox &amp; Vagrant on your Windows dev box Download and start a Linux &amp; Windows Vagrant Box.  Install  VirtualBox - https://www.virtualbox.org/wiki/Downloads Vagrant - http://www.vagrantup.com/downloads  Download the .msi Right click and Install as Administrator   Add a Vagrant Box  Open a Command Prompt and Run as Administrator  C:\Windows\system32\&gt;vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box  What that does:
+C:\Windows\system32\&gt;vagrant box add boxName http://url.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/using_vagrant_on_windows/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/">VPN Setup - MacBook to OpenVPN Server using Tunnelblick</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Dec 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/security">security</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/mac">mac</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Get MacBook to connect to a OpenVPN Server Install Tunnelblick to make that happen  Setup the OpenVPN Server  Follow this - sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws  Install Tunnelblick Tunnelblick Google Code
+Download OpenVPN Client Config file  Goto OpenVPN web client Login with new user Choose to download cert  Modify Client Config File for Tunnelblick  Create a folder for the new config / VPN connection The $vpnname.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/">VPN Setup - OpenVPN Server Deploy on AWS</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Dec 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/aws">aws</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/security">security</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Deploy an OpenVPN Server on AWS  Launch the OpenVPN Access Server AMI  Set AMI to VPC network Auto Assign Public Static IP  AMI ids    AMI Location ami id     US East (Virginia) ami-ff6b3096   US West (Oregon) ami-c8039bf8   US West (N California) ami-6c0b3d29   EU West (Ireland) ami-89d83afe   Asia Pacific (Singapore) ami-3c9bce6e   Asia Pacific (Tokyo) ami-172d4916   Asia Pacific (Sydney) ami-db73efe1   South America (Sao Paulo) ami-6d4ee870    Set user-data    Key Value     public_hostname hostname that clients should use to contact the server   admin_user (default=openvpn) Access Server administrative account name   license Access Server license key without a license key only 2 connections allowed   reroute_gw default=0 if 1, clients will route internet traffic through the VPN   reroute_dns default=0 if 1, clients will route DNS queries through the VPN    Set New Security Group    Protocol Type Port Source Role     SSH TCP 22 Anywhere 0.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/add_webproxy_cert_to_fedora/">Add WebProxy Cert to Fedora</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>29 Nov 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/fedora">fedora</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/linux">linux</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/bullshit">bullshit</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/workstation">workstation</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/techdebt">techdebt</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/oldcorp">oldcorp</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Make Fedora work behind a restrictive idiotic corporate web proxy Install a corporate cert to make that happen  Get the cert Install the cert spudBud@pineApplez&gt; openssl x509 -text -in /path/to/proxycert.crt &gt;&gt; /etc/pki/tls/certs/ca-bundle.crt  The result Your corporate overlord has now man in the middled your personal gmail, have fun.
+  </p>
+
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/add_twitter_bootstrap_3_to_octopress_with_octostrap3/">Add Twitter Bootstrap 3 to OctoPress with OctoStrap3</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 Nov 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/webstuff">webstuff</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/octopress">octopress</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Use awesome Twitter Bootstrap 3 on Octopress Setup OctoStrap3 to do that  The Links OctoPress - link
+OctoStrap3 - link
+Octopress Setup Go here and do all of that
+OctoStrap3 Setup Instructions here
+From the base OctoPress dir
+spudBud@pineApplez&gt; git clone https://github.com/kAworu/octostrap3 .themes/octostrap3 spudBud@pineApplez&gt; rake &quot;install[octostrap3]&quot;  Category List Aside Add a category list html page to source/_includes/custom/asides
+{% gist 7669102 %}
+Add the new aside in the _config.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/add_twitter_bootstrap_3_to_octopress_with_octostrap3/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/add_twitter_timeline_to_octopress_sidebar/">Add Twitter Timeline to OctoPress Sidebar</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 Nov 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/webstuff">webstuff</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/octopress">octopress</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Add a Twitter timeline to the sidebar of an Octopress blog  The links Octopress - link
+Acqui-hire.me - link
+Create a Twitter widget Goto the Twitter widget settings page here and create your timeline.
+Twitter Aside Add a twitter html page to source/_include/custom/asides
+{% gist 7669257 %}
+Add that aside in your _config.yml
+# list each of the sidebar modules you want to include, in the order you want them to appear.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/add_twitter_timeline_to_octopress_sidebar/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/">Auto Update VirtualBox Guest Additions with vagrant-vbguest</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>12 Nov 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/workstation">workstation</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal  Keep the VirtualBox guest additions at the latest version using vagrant-vbguest built by dotless-de.  The Links  Vagrant - link
+ Vagrant vbguest - link
+ dotless-de - link
+  vagrant-vbguest A beautifully simple Vagrant plugin to manage the guest additions on VirtualBox.
+install spudBud@pineApplez&gt; ~/Codestuff/vagrants/PuppetMaster $vagrant plugin install vagrant-vbguest  bootup usage vagrant-vbguest will run on every vagrant up or on a vagrant reload unless you specifically tell it not to.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://theargo.io/post/post_to_octopress_and_deploy_to_github_pages/">Post to octopress and deploy to Github pages</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>12 Nov 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/webstuff">webstuff</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/octopress">octopress</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/github">github</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  The Goal Use Jekyll &amp; octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are now)
+not anymore, Sandors HowTo notebook has been moved to Amazon AWS
+The Links  Jekyll - link
+ OctoPress - link
+ GitHub Pages - link
+  Create a new post pineApplez&gt;e30chris.github.io $rake new_post Enter a title for your post: post to octopress and deploy to github pages mkdir -p source/_posts Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.
+  </p>
+
+  
+  <footer>
+    <a href="https://theargo.io/post/post_to_octopress_and_deploy_to_github_pages/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+
+  
+
+
+<nav class="pagination" role="pagination">
+  
+  <a href="https://theargo.io/"><i class="fa fa-chevron-left"></i></a>
+  
+  <span>&nbsp;2 / 3&nbsp;</span>
+  
+  <a href="https://theargo.io/page/3/"><i class="fa fa-chevron-right"></i></a>
+  
+</nav>
+
+
+
+</div>
+
+</div>
+</div>
+<script src="https://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

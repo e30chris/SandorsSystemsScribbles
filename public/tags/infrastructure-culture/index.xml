@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/infrastructure-culture/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/infrastructure-culture/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Configure new servers with the basics via Ansible</title>
+      <link>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</link>
+      <pubDate>Wed, 08 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;You have a throw away server that you only need for the next couple of hours to try something out.  You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
+
+&lt;p&gt;This Ansible playbook that is simple and to the point.  It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-ServerDelivery&#34;&gt;GitHub - e30chris/ServerDelivery&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
+
+&lt;p&gt;After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured and easy to login to without any manual steps.  This playbook takes care of both requirements.&lt;/p&gt;
+
+&lt;h3 id=&#34;todo&#34;&gt;ToDo:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add a role to this playbook to kick off the droplet creation and then register the names and IP&amp;rsquo;s for the new servers before handing off to this current playbook config.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Servers booted and running&lt;/li&gt;
+&lt;li&gt;SSH access&lt;/li&gt;
+&lt;li&gt;SSH public keys for each user in files/&lt;/li&gt;
+&lt;li&gt;Server OS is in the Debian family or the RedHat family.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;create-the-new-droplets&#34;&gt;Create the new droplets&lt;/h3&gt;
+
+&lt;p&gt;Using the excellent Digital Ocean cli tool - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;TugBoat - GitHub&lt;/a&gt;&lt;/p&gt;
+
+
+sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 915832
+
+
+&lt;p&gt;That equals:&lt;/p&gt;
+
+&lt;p&gt;-s size (66 = 512 mb)&lt;/p&gt;
+
+&lt;p&gt;-i image (Centos 7 x64)&lt;/p&gt;
+
+&lt;p&gt;-r region (San Francisco)&lt;/p&gt;
+
+&lt;p&gt;-k ssh public key (mine)&lt;/p&gt;
+
+&lt;h3 id=&#34;add-new-droplet-to-ssh-config&#34;&gt;Add new droplet to SSH config&lt;/h3&gt;
+
+
+sandor@pineApplez$ cat ~/.ssh/config
+#SSH Stuff
+Host bloggindroplet
+  Hostname 45.55.7.178
+  User root
+Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 30
+  ControlMaster auto
+  ControlPath ~/.ssh/connections/ssh-%r@%h:%p
+  ControlPersist 4h
+  StrictHostKeyChecking no
+  IdentityFile ~/.ssh/id_rsa
+
+
+&lt;h3 id=&#34;add-new-droplet-to-ansible-hosts-file&#34;&gt;Add new droplet to Ansible hosts file&lt;/h3&gt;
+
+
+sandor@pineApplez$ › cat ~/.ansible/hosts
+# All Servers
+docks
+cent7
+fed22
+
+# App servers
+[app]
+
+# DB servers
+[db]
+
+# Group &#39;multi&#39; with all servers
+[multi:children]
+
+# Variables applied to all servers
+[multi:vars]
+
+
+
+&lt;h3 id=&#34;test-ssh-login&#34;&gt;Test ssh login&lt;/h3&gt;
+
+
+sandor@pineApplez$ ssh bloggindroplet
+Last login: Thu Jul  9 00:34:41 2015 from 67.135.32.227
+[root@bloggindroplet ~]#
+
+
+&lt;h3 id=&#34;test-ansible&#34;&gt;Test Ansible&lt;/h3&gt;
+
+
+sandor@pineApplez$ ansible bloggindroplet -m ping
+servfed | success &gt;&gt; {
+    &#34;changed&#34;: false,
+    &#34;ping&#34;: &#34;pong&#34;
+}
+sandor@pineApplez$
+
+
+&lt;h3 id=&#34;git-clone-the-playbook&#34;&gt;git clone the playbook&lt;/h3&gt;
+
+&lt;p&gt;Download:&lt;/p&gt;
+
+
+sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
+
+
+&lt;h3 id=&#34;create-the-user-accounts&#34;&gt;Create the user accounts&lt;/h3&gt;
+
+&lt;p&gt;via the variables in group_vars/main.yml&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;delivered_users: this is the user accounts you want created on the new server, each with sudo access.&lt;/em&gt;&lt;/p&gt;
+
+
+---
+# vars file for ServerDelivery
+delivered_users:
+  - chrisl
+  - dpr
+  - weev
+
+
+&lt;h3 id=&#34;give-each-users-ssh-key-a-password&#34;&gt;Give each users ssh key a password&lt;/h3&gt;
+
+&lt;h4 id=&#34;and-encrypt-it-with-ansible-vault&#34;&gt;and encrypt it with Ansible Vault&lt;/h4&gt;
+
+&lt;p&gt;via group_vars/passes.yml&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;this file will need to be created with ansible-vault&lt;/em&gt;&lt;/p&gt;
+
+
+sandor@pineApplez$ ansible-vault create group_vars/passes.yml
+---
+# vars file for ServerDelivery encrypted via ansible-vault
+users_ssh_key_pass: stallman was right
+
+
+&lt;h3 id=&#34;run-the-playbook&#34;&gt;Run the playbook&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;This will run with &amp;lsquo;hosts: all&amp;rsquo; which will put every server in your Ansible hosts file in this state.  This should be ok since all this playbook does is ensure sane security, adds users and updates packages.  Because Ansible is idempotent if these setting have not changed then nothing will be done.  If you do not want to run on all your hosts then specify that with either a group in the Ansible hosts file or with a cli switch.&lt;/em&gt;&lt;/p&gt;
+
+
+sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
+
+
+&lt;p&gt;which returns lots of cows:&lt;/p&gt;
+
+
+2.2.3 in ServerDelivery/ on dev
+› ansible-playbook -i &#34;docks,cent7,fed22,&#34; site.yml --ask-vault-pass
+Vault password:
+ ____________
+&lt; PLAY [all] &gt;
+ ------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ _________________
+&lt; GATHERING FACTS &gt;
+ -----------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [fed22]
+ok: [cent7]
+ok: [docks]
+docks: importing group_vars/Ubuntu.yml
+cent7: importing group_vars/CentOS.yml
+fed22: importing group_vars/Fedora.yml
+ _____________________________________
+&lt; TASK: update all packages on CentOS &gt;
+ -------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [fed22]
+skipping: [cent7]
+ _______________________________
+&lt; TASK: install EPEL for CentOS &gt;
+ -------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+skipping: [docks]
+ ________________________________________
+&lt; TASK: add the must have apps on CentOS &gt;
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [docks]
+skipping: [fed22]
+ ____________________________________________
+&lt; TASK: update all packages on Ubuntu family &gt;
+ --------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+ok: [docks]
+ ________________________________________
+&lt; TASK: add the must have apps on Ubuntu &gt;
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [cent7]
+skipping: [fed22]
+ok: [docks] =&gt; (item=sudo,vim,htop,tmux,unzip,fail2ban)
+ _____________________________________
+&lt; TASK: update all packages on Fedora &gt;
+ -------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [cent7]
+ok: [fed22]
+ ________________________________________
+&lt; TASK: add the must have apps on Fedora &gt;
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+skipping: [docks]
+skipping: [cent7]
+ok: [fed22] =&gt; (item=sudo,vim,htop,tmux,unzip,fail2ban)
+ _______________________________
+&lt; TASK: adding users to servers &gt;
+ -------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [docks] =&gt; (item=chrisl)
+ok: [fed22] =&gt; (item=chrisl)
+ok: [cent7] =&gt; (item=chrisl)
+ok: [docks] =&gt; (item=dpr)
+ok: [fed22] =&gt; (item=dpr)
+ok: [cent7] =&gt; (item=dpr)
+ok: [cent7] =&gt; (item=weev)
+ok: [fed22] =&gt; (item=weev)
+ok: [docks] =&gt; (item=weev)
+ _________________________________
+&lt; TASK: add users ssh public keys &gt;
+ ---------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [fed22] =&gt; (item=chrisl)
+ok: [cent7] =&gt; (item=chrisl)
+ok: [docks] =&gt; (item=chrisl)
+ok: [fed22] =&gt; (item=dpr)
+ok: [docks] =&gt; (item=dpr)
+ok: [cent7] =&gt; (item=dpr)
+ok: [fed22] =&gt; (item=weev)
+ok: [docks] =&gt; (item=weev)
+ok: [cent7] =&gt; (item=weev)
+ _______________________
+&lt; TASK: add admin group &gt;
+ -----------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [docks]
+ok: [fed22]
+ok: [cent7]
+ ________________________________
+&lt; TASK: add users to admin group &gt;
+ --------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [cent7] =&gt; (item=chrisl)
+ok: [fed22] =&gt; (item=chrisl)
+ok: [docks] =&gt; (item=chrisl)
+ok: [cent7] =&gt; (item=dpr)
+ok: [fed22] =&gt; (item=dpr)
+ok: [docks] =&gt; (item=dpr)
+ok: [cent7] =&gt; (item=weev)
+ok: [fed22] =&gt; (item=weev)
+ok: [docks] =&gt; (item=weev)
+ ______________________________
+&lt; TASK: add users sudoers file &gt;
+ ------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [cent7] =&gt; (item=chrisl)
+ok: [fed22] =&gt; (item=chrisl)
+ok: [docks] =&gt; (item=chrisl)
+ok: [cent7] =&gt; (item=dpr)
+ok: [fed22] =&gt; (item=dpr)
+ok: [docks] =&gt; (item=dpr)
+ok: [cent7] =&gt; (item=weev)
+ok: [fed22] =&gt; (item=weev)
+ok: [docks] =&gt; (item=weev)
+ __________________________________________
+&lt; TASK: secure SSH with a sane sshd_config &gt;
+ ------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+ok: [docks]
+ok: [cent7]
+ok: [fed22]
+ _______________________
+&lt; TASK: restarting sshd &gt;
+ -----------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+changed: [cent7]
+changed: [fed22]
+changed: [docks]
+ ____________
+&lt; PLAY RECAP &gt;
+ ------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+cent7                      : ok=8    changed=1    unreachable=0    failed=0
+docks                      : ok=10   changed=1    unreachable=0    failed=0
+fed22                      : ok=10   changed=1    unreachable=0    failed=0
+
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

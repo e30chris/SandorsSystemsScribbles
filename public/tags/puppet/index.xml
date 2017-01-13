@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/puppet/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/puppet/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using Ansible to deploy a PuppetMaster</title>
+      <link>https://theargo.io/post/using_ansible_to_deploy_a_puppetmaster/</link>
+      <pubDate>Fri, 13 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/using_ansible_to_deploy_a_puppetmaster/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations.  Also need to deploy to several environments using a consistent configuration.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.&lt;/p&gt;
+
+&lt;h4 id=&#34;note-this-playbook-is-still-a-work-in-progress-most-of-the-issues-are-fighting-puppets-insane-complexity-of-getting-installed-correctly-with-a-few-small-ansible-bugs-sprinkled-in&#34;&gt;Note: this playbook is still a work in progress.  Most of the issues are fighting Puppets insane complexity of getting installed correctly with a few small Ansible bugs sprinkled in.&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;github-repo&#34;&gt;GitHub Repo&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-PuppetEnterpriseDeploy&#34;&gt;github.com/e30chris/Ansible-PuppetEnterpriseDeploy&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;playbook-notes&#34;&gt;Playbook notes&lt;/h2&gt;
+
+&lt;h2 id=&#34;setting-the-variables-for-each-environment&#34;&gt;Setting the variables for each environment&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ cd ~/Ansible-PuppetEnterpriseDeploy/
+sandor@pineapplez:$ cat group_vars/all
+---
+# common variables for PuppetMaster Deployment
+# format for this file
+# variable: fact
+#
+# version of Puppet Enterprise
+pe_version: 3.2.3
+
+# os family
+os_family: debian
+os_version: 7
+os_arch: amd64
+
+# pe installer
+pe_installer: puppet-enterprise-{{ pe_version }}-{{ os_family }}-{{ os_version }}-{{ os_arch }}
+
+# hostnames
+pupmaster_hostname: pupmaster.argo.local
+pupdb_hostname: pupdb.argo.local
+pupconsole_hostname: pupconsole.argo.local
+
+# IP&#39;s
+pupmaster_ip: 10.0.0.10
+pupdb_ip: 10.0.0.11
+pupconsole_ip: 10.0.0.12
+
+# dns salt hostnames
+pupmaster_salt_hostnames: puppet,puppetmaster
+pupdb_salt_hostnames: puppetdb
+pupconsole_salt_hostname: pupconsole
+
+# passwords
+console_auth_db_pass: arandompasswordthatneedschangedhere
+console_db_pass: arandompasswordthatneedschangedhere
+pupdb_db_pass: arandompasswordthatneedschangedhere
+db_root_pass: arandompasswordthatneedschangedhere
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To keep it simple only the values that should be changed are assigned variables.  Everything else is left with the Puppet defaults in the answer files.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;tasks-to-be-run-on-all-servers&#34;&gt;Tasks to be run on all servers&lt;/h2&gt;
+
+&lt;p&gt;Puppet needs very perfect name resolution between all agents and the PuppetMaster.  Having a &lt;strong&gt;perfect&lt;/strong&gt; hosts file on each server is required.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- name: Ensure common etc hosts file
+  template:
+    src=&amp;quot;../templates/hosts.j2&amp;quot;
+    dest=/etc/hosts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To keep things simple all the installation tasks will run out of a /puppetinstall directory.  This should be in the user home dir that is running the installer.  The examples here use root but the SysAdmin Bible states never use root always use &lt;strong&gt;sudo&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- name: Ensure Puppet installer directory present
+  file:
+    path=/root/puppetinstall
+    state=directory
+
+- name: Ensure install log present
+  file:
+    path=/root/puppetinstall/pupconsole_install.log
+    owner=root
+    state=touch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When you download the PE tarball you can grab the download url from S3.  This grabs the version you need and extracts it into the installer dir.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- name: Ensure PE tarball present
+  get_url:
+    url=https://s3.amazonaws.com/pe-builds/released/{{ pe_version }}/{{ pe_installer }}.tar.gz
+    dest=/root/peinstaller.tar.gz
+    force=no
+
+- name: Ensure Puppet untar&#39;d to install directory
+  unarchive:
+    copy=no
+    src=/root/peinstaller.tar.gz
+    dest=/root/puppetinstall
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;tasks-that-run-on-each-server-role&#34;&gt;Tasks that run on each server role&lt;/h2&gt;
+
+&lt;p&gt;Each server then runs the same basic installer command with a few things named for each role like the installer log.&lt;/p&gt;
+
+&lt;p&gt;Here is the PuppetMasters install-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+# Tasks for PupMaster
+- name: Ensure install log present
+  file:
+    path=/root/puppetinstall/pupmaster_install.log
+    owner=root
+    state=touch
+
+- name: answer file for PupMaster
+  template:
+    src=&amp;quot;../templates/pupmaster.answer.j2&amp;quot;
+    dest=/root/puppetinstall/pupmaster.answer
+    owner=root
+
+- name: run the pe installer
+  command: /root/puppetinstall/{{ pe_installer }}/puppet-enterprise-installer -a /root/puppetinstall/pupmaster.answer -l /root/puppetinstall/pupmaster_install.log
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Oscar to Build a Local Puppet Environment with Vagrant</title>
+      <link>https://theargo.io/post/using_oscar_to_build_a_local_puppet_environment_with_vagrant/</link>
+      <pubDate>Fri, 20 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/using_oscar_to_build_a_local_puppet_environment_with_vagrant/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Install Oscar&lt;/li&gt;
+&lt;li&gt;Use Oscar to build a local PuppetMaster &amp;amp; Agent config&lt;/li&gt;
+&lt;li&gt;Use Vagrant to start the PuppetMaster &amp;amp; Agent&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;VirtualBox - &lt;a href=&#34;https://www.virtualbox.org/wiki/Downloads&#34;&gt;https://www.virtualbox.org/wiki/Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Vagrant - Oscar works with Vagrant version 1.3.4 - &lt;a href=&#34;http://downloads.vagrantup.com/tags/v1.3.4&#34;&gt;http://downloads.vagrantup.com/tags/v1.3.4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Oscar - &lt;a href=&#34;https://github.com/adrienthebo/oscar&#34;&gt;https://github.com/adrienthebo/oscar&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant plugin install oscar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;add-a-vagrant-box&#34;&gt;Add a Vagrant Box&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What that does:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant box add boxName http://url.box
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Downloads the .box file to the Vagrant boxes directory&lt;/li&gt;
+&lt;li&gt;nocm = No &amp;ldquo;configuration management&amp;rdquo; installed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;create-a-vagrant-environment-with-oscar&#34;&gt;Create a Vagrant environment with Oscar&lt;/h2&gt;
+
+&lt;p&gt;Give Vagrant a Puppet Enterprise installer location &amp;amp; version.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vim config/pe_build.yaml
+
+---
+ pe_build:
+   version: &amp;quot;3.1.3&amp;quot;
+   #download_root: &#39;http://s3.amazonpebucket.com&#39;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set the download_root or manually add the installer with&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant pe-build copy puppet-enterprise-3.1.3-el-6-x86_64.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant oscar init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant oscar init-vms \
+                   --master master=centosPupLabs \
+                   --agent firstagent=centosPupLabs
+                   --agent secondagent=centosPupLabs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant up
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What that does:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Creates a Vagrantfile that is customized by Oscar&lt;/li&gt;
+&lt;li&gt;Adds a PuppetMaster and 2 agents to the Vagrant environment&lt;/li&gt;
+&lt;li&gt;Uses the PuppetLabs Centos box as the OS for all 3 VMsgs&lt;/li&gt;
+&lt;li&gt;Starts the group of VMs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;login-to-the-vms&#34;&gt;Login to the VMs&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant ssh master
+sandor@pineApplez&amp;gt; vagrant ssh firstagent
+sandor@pineApplez&amp;gt; vagrant ssh secondagent
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;3 running VMs with a PuppetMaster and 2 agents&lt;/li&gt;
+&lt;li&gt;Both Agents are authenticated with the Master&lt;/li&gt;
+&lt;li&gt;You can now run your Puppet code&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Puppet vim setup</title>
+      <link>https://theargo.io/post/puppet_vim_setup/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/puppet_vim_setup/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-links&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;PuppetLabs - &lt;a href=&#34;http://puppetlabs.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vim-puppet - &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vim tabular - &lt;a href=&#34;https://github.com/godlygeek/tabular&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;vim syntastic - &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;vim-pathogen&#34;&gt;Vim-Pathogen&lt;/h2&gt;
+
+&lt;p&gt;Vim-Pathogen on &lt;a href=&#34;https://github.com/tpope/vim-pathogen&#34; title=&#34;vim-pathogen&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# mkdir -p ~/.vim/autoload ~/.vim/bundle
+[root@Argon ~]# cd ~/.vim/autoload
+[root@Argon ~]# curl -o pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add these settings to .vimrc&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;execute pathogen#infect()
+syntax on
+filetype plugin indent on
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;vim-puppet&#34;&gt;Vim-Puppet&lt;/h2&gt;
+
+&lt;p&gt;Vim-Puppet on &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34; title=&#34;vim-puppet&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
+[root@Argon ~]# git clone git://github.com/rodjek/vim-puppet.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;tabular&#34;&gt;Tabular&lt;/h2&gt;
+
+&lt;p&gt;Tabular on &lt;a href=&#34;https://github.com/godlygeek/tabular&#34; title=&#34;tabular&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
+[root@Argon ~]# git clone git://github.com/godlygeek/tabular.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;syntastic&#34;&gt;Syntastic&lt;/h2&gt;
+
+&lt;p&gt;Syntastic on &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34; title=&#34;syntastic&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
+[root@Argon ~]# git clone https://github.com/scrooloose/syntastic.git
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/winders/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/winders/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using Vagrant on Windows</title>
+      <link>https://theargo.io/post/using_vagrant_on_windows/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/using_vagrant_on_windows/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Install and configure VirtualBox &amp;amp; Vagrant on your Windows dev box&lt;/li&gt;
+&lt;li&gt;Download and start a Linux &amp;amp; Windows Vagrant Box.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;VirtualBox - &lt;a href=&#34;https://www.virtualbox.org/wiki/Downloads&#34;&gt;https://www.virtualbox.org/wiki/Downloads&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/downloads&#34;&gt;http://www.vagrantup.com/downloads&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download the .msi&lt;/li&gt;
+&lt;li&gt;Right click and &lt;code&gt;Install as Administrator&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;add-a-vagrant-box&#34;&gt;Add a Vagrant Box&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Open a Command Prompt and &lt;code&gt;Run as Administrator&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\Windows\system32\&amp;gt;vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What that does:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\Windows\system32\&amp;gt;vagrant box add boxName http://url.box
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Downloads the .box file to the Vagrant boxes directory&lt;/li&gt;
+&lt;li&gt;nocm = No &amp;ldquo;configuration management&amp;rdquo; installed&lt;/li&gt;
+&lt;li&gt;We will use a Vagrant plugin called Oscar to install and configure the PuppetMaster and Agent in a separate post.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;start-the-vagrant-box&#34;&gt;Start the Vagrant Box&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant init centosPupLabs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant up
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What that does:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Tells Vagrant to write a VagrantConfig file in &lt;code&gt;C:\stuff\vagrants\&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Vagrant then boots the centosPupLabs VirtualBox machine&lt;/li&gt;
+&lt;li&gt;SSH into the VM
+
+&lt;ul&gt;
+&lt;li&gt;Must have Cygwin or Git installed&lt;/li&gt;
+&lt;li&gt;You can also use PuTTY&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

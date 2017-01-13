@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/coins/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/coins/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Dogecoin mining on Digital Ocean</title>
+      <link>https://theargo.io/post/dogecoin_mining_on_digital_ocean/</link>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/dogecoin_mining_on_digital_ocean/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
+
+&lt;p&gt;Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/dogecoinsuchlogo.png&#34; alt=&#34;doge&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Dogecoin - &lt;a href=&#34;http://dogecoin.com/&#34;&gt;very link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;/r/dogecoin - &lt;a href=&#34;http://www.reddit.com/r/dogecoin&#34;&gt;so reddit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;/r/dogemining - &lt;a href=&#34;http://www.reddit.com/r/dogemining&#34;&gt;many mines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dogecoin Mining Pools - &lt;a href=&#34;http://www.doktorrf.com/dogecoin/pools.html&#34;&gt;much swim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dogecoin Resources - &lt;a href=&#34;https://github.com/ummjackson/dogecoin-resources&#34;&gt;sources&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dogecoin Foundation - &lt;a href=&#34;http://foundation.dogecoin.com/&#34;&gt;now found&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com&#34;&gt;awesome drops&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;TugBoat - &lt;a href=&#34;https://www.digitalocean.com/community/articles/how-to-use-tugboat-to-manage-digitalocean-droplets-from-a-terminal&#34;&gt;command line ocean&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;create-a-droplet&#34;&gt;Create a droplet&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@argo&amp;gt; tugboat create lucydoge -s 62 -i 308287 -r 3 -k 44888
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;Name:             lucydoge
+Status:           active
+Region ID:        3
+Image ID:         308287
+Size ID:          62
+Backups Active:   false
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;create-user&#34;&gt;Create user&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# history
+root@lucydoge:~# ls -al
+root@lucydoge:~# useradd -m lucy
+root@lucydoge:~# passwd lucy
+root@lucydoge:~# adduser lucy sudo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;update-debian&#34;&gt;Update Debian&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# apt-get -y update &amp;amp;&amp;amp; apt-get -y upgrade
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;install-screen&#34;&gt;Install Screen&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# apt-get install screen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;install-a-cpu-miner&#34;&gt;Install a CPU Miner&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;root@lucydoge:~# sudo apt-get install git build-essential autotools-dev libcurl4-gnutls-dev autoconf automake
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# mkdir ~/miner2049er
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# cd miner2049er
+lucy@lucydoge:~# git clone https://github.com/pooler/cpuminer.git
+lucy@lucydoge:~# cd cpuminer
+lucy@lucydoge:~# ./autogen.sh
+lucy@lucydoge:~# CFLAGS=&amp;quot;-O3 -Wall -msse2&amp;quot; ./configure
+lucy@lucydoge:~# make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;find-a-mining-pool&#34;&gt;Find a Mining Pool&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.doktorrf.com/dogecoin/pools.html&#34;&gt;Mining Pools&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a new address for mining deposits&lt;/li&gt;
+&lt;li&gt;Add that mining address to your pool profile&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;start-mining&#34;&gt;Start mining&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# ./minerd --url stratum+tcp://server:port --userpass worker.name:password
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;enjoy much coins&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.17" />
+
+  <title>Vanilla Vagrant Setup &middot; Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Vanilla Vagrant Setup</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>12 Nov 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/workstation">workstation</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h2 id="the-goal">The Goal</h2>
+
+<ul>
+<li>Setup Vagrant</li>
+<li>Start a Vanilla Ubuntu box</li>
+</ul>
+
+<h2 id="the-links">The Links</h2>
+
+<ul>
+<li>Vagrant - <a href="http://www.vagrantup.com/">link</a></li>
+</ul>
+
+<h2 id="vagrant-setup">Vagrant Setup</h2>
+
+<h3 id="grab-the-latest-here-http-downloads-vagrantup-com">Grab the latest <a href="http://downloads.vagrantup.com/">here</a></h3>
+
+<h3 id="install-it">Install it</h3>
+
+<h3 id="thats-it">Thats it</h3>
+
+<h2 id="adding-boxes">Adding Boxes</h2>
+
+<p>When you add a box to your local puter it downloads the VM image to your home dir like so:</p>
+
+<pre><code>vagrant box add name url
+</code></pre>
+
+<pre><code>spudBud@pineApplez&gt; vagrant box add precise32 http://files.vagrantup.com/precise32.box
+</code></pre>
+
+<p>This downloads the VM image into the /boxes dir:</p>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants/PuppetMaster $la ~/.vagrant.d/boxes/
+total
+drwxr-xr-x  7 spudBud  staff   238B Aug 27 17:38 ./
+drwxr-xr-x  7 spudBud  staff   340B Aug 14 16:46 ../
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 17:38 centos6min/
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 15:51 lucid32/
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 16:12 precise32/
+drwxr-xr-x  3 spudBud  staff   102B Jun 13 16:33 raring/
+drwxr-xr-x  3 spudBud  staff   102B Jul  8 11:15 ubuntu/
+</code></pre>
+
+<p>With each box dir looking like so:</p>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants/PuppetMaster $la ~/.vagrant.d/boxes/centos6min/virtualbox/
+total 742368
+drwxr-xr-x  2 spudBud  staff   238B Aug 27 17:38 ./
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 17:38 ../
+-rw-r--r--  1 spudBud  staff   505B Aug 27 17:37 Vagrantfile
+-rw-------  1 spudBud  staff   362M Aug 27 17:38 box-disk1.vmdk
+-rw-------  1 spudBud  staff   121B Aug 27 17:37 box.mf
+-rw-------  1 spudBud  staff    13K Aug 27 17:38 box.ovf
+-rw-r--r--  1 spudBud  staff    25B Aug 27 17:38 metadata.json
+</code></pre>
+
+<p>Once you download a box the base image stays in this directory even if you destroy the VM you create.  The only way to completely remove a box from your puter (and remove it totally from the ~/.vagrant.d/boxes dir) is by running</p>
+
+<pre><code>spudBud@pineApplez&gt; vagrant box remove precise64 virtualbox
+</code></pre>
+
+<p>The two arguments are the logical name of the box and the provider of the box.</p>
+
+<h2 id="vanilla-vagrant">Vanilla Vagrant</h2>
+
+<p>Start a vanilla Ubuntu like so:</p>
+
+<h3 id="download-the-box">Download the Box</h3>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants $vagrant box add precise32 http://files.vagrantup.com/precise32.box
+</code></pre>
+
+<h3 id="create-the-dir">Create the dir</h3>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants $mkdir precise32 &amp;&amp; cd precise32
+</code></pre>
+
+<h3 id="create-the-vagrantfile">Create the Vagrantfile</h3>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants/precise32 $vim Vagrantfile
+</code></pre>
+
+<pre><code>Vagrant.configure(&quot;2&quot;) do |config|
+  config.vm.box = &quot;precise32&quot;
+end
+</code></pre>
+
+<p>This creates a basic Vagrantfile to start up a machine.  If you use &lsquo;vagrant init&rsquo; you get a really long file with a bunch of crap you don&rsquo;t need to read that does what this does.  KISS!</p>
+
+<h3 id="start-the-vm">Start the VM</h3>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants/precise32 $vagrant up
+</code></pre>
+
+<h3 id="login">Login</h3>
+
+<pre><code>spudBud@pineApplez&gt; ~/Codestuff/vagrants/precise32 $vagrant ssh
+</code></pre>
+
+<p>You are now logged into a Vanilla Vagrant box.</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://theargo.io/post/ansible_on_redhat_5_dot_x/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://theargo.io/post/ansible_on_redhat_5_dot_x/">Ansible on RedHat 5.x</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://theargo.io/post/puppet_vim_setup/">Puppet vim setup</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://theargo.io/post/puppet_vim_setup/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/workstation/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/workstation/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Installing Ansible</title>
+      <link>https://theargo.io/post/installing_ansible/</link>
+      <pubDate>Mon, 16 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/installing_ansible/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;Install Ansible from the latest release on GitHub.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;p&gt;Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;clone-the-ansible-repo&#34;&gt;Clone the Ansible repo&lt;/h2&gt;
+
+&lt;p&gt;Go to the GitHub project page &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;github/ansible&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Choose a release version or the dev branch and clone.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController &amp;lt;-- Ansible runs from here
+sandor@pineapplez:$ mkdir ~/Codestuff/ansibles &amp;lt;-- Playbooks go here
+sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts &amp;lt;-- Server inventory goes here
+sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
+sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;run-the-environment-script&#34;&gt;Run the environment script&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ./hacking/env-setup
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.&lt;/p&gt;
+
+&lt;p&gt;You are now setup to run Ansible from the Controller.  Because the inventory file is inside the playbook dir or ~/Codestuff/ansibles/ansible_hosts it will not get overwritten if you change the AnsibleController dir.&lt;/p&gt;
+
+&lt;p&gt;Push some SSH public keys and start pushing playbooks!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Add WebProxy Cert to Fedora</title>
+      <link>https://theargo.io/post/add_webproxy_cert_to_fedora/</link>
+      <pubDate>Fri, 29 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/add_webproxy_cert_to_fedora/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Make Fedora work behind a restrictive idiotic corporate web proxy&lt;/li&gt;
+&lt;li&gt;Install a corporate cert to make that happen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;get-the-cert&#34;&gt;Get the cert&lt;/h2&gt;
+
+&lt;h2 id=&#34;install-the-cert&#34;&gt;Install the cert&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
+
+&lt;p&gt;Your corporate overlord has now man in the middled your personal gmail, have fun.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Auto Update VirtualBox Guest Additions with vagrant-vbguest</title>
+      <link>https://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Keep the VirtualBox guest additions at the latest version using vagrant-vbguest built by dotless-de.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-links&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Vagrant vbguest - &lt;a href=&#34;https://github.com/dotless-de/vagrant-vbguest&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;dotless-de - &lt;a href=&#34;https://github.com/dotless-de&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;vagrant-vbguest&#34;&gt;vagrant-vbguest&lt;/h2&gt;
+
+&lt;p&gt;A beautifully simple Vagrant plugin to manage the guest additions on VirtualBox.&lt;/p&gt;
+
+&lt;h2 id=&#34;install&#34;&gt;install&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/PuppetMaster $vagrant plugin install vagrant-vbguest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;bootup-usage&#34;&gt;bootup usage&lt;/h2&gt;
+
+&lt;p&gt;vagrant-vbguest will run on every &lt;code&gt;vagrant up&lt;/code&gt; or on a &lt;code&gt;vagrant reload&lt;/code&gt; unless you specifically tell it not to.&lt;/p&gt;
+
+&lt;h2 id=&#34;running-vm-usage&#34;&gt;running VM usage&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; vagrant vbguest --status
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vanilla Vagrant Setup</title>
+      <link>https://theargo.io/post/vanilla_vagrant_setup/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/vanilla_vagrant_setup/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Setup Vagrant&lt;/li&gt;
+&lt;li&gt;Start a Vanilla Ubuntu box&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-links&#34;&gt;The Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;vagrant-setup&#34;&gt;Vagrant Setup&lt;/h2&gt;
+
+&lt;h3 id=&#34;grab-the-latest-here-http-downloads-vagrantup-com&#34;&gt;Grab the latest &lt;a href=&#34;http://downloads.vagrantup.com/&#34;&gt;here&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&#34;install-it&#34;&gt;Install it&lt;/h3&gt;
+
+&lt;h3 id=&#34;thats-it&#34;&gt;Thats it&lt;/h3&gt;
+
+&lt;h2 id=&#34;adding-boxes&#34;&gt;Adding Boxes&lt;/h2&gt;
+
+&lt;p&gt;When you add a box to your local puter it downloads the VM image to your home dir like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vagrant box add name url
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; vagrant box add precise32 http://files.vagrantup.com/precise32.box
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This downloads the VM image into the /boxes dir:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/PuppetMaster $la ~/.vagrant.d/boxes/
+total
+drwxr-xr-x  7 spudBud  staff   238B Aug 27 17:38 ./
+drwxr-xr-x  7 spudBud  staff   340B Aug 14 16:46 ../
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 17:38 centos6min/
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 15:51 lucid32/
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 16:12 precise32/
+drwxr-xr-x  3 spudBud  staff   102B Jun 13 16:33 raring/
+drwxr-xr-x  3 spudBud  staff   102B Jul  8 11:15 ubuntu/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With each box dir looking like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/PuppetMaster $la ~/.vagrant.d/boxes/centos6min/virtualbox/
+total 742368
+drwxr-xr-x  2 spudBud  staff   238B Aug 27 17:38 ./
+drwxr-xr-x  3 spudBud  staff   102B Aug 27 17:38 ../
+-rw-r--r--  1 spudBud  staff   505B Aug 27 17:37 Vagrantfile
+-rw-------  1 spudBud  staff   362M Aug 27 17:38 box-disk1.vmdk
+-rw-------  1 spudBud  staff   121B Aug 27 17:37 box.mf
+-rw-------  1 spudBud  staff    13K Aug 27 17:38 box.ovf
+-rw-r--r--  1 spudBud  staff    25B Aug 27 17:38 metadata.json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once you download a box the base image stays in this directory even if you destroy the VM you create.  The only way to completely remove a box from your puter (and remove it totally from the ~/.vagrant.d/boxes dir) is by running&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; vagrant box remove precise64 virtualbox
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The two arguments are the logical name of the box and the provider of the box.&lt;/p&gt;
+
+&lt;h2 id=&#34;vanilla-vagrant&#34;&gt;Vanilla Vagrant&lt;/h2&gt;
+
+&lt;p&gt;Start a vanilla Ubuntu like so:&lt;/p&gt;
+
+&lt;h3 id=&#34;download-the-box&#34;&gt;Download the Box&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants $vagrant box add precise32 http://files.vagrantup.com/precise32.box
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;create-the-dir&#34;&gt;Create the dir&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants $mkdir precise32 &amp;amp;&amp;amp; cd precise32
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;create-the-vagrantfile&#34;&gt;Create the Vagrantfile&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/precise32 $vim Vagrantfile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;Vagrant.configure(&amp;quot;2&amp;quot;) do |config|
+  config.vm.box = &amp;quot;precise32&amp;quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This creates a basic Vagrantfile to start up a machine.  If you use &amp;lsquo;vagrant init&amp;rsquo; you get a really long file with a bunch of crap you don&amp;rsquo;t need to read that does what this does.  KISS!&lt;/p&gt;
+
+&lt;h3 id=&#34;start-the-vm&#34;&gt;Start the VM&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/precise32 $vagrant up
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;login&#34;&gt;Login&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/precise32 $vagrant ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You are now logged into a Vanilla Vagrant box.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

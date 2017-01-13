@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/security/index.xml</link>
+    <description>Recent content on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://theargo.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using Ansible to Align Passwords on Servers</title>
+      <link>https://theargo.io/post/using_ansible_to_align_passwords_on_servers/</link>
+      <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/using_ansible_to_align_passwords_on_servers/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
+
+&lt;p&gt;A group of servers get their passwords updated every 3 months with a new shared password.  The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal:&lt;/h2&gt;
+
+&lt;p&gt;Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it.  The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;note - using the same root password on all your servers is a terrible idea and completely against the SysAdmin Bible.  Use random passwords and keys!&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;howto&#34;&gt;HowTo:&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download the playbook from
+
+&lt;ul&gt;
+&lt;li&gt;GitHub - &lt;a href=&#34;https://github.com/e30chris/Ansible-AlignPassword&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Galaxy - &lt;a href=&#34;https://galaxy.ansible.com/list#/roles/1134&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Create a branch to edit the variables for your environment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ cd ~/Codestuff/ansibles/Ansible-AlignPassword
+  sandor@pineapplez:$ git checkout -b qatenv    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ansible-vault the file that will contain the passwords.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault encrypt group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Edit the vars for the environment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault edit group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add the inventory to hosts&lt;/li&gt;
+&lt;li&gt;Verify Ansible connect with ping pong&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible -i hosts all -m ping
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Run the playbook&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-playbook -i hosts site.yml -vv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;common-task-actions&#34;&gt;Common Task Actions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Attempt to login to each server using all possible passwords&lt;/li&gt;
+&lt;li&gt;Register which passwords work on each server&lt;/li&gt;
+&lt;li&gt;Set a new shared password for every server&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;variables&#34;&gt;Variables&lt;/h2&gt;
+
+&lt;p&gt;Go here:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this format:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;variable: value
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VPN Setup - MacBook to OpenVPN Server using Tunnelblick</title>
+      <link>https://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/</link>
+      <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Get MacBook to connect to a OpenVPN Server&lt;/li&gt;
+&lt;li&gt;Install Tunnelblick to make that happen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;setup-the-openvpn-server&#34;&gt;Setup the OpenVPN Server&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Follow this - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws/&#34;&gt;sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;install-tunnelblick&#34;&gt;Install Tunnelblick&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://code.google.com/p/tunnelblick/&#34;&gt;Tunnelblick Google Code&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;download-openvpn-client-config-file&#34;&gt;Download OpenVPN Client Config file&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Goto OpenVPN web client&lt;/li&gt;
+&lt;li&gt;Login with new user&lt;/li&gt;
+&lt;li&gt;Choose to download cert&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;modify-client-config-file-for-tunnelblick&#34;&gt;Modify Client Config File for Tunnelblick&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a folder for the new config / VPN connection&lt;/li&gt;
+&lt;li&gt;The $vpnname.tblk folder is where that VPN connection is saved&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; mkdir -p ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Copy the .ovpn client config file to that directory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;start-tunnelblick&#34;&gt;Start Tunnelblick&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Choose VPN from the tunnel&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-test&#34;&gt;The Test&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Verify IP using Tunnelblick&lt;/li&gt;
+&lt;li&gt;Verify IP with Tunnelblick off&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ipchicken.com/&#34;&gt;IP Chicken&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-result&#34;&gt;The Result&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Using a VPN your nets are safe from all prying eyes except the NSAs&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VPN Setup - OpenVPN Server Deploy on AWS</title>
+      <link>https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/</link>
+      <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Deploy an OpenVPN Server on AWS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;launch-the-openvpn-access-server-ami&#34;&gt;Launch the OpenVPN Access Server AMI&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Set AMI to VPC network&lt;/li&gt;
+&lt;li&gt;Auto Assign Public Static IP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ami-ids&#34;&gt;AMI ids&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;AMI Location&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;ami id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;US East (Virginia)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-ff6b3096&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;US West (Oregon)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-c8039bf8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;US West (N California)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-6c0b3d29&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;EU West (Ireland)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-89d83afe&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Asia Pacific (Singapore)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-3c9bce6e&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Asia Pacific (Tokyo)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-172d4916&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Asia Pacific (Sydney)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-db73efe1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;South America (Sao Paulo)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ami-6d4ee870&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;set-user-data&#34;&gt;Set user-data&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Key&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;public_hostname&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;hostname that clients should use to contact the server&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;admin_user (default=openvpn)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Access Server administrative account name&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;license&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Access Server license key &lt;em&gt;without a license key only 2 connections allowed&lt;/em&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;reroute_gw default=0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;if 1, clients will route internet traffic through the VPN&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;reroute_dns default=0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;if 1, clients will route DNS queries through the VPN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;set-new-security-group&#34;&gt;Set New Security Group&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Protocol&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Type&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Port&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Source&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Role&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;SSH&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;22&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Linux Access&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;HTTPS&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;443&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;OpenVPN Client Web Server&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Custom TCP Rule&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;943&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;OpenVPN Web UI&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Custom UDP Rule&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UDP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1194&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Initiate UDP based VPN sessions&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;configure-openvpn-server&#34;&gt;Configure OpenVPN Server&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ovpn-init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;access-client-website&#34;&gt;Access Client Website&lt;/h2&gt;
+
+&lt;p&gt;https://&amp;ldquo;aws public ip&amp;rdquo;:943/admin/&lt;/p&gt;
+
+&lt;h2 id=&#34;change-default-openvpn-admin-password&#34;&gt;Change default OpenVPN Admin Password&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; passwd &#39;admin user set in user-data&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;add-a-new-vpn-user&#34;&gt;Add a new VPN user&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; useradd sandor
+spudBud@pineApplez&amp;gt; passwd sandor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Login with new user account to web to download client config files.&lt;/p&gt;
+
+&lt;p&gt;https://&amp;ldquo;aws public ip&amp;rdquo;:943/&lt;/p&gt;
+
+&lt;h2 id=&#34;configure-vpn-client&#34;&gt;Configure VPN client&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MacBook - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/&#34;&gt;sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fedora  - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server/&#34;&gt;sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
+
+&lt;p&gt;A running OpenVPN Server that you can connect a MacBook or Linux box too.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
