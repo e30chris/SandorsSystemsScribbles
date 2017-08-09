@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.15" />
+
+  <title>VPN Setup - OpenVPN Server Deploy on AWS &middot; Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>VPN Setup - OpenVPN Server Deploy on AWS</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Dec 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/aws">aws</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/security">security</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h2 id="the-goal:c950210b9e87427800c67d178cbef625">The Goal</h2>
+
+<ul>
+<li>Deploy an OpenVPN Server on AWS</li>
+</ul>
+
+<h2 id="launch-the-openvpn-access-server-ami:c950210b9e87427800c67d178cbef625">Launch the OpenVPN Access Server AMI</h2>
+
+<ul>
+<li>Set AMI to VPC network</li>
+<li>Auto Assign Public Static IP</li>
+</ul>
+
+<h3 id="ami-ids:c950210b9e87427800c67d178cbef625">AMI ids</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left">AMI Location</th>
+<th align="left">ami id</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">US East (Virginia)</td>
+<td align="left">ami-ff6b3096</td>
+</tr>
+
+<tr>
+<td align="left">US West (Oregon)</td>
+<td align="left">ami-c8039bf8</td>
+</tr>
+
+<tr>
+<td align="left">US West (N California)</td>
+<td align="left">ami-6c0b3d29</td>
+</tr>
+
+<tr>
+<td align="left">EU West (Ireland)</td>
+<td align="left">ami-89d83afe</td>
+</tr>
+
+<tr>
+<td align="left">Asia Pacific (Singapore)</td>
+<td align="left">ami-3c9bce6e</td>
+</tr>
+
+<tr>
+<td align="left">Asia Pacific (Tokyo)</td>
+<td align="left">ami-172d4916</td>
+</tr>
+
+<tr>
+<td align="left">Asia Pacific (Sydney)</td>
+<td align="left">ami-db73efe1</td>
+</tr>
+
+<tr>
+<td align="left">South America (Sao Paulo)</td>
+<td align="left">ami-6d4ee870</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="set-user-data:c950210b9e87427800c67d178cbef625">Set user-data</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left">Key</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">public_hostname</td>
+<td align="left">hostname that clients should use to contact the server</td>
+</tr>
+
+<tr>
+<td align="left">admin_user (default=openvpn)</td>
+<td align="left">Access Server administrative account name</td>
+</tr>
+
+<tr>
+<td align="left">license</td>
+<td align="left">Access Server license key <em>without a license key only 2 connections allowed</em></td>
+</tr>
+
+<tr>
+<td align="left">reroute_gw default=0</td>
+<td align="left">if 1, clients will route internet traffic through the VPN</td>
+</tr>
+
+<tr>
+<td align="left">reroute_dns default=0</td>
+<td align="left">if 1, clients will route DNS queries through the VPN</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="set-new-security-group:c950210b9e87427800c67d178cbef625">Set New Security Group</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left">Protocol</th>
+<th align="left">Type</th>
+<th align="left">Port</th>
+<th align="left">Source</th>
+<th align="left">Role</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">SSH</td>
+<td align="left">TCP</td>
+<td align="left">22</td>
+<td align="left">Anywhere 0.0.0.0/0</td>
+<td align="left">Linux Access</td>
+</tr>
+
+<tr>
+<td align="left">HTTPS</td>
+<td align="left">TCP</td>
+<td align="left">443</td>
+<td align="left">Anywhere 0.0.0.0/0</td>
+<td align="left">OpenVPN Client Web Server</td>
+</tr>
+
+<tr>
+<td align="left">Custom TCP Rule</td>
+<td align="left">TCP</td>
+<td align="left">943</td>
+<td align="left">Anywhere 0.0.0.0/0</td>
+<td align="left">OpenVPN Web UI</td>
+</tr>
+
+<tr>
+<td align="left">Custom UDP Rule</td>
+<td align="left">UDP</td>
+<td align="left">1194</td>
+<td align="left">Anywhere 0.0.0.0/0</td>
+<td align="left">Initiate UDP based VPN sessions</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="configure-openvpn-server:c950210b9e87427800c67d178cbef625">Configure OpenVPN Server</h2>
+
+<pre><code>spudBud@pineApplez&gt; ovpn-init
+</code></pre>
+
+<h2 id="access-client-website:c950210b9e87427800c67d178cbef625">Access Client Website</h2>
+
+<p>https://&ldquo;aws public ip&rdquo;:943/admin/</p>
+
+<h2 id="change-default-openvpn-admin-password:c950210b9e87427800c67d178cbef625">Change default OpenVPN Admin Password</h2>
+
+<pre><code>spudBud@pineApplez&gt; passwd 'admin user set in user-data'
+</code></pre>
+
+<h2 id="add-a-new-vpn-user:c950210b9e87427800c67d178cbef625">Add a new VPN user</h2>
+
+<pre><code>spudBud@pineApplez&gt; useradd sandor
+spudBud@pineApplez&gt; passwd sandor
+</code></pre>
+
+<p>Login with new user account to web to download client config files.</p>
+
+<p>https://&ldquo;aws public ip&rdquo;:943/</p>
+
+<h2 id="configure-vpn-client:c950210b9e87427800c67d178cbef625">Configure VPN client</h2>
+
+<ul>
+<li>MacBook - <a href="http://sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/">sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick</a></li>
+<li>Fedora  - <a href="http://sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server/">sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server</a></li>
+</ul>
+
+<h2 id="the-result:c950210b9e87427800c67d178cbef625">The result</h2>
+
+<p>A running OpenVPN Server that you can connect a MacBook or Linux box too.</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="http://theargo.io/post/add-webproxy-cert-to-fedora/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="http://theargo.io/post/add-webproxy-cert-to-fedora/">Add WebProxy Cert to Fedora</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="http://theargo.io/post/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/">VPN Setup - MacBook to OpenVPN Server using Tunnelblick</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="http://theargo.io/post/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="http://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

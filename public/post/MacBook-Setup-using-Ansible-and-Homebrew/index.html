@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.15" />
+
+  <title>MacBook Setup Using Ansible and Homebrew &middot; Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>MacBook Setup Using Ansible and Homebrew</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>18 May 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/ansible">ansible</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/mac">mac</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/homebrew">homebrew</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h2 id="the-problem:b06f0edf5db1d7044a8c9a03ec3d69d0">The Problem:</h2>
+
+<p>You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew &amp; Cask and OSX setup with goodies like zsh and .dotfiles.</p>
+
+<h2 id="the-solution:b06f0edf5db1d7044a8c9a03ec3d69d0">The solution:</h2>
+
+<p>Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.</p>
+
+<p><a href="https://github.com/e30chris/Ansible-MacDeploy">GitHub - e30chris/Ansible-MacDeploy</a></p>
+
+<h3 id="backstory:b06f0edf5db1d7044a8c9a03ec3d69d0">Backstory:</h3>
+
+<p>Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.</p>
+
+<h3 id="todo:b06f0edf5db1d7044a8c9a03ec3d69d0">ToDo:</h3>
+
+<ul>
+<li>Bring in OSX user settings like desktop backgrounds and other System Preferences.</li>
+</ul>
+
+<hr />
+
+<h3 id="pre-requisites:b06f0edf5db1d7044a8c9a03ec3d69d0">Pre-Requisites:</h3>
+
+<ul>
+<li>Fresh OSX install</li>
+<li>Homebrew installed</li>
+<li>Ansible installed via Homebrew</li>
+<li>GitHub Authenticated</li>
+<li>GitHub API token set</li>
+<li>.dotfiles forked and customized to your liking</li>
+</ul>
+
+<h4 id="fresh-osx-install:b06f0edf5db1d7044a8c9a03ec3d69d0">Fresh OSX Install</h4>
+
+<p><a href="http://osxdaily.com/2014/10/16/make-os-x-yosemite-boot-install-drive/">USB install OSX</a></p>
+
+<h4 id="homebrew-installed:b06f0edf5db1d7044a8c9a03ec3d69d0">Homebrew installed</h4>
+
+<p>Follow the SysAdmin Bible and read the script before you run it:</p>
+
+<p><a href="https://raw.githubusercontent.com/Homebrew/install/master/install">Github Raw of Homebrew install script</a></p>
+
+<p>Run the script once verified that you know what it will be doing:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">ruby -e <span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
+</pre></div>
+
+
+<p>Verify Homebrew is correct:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>brew doctor
+</pre></div>
+
+
+<h4 id="install-ansible-via-homebrew:b06f0edf5db1d7044a8c9a03ec3d69d0">Install Ansible via Homebrew</h4>
+
+<p>Installing the latest from dev:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>brew install ansible --HEAD
+</pre></div>
+
+
+<h4 id="github-authenticated:b06f0edf5db1d7044a8c9a03ec3d69d0">GitHub Authenticated</h4>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>git config --global user.name <span style="color: #e6db74">&quot;sandor&quot;</span>
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>git config --global user.email <span style="color: #e6db74">&quot;chris@e30chris.me&quot;</span>
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>ssh-keygen -t rsa -b <span style="color: #ae81ff">4096</span> -C <span style="color: #e6db74">&quot;sandor@macbook&quot;</span>
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>ssh-add ~/.ssh/id_rsa
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>pbcopy &lt; ~/.ssh/id_rsa.pub
+</pre></div>
+
+
+<p>Add your SSH Public Key to GitHub -&gt; Settings.</p>
+
+<h4 id="github-api-token-set:b06f0edf5db1d7044a8c9a03ec3d69d0">GitHub API Token Set</h4>
+
+<p>This avoids annoying brew errors on lookups.</p>
+
+<p><a href="http://stackoverflow.com/questions/20130681/setting-github-api-token-for-homebrew#20130816">stackoverflow</a></p>
+
+<h4 id="dotfile-forked:b06f0edf5db1d7044a8c9a03ec3d69d0">.dotfile forked</h4>
+
+<p><a href="https://github.com/holman/dotfiles">All hail Holmans .dotfiles</a></p>
+
+<p><a href="http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/">Explained by Holman</a></p>
+
+<h3 id="download-and-run-the-playbook:b06f0edf5db1d7044a8c9a03ec3d69d0">Download and run the playbook</h3>
+
+<p>Download:</p>
+
+<p><div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
+</pre></div>
+</p>
+
+<p>Edit:</p>
+
+<ul>
+<li>Set the OSX username that is running the playbook in vars/main.yml</li>
+</ul>
+
+<p>Run:</p>
+
+<p><div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>ansible-playbook -i hosts site.yml --ask-sudo-pass
+</pre></div>
+</p>
+
+<p>Then run the .dotfiles bootstrap script</p>
+
+<p><div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>~/.dotfiles/script/bootstrap
+</pre></div>
+</p>
+
+<p>Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="http://theargo.io/post/Deploy-AWS-Redshift-into-a-dedicated-VPC-on-the-EC2-VPC-platform/">Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/">Configure new servers with the basics via Ansible</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="http://theargo.io/post/Configure-new-servers-with-the-basics-via-Ansible/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="http://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.15" />
+
+  <title>Using Oscar to Build a Local Puppet Environment with Vagrant &middot; Sandors Systems Scribbles</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://theargo.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://theargo.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://theargo.io/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://theargo.io/">Scribbles</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/e30chris" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://quitter.se/e30chris" target="_blank"><i class="fa fa-comment fa-fw"></i>GNU social</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/clivermore" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/e30chris" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/e30chris" target="_blank"><i class="fa fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using Oscar to Build a Local Puppet Environment with Vagrant</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Dec 2013, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/puppet">puppet</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="http://theargo.io/tags/vagrant">vagrant</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h2 id="the-goal:f425891b1860d23a93278dbe002c8890">The Goal</h2>
+
+<ul>
+<li>Install Oscar</li>
+<li>Use Oscar to build a local PuppetMaster &amp; Agent config</li>
+<li>Use Vagrant to start the PuppetMaster &amp; Agent</li>
+</ul>
+
+<h2 id="install:f425891b1860d23a93278dbe002c8890">Install</h2>
+
+<ul>
+<li>VirtualBox - <a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></li>
+<li>Vagrant - Oscar works with Vagrant version 1.3.4 - <a href="http://downloads.vagrantup.com/tags/v1.3.4">http://downloads.vagrantup.com/tags/v1.3.4</a></li>
+<li>Oscar - <a href="https://github.com/adrienthebo/oscar">https://github.com/adrienthebo/oscar</a></li>
+</ul>
+
+<pre><code>sandor@pineApplez&gt; vagrant plugin install oscar
+</code></pre>
+
+<h2 id="add-a-vagrant-box:f425891b1860d23a93278dbe002c8890">Add a Vagrant Box</h2>
+
+<pre><code>sandor@pineApplez&gt; vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
+</code></pre>
+
+<p>What that does:</p>
+
+<pre><code>sandor@pineApplez&gt; vagrant box add boxName http://url.box
+</code></pre>
+
+<ul>
+<li>Downloads the .box file to the Vagrant boxes directory</li>
+<li>nocm = No &ldquo;configuration management&rdquo; installed</li>
+</ul>
+
+<h2 id="create-a-vagrant-environment-with-oscar:f425891b1860d23a93278dbe002c8890">Create a Vagrant environment with Oscar</h2>
+
+<p>Give Vagrant a Puppet Enterprise installer location &amp; version.</p>
+
+<pre><code>sandor@pineApplez&gt; vim config/pe_build.yaml
+
+---
+ pe_build:
+   version: &quot;3.1.3&quot;
+   #download_root: 'http://s3.amazonpebucket.com'
+
+</code></pre>
+
+<p>Set the download_root or manually add the installer with</p>
+
+<pre><code>sandor@pineApplez&gt; vagrant pe-build copy puppet-enterprise-3.1.3-el-6-x86_64.tar.gz
+</code></pre>
+
+<pre><code>sandor@pineApplez&gt; vagrant oscar init
+</code></pre>
+
+<pre><code>sandor@pineApplez&gt; vagrant oscar init-vms \
+                   --master master=centosPupLabs \
+                   --agent firstagent=centosPupLabs
+                   --agent secondagent=centosPupLabs
+</code></pre>
+
+<pre><code>sandor@pineApplez&gt; vagrant up
+</code></pre>
+
+<p>What that does:</p>
+
+<ul>
+<li>Creates a Vagrantfile that is customized by Oscar</li>
+<li>Adds a PuppetMaster and 2 agents to the Vagrant environment</li>
+<li>Uses the PuppetLabs Centos box as the OS for all 3 VMsgs</li>
+<li>Starts the group of VMs</li>
+</ul>
+
+<h2 id="login-to-the-vms:f425891b1860d23a93278dbe002c8890">Login to the VMs</h2>
+
+<pre><code>sandor@pineApplez&gt; vagrant ssh master
+sandor@pineApplez&gt; vagrant ssh firstagent
+sandor@pineApplez&gt; vagrant ssh secondagent
+</code></pre>
+
+<h2 id="the-result:f425891b1860d23a93278dbe002c8890">The result</h2>
+
+<ul>
+<li>3 running VMs with a PuppetMaster and 2 agents</li>
+<li>Both Agents are authenticated with the Master</li>
+<li>You can now run your Puppet code</li>
+</ul>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="http://theargo.io/post/using-vagrant-on-windows/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="http://theargo.io/post/using-vagrant-on-windows/">Using Vagrant on Windows</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="http://theargo.io/post/dogecoin-mining-on-digital-ocean/">Dogecoin mining on Digital Ocean</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="http://theargo.io/post/dogecoin-mining-on-digital-ocean/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="http://theargo.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-80255618-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+
