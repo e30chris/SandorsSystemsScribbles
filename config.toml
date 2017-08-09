@@ -2,7 +2,7 @@ baseurl = "https://theargo.io/"
 title = "Sandors Systems Scribbles"
 author = "Sandor"
 # Shown in the side menu
-copyright = "&copy; 2016. All rights reserved."
+copyright = "&copy; 2017. All rights reserved."
 canonifyurls = true
 paginate = 10
 
