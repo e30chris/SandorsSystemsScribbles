@@ -26,7 +26,8 @@ Create the Cluster Subnet Group
 
 _subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default)._
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 aws redshift create-cluster-subnet-group
 
   --cluster-subnet-group-name argodataanalyticsredshiftsubnet
@@ -35,7 +36,8 @@ aws redshift create-cluster-subnet-group
 
   --subnet-ids subnet-382fee1w
 
-~~~
+&nbsp;
+{{ </highlight >}}
 
 [AWS CLI Documentation create=cluster-subnet-group](http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html)
 

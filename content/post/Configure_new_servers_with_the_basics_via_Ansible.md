@@ -36,8 +36,10 @@ After pitching Ansible as a great solution to infrastructure automation I wanted
 Using the excellent Digital Ocean cli tool - [TugBoat - GitHub](https://github.com/pearkes/tugboat)
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 915832
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 That equals:
 
@@ -52,6 +54,7 @@ That equals:
 ### Add new droplet to SSH config
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ cat ~/.ssh/config
 #SSH Stuff
 Host bloggindroplet
@@ -65,11 +68,13 @@ Host *
   ControlPersist 4h
   StrictHostKeyChecking no
   IdentityFile ~/.ssh/id_rsa
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 ### Add new droplet to Ansible hosts file
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ › cat ~/.ansible/hosts
 # All Servers
 docks
@@ -87,28 +92,32 @@ fed22
 
 # Variables applied to all servers
 [multi:vars]
-
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 
 ### Test ssh login
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ ssh bloggindroplet
 Last login: Thu Jul  9 00:34:41 2015 from 67.135.32.227
 [root@bloggindroplet ~]#
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 ### Test Ansible
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ ansible bloggindroplet -m ping
 servfed | success >> {
     "changed": false,
     "ping": "pong"
 }
 sandor@pineApplez$
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 
 ### git clone the playbook
@@ -116,8 +125,10 @@ sandor@pineApplez$
 Download:
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 ### Create the user accounts
 
@@ -126,13 +137,15 @@ via the variables in group_vars/main.yml
 *delivered_users: this is the user accounts you want created on the new server, each with sudo access.*
 
 {{< highlight yaml >}}
+&nbsp;
 ---
 # vars file for ServerDelivery
 delivered_users:
   - chrisl
   - dpr
   - weev
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 
 ### Give each users ssh key a password
@@ -144,11 +157,13 @@ via group_vars/passes.yml
 _this file will need to be created with ansible-vault_
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ ansible-vault create group_vars/passes.yml
 ---
 # vars file for ServerDelivery encrypted via ansible-vault
 users_ssh_key_pass: stallman was right
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 ### Run the playbook
 
@@ -156,12 +171,15 @@ _This will run with 'hosts: all' which will put every server in your Ansible hos
 
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 which returns lots of cows:
 
 {{< highlight bash >}}
+&nbsp;
 2.2.3 in ServerDelivery/ on dev
 › ansible-playbook -i "docks,cent7,fed22," site.yml --ask-vault-pass
 Vault password:
@@ -410,5 +428,5 @@ changed: [docks]
 cent7                      : ok=8    changed=1    unreachable=0    failed=0
 docks                      : ok=10   changed=1    unreachable=0    failed=0
 fed22                      : ok=10   changed=1    unreachable=0    failed=0
-
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}

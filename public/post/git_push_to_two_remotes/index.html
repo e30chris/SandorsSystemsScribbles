@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.26" />
 
-  <title>Tags &middot; Sandors Systems Scribbles</title>
+  <title>Git push to two remotes &middot; Sandors Systems Scribbles</title>
 
   
   
@@ -36,8 +36,6 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
 
   
-  
-  <link rel="alternate" type="application/rss+xml" title="Sandors Systems Scribbles" href="https://theargo.io/tags/index.xml" />
   
 
   
@@ -92,10 +90,6 @@
   <div class="pure-menu social">
   <ul class="pure-menu-list">
 
-    
-    <li class="pure-menu-item">
-      <a class="pure-menu-link" href="https://theargo.io/tags/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
-    </li>
     
 
     
@@ -159,163 +153,128 @@
 
 
 <div class="header">
-  <h1>Tags</h1>
+  <h1>Git push to two remotes</h1>
+  <h2></h2>
 </div>
 <div class="content">
-  <ul>
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Aug 2017, 00:00</time>
+  </div>
+
+  
+
+  
+
   
   
-    <li>
-      <a href="ansible">ansible</a>
-      <span>&#40;9&#41;</span>
-    </li>
   
-    <li>
-      <a href="oldcorp">oldcorp</a>
-      <span>&#40;4&#41;</span>
-    </li>
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/git">git</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/github">github</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://theargo.io/tags/gitlab">gitlab</a>
+    
+  </div>
   
-    <li>
-      <a href="techdebt">techdebt</a>
-      <span>&#40;4&#41;</span>
-    </li>
   
-    <li>
-      <a href="vagrant">vagrant</a>
-      <span>&#40;4&#41;</span>
-    </li>
+
+</div>
+
   
-    <li>
-      <a href="workstation">workstation</a>
-      <span>&#40;4&#41;</span>
-    </li>
+
+<h2 id="the-problem">The Problem:</h2>
+
+<p>Need a way to share code hosted in a private GitLab repo publicly on GitHub.</p>
+
+<h2 id="the-solution">The solution:</h2>
+
+<p>Use a second Git remote to share a private Git repo publicly on GitHub.</p>
+
+<h3 id="backstory">Backstory:</h3>
+
+<p>GitLab with its free unlimited private repository hosting and CiCd services offers a great place to host Git repos and build code.  GitHub is the defacto home of Open Source code repositories and is also a great way to add to a resume by sharing projects publicly.</p>
+
+<hr />
+
+<h3 id="pre-requisites">Pre-Requisites:</h3>
+
+<ul>
+<li><a href="https://gitlab.com">GitLab</a> account</li>
+<li><a href="https://github.com">GitHub</a> account</li>
+<li>Private Git repo hosted on GitLab</li>
+<li>Public Git repo hosted on GitHub</li>
+</ul>
+
+<h3 id="verify-the-current-remote">Verify the current remote</h3>
+
+<p>From the GitLab hosted repo:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"> 
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>git remote -v
+origin	git@gitlab.com:e30chris/theargo.io.git <span style="color: #f92672">(</span>fetch<span style="color: #f92672">)</span>
+origin	git@gitlab.com:e30chris/theargo.io.git <span style="color: #f92672">(</span>push<span style="color: #f92672">)</span>
+ 
+</pre></div>
+
+
+<h3 id="add-the-second-github-remote">Add the second GitHub remote</h3>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"> 
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>git remote <span style="color: #f8f8f2">set</span>-url --add --push origin git@github.com:e30chris/SandorsSystemsScribbles.git
+ 
+</pre></div>
+
+
+<h3 id="verify-the-remotes">Verify the remotes</h3>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"> 
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>git remote -v
+origin	git@gitlab.com:e30chris/theargo.io.git <span style="color: #f92672">(</span>fetch<span style="color: #f92672">)</span>
+origin	git@github.com:e30chris/SandorsSystemsScribbles.git <span style="color: #f92672">(</span>push<span style="color: #f92672">)</span>
+origin	git@gitlab.com:e30chris/theargo.io.git <span style="color: #f92672">(</span>push<span style="color: #f92672">)</span>
+ 
+</pre></div>
+
+
+<p>This is using <code>origin</code> as the remote name for both GitLab and GitHub.  Using <code>gitlab</code> and <code>github</code> as the remote names is another possibility and would enable pushing to GitHub only when the project is ready to be published publicly.</p>
+
+
   
-    <li>
-      <a href="aws">aws</a>
-      <span>&#40;3&#41;</span>
-    </li>
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/">Configure new servers with the basics via Ansible</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
   
-    <li>
-      <a href="bullshit">bullshit</a>
-      <span>&#40;3&#41;</span>
-    </li>
-  
-    <li>
-      <a href="octopress">octopress</a>
-      <span>&#40;3&#41;</span>
-    </li>
-  
-    <li>
-      <a href="puppet">puppet</a>
-      <span>&#40;3&#41;</span>
-    </li>
-  
-    <li>
-      <a href="security">security</a>
-      <span>&#40;3&#41;</span>
-    </li>
-  
-    <li>
-      <a href="webstuff">webstuff</a>
-      <span>&#40;3&#41;</span>
-    </li>
-  
-    <li>
-      <a href="github">github</a>
-      <span>&#40;2&#41;</span>
-    </li>
-  
-    <li>
-      <a href="linux">linux</a>
-      <span>&#40;2&#41;</span>
-    </li>
-  
-    <li>
-      <a href="mac">mac</a>
-      <span>&#40;2&#41;</span>
-    </li>
-  
-    <li>
-      <a href="beanstalk">beanstalk</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="coins">coins</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="digitaloceans">digitaloceans</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="dogecoin">dogecoin</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="fedora">fedora</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="git">git</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="gitlab">gitlab</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="go">go</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="homebrew">homebrew</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="hp-ux">hp-ux</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="infrastructure-culture">infrastructure-culture</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="redhat">redhat</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="redshift">redshift</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="vim">vim</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="vpc">vpc</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-    <li>
-      <a href="winders">winders</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-  </ul>
+
 </div>
 
 </div>
@@ -338,3 +297,4 @@
 
 </body>
 </html>
+

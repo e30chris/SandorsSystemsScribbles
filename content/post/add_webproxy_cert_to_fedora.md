@@ -17,9 +17,11 @@ image: ""
 
 ## Install the cert
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> openssl x509 -text -in /path/to/proxycert.crt >> /etc/pki/tls/certs/ca-bundle.crt
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## The result
 

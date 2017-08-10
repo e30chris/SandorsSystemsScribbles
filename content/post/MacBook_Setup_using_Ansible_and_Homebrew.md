@@ -47,32 +47,40 @@ Follow the SysAdmin Bible and read the script before you run it:
 Run the script once verified that you know what it will be doing:
 
 {{< highlight bash >}}
+&nbsp;
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 Verify Homebrew is correct:
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ brew doctor
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 #### Install Ansible via Homebrew
 
 Installing the latest from dev:
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ brew install ansible --HEAD
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 #### GitHub Authenticated
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ git config --global user.name "sandor"
 sandor@pineApplez$ git config --global user.email "chris@e30chris.me"
 sandor@pineApplez$ ssh-keygen -t rsa -b 4096 -C "sandor@macbook"
 sandor@pineApplez$ ssh-add ~/.ssh/id_rsa
 sandor@pineApplez$ pbcopy < ~/.ssh/id_rsa.pub
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 Add your SSH Public Key to GitHub -> Settings.
 
@@ -95,8 +103,9 @@ This avoids annoying brew errors on lookups.
 Download:
 
 {{< highlight bash >}}
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
-{{< / highlight >}}
+&nbsp;sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
+&nbsp;
+{{< /highlight >}}
 
 Edit:
 
@@ -105,13 +114,17 @@ Edit:
 Run:
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ ansible-playbook -i hosts site.yml --ask-sudo-pass
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 Then run the .dotfiles bootstrap script
 
 {{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ ~/.dotfiles/script/bootstrap
-{{< / highlight >}}
+&nbsp;
+{{< /highlight >}}
 
 Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.

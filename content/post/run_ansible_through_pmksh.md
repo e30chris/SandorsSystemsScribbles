@@ -29,15 +29,19 @@ Ansible Shells:
 Current Workaround:
 
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineapplez:$ ansible -i hosts all -m command -a "/opt/quest/bin/pmksh -c '/bin/touch /root/bmw.325'"
-~~~
+&nbsp;
+{{< /highlight >}}
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 tasks:
 
 - name: run a command through pmksh
   command: "/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325'"
-~~~
+&nbsp;
+{{< /highlight >}}
 
 _once ksh is added to the list of shells I will update this post_

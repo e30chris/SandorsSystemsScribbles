@@ -24,30 +24,35 @@ _not anymore, Sandors HowTo notebook has been moved to Amazon AWS_
 
 ## Create a new post
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 pineApplez>e30chris.github.io $rake new_post
 Enter a title for your post: post to octopress and deploy to github pages
 mkdir -p source/_posts
 Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
-~~~
+&nbsp;
+{{< /highlight >}}
 Write the post in markdown, save it.  [Mou](http://mouapp.com/) is a nice markdown editor for OS X.
 
 ## Generate new blog
 This throws away everything and recreates the static files from scratch.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 pineApplez>e30chris.github.io $rake -v generate
 ## Generating Site with Jekyll
 identical source/stylesheets/screen.css
 Configuration from /Users/Sandors/Codestuff/e30chris.github.io/_config.yml
 Building site: source -> public
 Successfully generated site: source -> public
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## Deploy new blog
 This does a bunch of stuff to move the new blog content in the 'source' branch to the 'master' branch on GitHub which then updates the GitHub Pages content.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 pineApplez>e30chris.github.io $rake -v deploy
 ## Deploying branch to Github Pages
 ## Pulling any updates from Github Pages
@@ -103,18 +108,21 @@ To git@github.com:e30chris/e30chris.github.io.git
 
 ## Github Pages deploy complete
 cd -
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ### Commit the new post
 Now that the code is up on GitHub save it in the git repo.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 pineApplez>e30chris.github.io $git add .
 pineApplez>e30chris.github.io $git commit -m 'post - post to octopress and deploy to github pages'
 [source e200e58] post - post to octopress and deploy to github pages
  1 file changed, 52 insertions(+)
  create mode 100644 source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
 pineApplez>e30chris.github.io $git push origin source
-~~~
+&nbsp;
+{{< /highlight >}}
 
 Now write more scribbles and make the nerd world even more lazyier.

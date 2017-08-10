@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&amp;copy; 2017. All rights reserved.</copyright>
-    <lastBuildDate>Wed, 08 Jul 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Aug 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://theargo.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git push to two remotes</title>
+      <link>https://theargo.io/post/git_push_to_two_remotes/</link>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/git_push_to_two_remotes/</guid>
+      <description>The Problem: Need a way to share code hosted in a private GitLab repo publicly on GitHub.
+The solution: Use a second Git remote to share a private Git repo publicly on GitHub.
+Backstory: GitLab with its free unlimited private repository hosting and CiCd services offers a great place to host Git repos and build code. GitHub is the defacto home of Open Source code repositories and is also a great way to add to a resume by sharing projects publicly.</description>
+    </item>
     
     <item>
       <title>Configure new servers with the basics via Ansible</title>

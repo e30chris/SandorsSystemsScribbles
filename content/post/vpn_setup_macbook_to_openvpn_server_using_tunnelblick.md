@@ -35,16 +35,20 @@ image: ""
 - Create a folder for the new config / VPN connection
 - The $vpnname.tblk folder is where that VPN connection is saved
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineAplez> mkdir -p ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/
-~~~
+&nbsp;
+{{< /highlight >}}
 
 - Copy the .ovpn client config file to that directory
 
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineAplez> cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/.
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## Start Tunnelblick
 

@@ -23,35 +23,45 @@ _**note - using the same root password on all your servers is a terrible idea an
     * Galaxy - [repo](https://galaxy.ansible.com/list#/roles/1134)
   * Create a branch to edit the variables for your environment
 
-  ~~~
+  {{< highlight bash >}}
+  &nbsp;
   sandor@pineapplez:$ cd ~/Codestuff/ansibles/Ansible-AlignPassword
   sandor@pineapplez:$ git checkout -b qatenv    
-  ~~~
+  &nbsp;
+  {{< /highlight >}}
 
   * ansible-vault the file that will contain the passwords.
 
-  ~~~
+  {{< highlight bash >}}
+  &nbsp;
   sandor@pineapplez:$ ansible-vault encrypt group_vars/all
-  ~~~
+  &nbsp;
+  {{< /highlight >}}
 
   * Edit the vars for the environment
 
-  ~~~
+  {{< highlight bash >}}
+  &nbsp;
   sandor@pineapplez:$ ansible-vault edit group_vars/all
-  ~~~
+  &nbsp;
+  {{< /highlight >}}
 
   * Add the inventory to hosts
   * Verify Ansible connect with ping pong
 
-  ~~~
+  {{< highlight bash >}}
+  &nbsp;
   sandor@pineapplez:$ ansible -i hosts all -m ping
-  ~~~
+  &nbsp;
+  {{< /highlight >}}
 
   * Run the playbook
 
-  ~~~
+  {{< highlight bash >}}
+  &nbsp;
   sandor@pineapplez:$ ansible-playbook -i hosts site.yml -vv
-  ~~~
+  &nbsp;
+  {{< /highlight >}}
 
 ## Common Task Actions
 
@@ -64,12 +74,16 @@ _**note - using the same root password on all your servers is a terrible idea an
 
 Go here:
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 group_vars/all
-~~~
+&nbsp;
+{{< /highlight >}}
 
 With this format:
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 variable: value
-~~~
+&nbsp;
+{{< /highlight >}}

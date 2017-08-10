@@ -28,24 +28,31 @@ Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the
 
 On your MacBook create a file to host your AWS creds.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ vim ~/.awscreds
-~~~
+&nbsp;
+{{< /highlight >}}
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 AWSAccessKeyId=Your AWS access ID
 AWSSecretKey=Your AWS secret key
-~~~
+&nbsp;
+{{< /highlight >}}
 
 Set the permissions
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ chmod 0600 ~/.awscreds
-~~~
+&nbsp;
+{{< /highlight >}}
 
 Install *all* the AWS tools using Homebrew
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 brew install awscli
 brew install aws-elasticbeanstalk
 brew install aws-as
@@ -54,10 +61,13 @@ brew install aws-cloudsearch
 brew install aws-elasticcache
 brew install aws-mon
 brew install aws-sns-cli
-~~~
+&nbsp;
+{{< /highlight >}}
+
 Some of those installs need stuff added to the bash|zsh profile
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 # aws stuff
 export AWS_ACCESS_KEY="Your AWS access ID"
 export AWS_SECRET_KEY="Your AWS secret key"
@@ -70,14 +80,17 @@ export AWS_SNS_HOME="/usr/local/Cellar/aws-sns-cli/2013-09-27/libexec"
 export JAVA_HOME="$(/usr/libexec/java_home)"
 export AWS_CREDENTIAL_FILE=/Users/sandor/.awscreds
 export ELASTICBEANSTALK_URL="https://elasticbeanstalk.us-west-2.amazonaws.com"
-~~~
+&nbsp;
+{{< /highlight >}}
+
 *Planning ahead for the eventual [Cascadia](https://en.wikipedia.org/wiki/Cascadia_%28independence_movement%29) so Oregon is my AWS home*
 
 ## HowTo - Setup a BeanStalk Environment
 
 Setup a basic PHP BeanStalk to verify everything is working.  The end results is you should see a PHP test page.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ eb init
 sandor@pineApplez$ To get your AWS Access Key ID and Secret Access Key,
   visit "https://aws-portal.amazon.com/gp/aws/securityCredentials".
@@ -119,12 +132,13 @@ Attach an instance profile (current value is "[Create a default instance profile
 You IAM user does not have sufficient permission. User: arn:aws:iam::246173154382:user/smbec2r is not authorized to perform: iam:ListInstanceProfiles on resource: arn:aws:iam::246173154382:instance-profile/
 Do you want to proceed without attaching an instance profile? [y/n]: y
 Updated AWS Credential file at "/Users/sandor/.elasticbeanstalk/aws_credential_file".
-
-~~~
+&nbsp;
+{{< /highlight >}}
 
 Now start the test BeanStalk
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ eb start
 Starting application "testapp".
 Waiting for environment "testapp-env" to launch.
@@ -136,7 +150,8 @@ Waiting for environment "testapp-env" to launch.
 2014-12-01 00:11:27	INFO	Created RDS database named: aa1e1p73zv1ede2
 2014-12-01 00:12:23	INFO	Waiting for EC2 instances to launch. This may take a few minutes.
 2014-12-01 00:14:05	INFO	Successfully launched environment: testapp-env
-~~~
+&nbsp;
+{{< /highlight >}}
 
 Navigate to the EIP - http://54.149.45.218 and you should see the Beanstalk PHP congrats page.
 
@@ -152,6 +167,8 @@ This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.
 
 Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
-~~~
+&nbsp;
+{{< /highlight >}}

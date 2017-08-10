@@ -18,6 +18,8 @@ Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.
 
 _Using Ansible Raw_
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineapplez:$ ansible -i hosts all -m raw -a "yum -y install python-simplejson"
-~~~
+&nbsp;
+{{< /highlight >}}

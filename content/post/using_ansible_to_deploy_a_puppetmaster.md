@@ -29,7 +29,8 @@ A repeatable and documented way to deploy the very finicky Puppet installer in a
 
 ## Setting the variables for each environment
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineapplez:$ cd ~/Ansible-PuppetEnterpriseDeploy/
 sandor@pineapplez:$ cat group_vars/all
 ---
@@ -69,7 +70,8 @@ console_db_pass: arandompasswordthatneedschangedhere
 pupdb_db_pass: arandompasswordthatneedschangedhere
 db_root_pass: arandompasswordthatneedschangedhere
 
-~~~
+&nbsp;
+{{< /highlight >}}
 
 To keep it simple only the values that should be changed are assigned variables.  Everything else is left with the Puppet defaults in the answer files.
 
@@ -79,16 +81,19 @@ To keep it simple only the values that should be changed are assigned variables.
 
 Puppet needs very perfect name resolution between all agents and the PuppetMaster.  Having a **perfect** hosts file on each server is required.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 - name: Ensure common etc hosts file
   template:
     src="../templates/hosts.j2"
     dest=/etc/hosts
-~~~
+&nbsp;
+{{< /highlight >}}
 
 To keep things simple all the installation tasks will run out of a /puppetinstall directory.  This should be in the user home dir that is running the installer.  The examples here use root but the SysAdmin Bible states never use root always use **sudo**.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 - name: Ensure Puppet installer directory present
   file:
     path=/root/puppetinstall
@@ -99,12 +104,14 @@ To keep things simple all the installation tasks will run out of a /puppetinstal
     path=/root/puppetinstall/pupconsole_install.log
     owner=root
     state=touch
-~~~
+&nbsp;
+{{< /highlight >}}
 
 
 When you download the PE tarball you can grab the download url from S3.  This grabs the version you need and extracts it into the installer dir.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 - name: Ensure PE tarball present
   get_url:
     url=https://s3.amazonaws.com/pe-builds/released/{{ pe_version }}/{{ pe_installer }}.tar.gz
@@ -116,8 +123,8 @@ When you download the PE tarball you can grab the download url from S3.  This gr
     copy=no
     src=/root/peinstaller.tar.gz
     dest=/root/puppetinstall
-
-~~~
+&nbsp;
+{{< /highlight >}}
 ---
 
 ## Tasks that run on each server role
@@ -126,7 +133,8 @@ Each server then runs the same basic installer command with a few things named f
 
 Here is the PuppetMasters install-
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 ---
 # Tasks for PupMaster
 - name: Ensure install log present
@@ -143,5 +151,5 @@ Here is the PuppetMasters install-
 
 - name: run the pe installer
   command: /root/puppetinstall/{{ pe_installer }}/puppet-enterprise-installer -a /root/puppetinstall/pupmaster.answer -l /root/puppetinstall/pupmaster_install.log
-
-~~~
+&nbsp;
+{{< /highlight >}}

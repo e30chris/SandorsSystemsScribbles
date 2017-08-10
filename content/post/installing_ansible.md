@@ -24,19 +24,22 @@ Go to the GitHub project page [github/ansible](https://github.com/ansible/ansibl
 
 Choose a release version or the dev branch and clone.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController <-- Ansible runs from here
 sandor@pineapplez:$ mkdir ~/Codestuff/ansibles <-- Playbooks go here
 sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts <-- Server inventory goes here
 sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
 sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## Run the environment script
 
-~~~
+{{< highlight bash >}}
 sandor@pineapplez:$ ./hacking/env-setup
-~~~
+&nbsp;
+{{< /highlight >}}
 
 To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.
 

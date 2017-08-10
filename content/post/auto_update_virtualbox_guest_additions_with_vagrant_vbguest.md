@@ -27,9 +27,11 @@ A beautifully simple Vagrant plugin to manage the guest additions on VirtualBox.
 
 ## install
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> ~/Codestuff/vagrants/PuppetMaster $vagrant plugin install vagrant-vbguest
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## bootup usage
 
@@ -37,6 +39,8 @@ vagrant-vbguest will run on every `vagrant up` or on a `vagrant reload` unless y
 
 ## running VM usage
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> vagrant vbguest --status
-~~~
+&nbsp;
+{{< /highlight >}}

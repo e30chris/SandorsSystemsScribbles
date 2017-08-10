@@ -40,9 +40,11 @@ Create the GoAccess Playbook.  This installs GoAccess using Apt on Debian.
 
 Run the playbook with Ansible.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineapplez:$ ansible-playbook ~/playbooks/goaccess/goaccess.yml -vvvv
-~~~
+&nbsp;
+{{< /highlight >}}
 
 
 # GoAccess Usage
@@ -50,9 +52,11 @@ sandor@pineapplez:$ ansible-playbook ~/playbooks/goaccess/goaccess.yml -vvvv
 Now that GoAccess is installed on the server we can login and parse the webserver logs.
 
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@argo:/var/log/apache2$ goaccess -f apache2.log
-~~~
+&nbsp;
+{{< /highlight >}}
 
 GoAccess now parses the log and outputs the results in a configurable format.  You can also export the results into various file formats.
 
@@ -66,14 +70,18 @@ To keep it simple install Apache rotatelog and set the logs to rollover on the h
 
 Apache rotatelog setting for hourly logs:
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 CustomLog "|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600" common
-~~~
+&nbsp;
+{{< /highlight >}}
 
 Parsing a specific hours logs with GoAccess
 
 Example - Logs for 8am April, 2 2014.
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@argo:/var/log/apache2$ goaccess -f apache2.2014-04-02-08
-~~~
+&nbsp;
+{{< /highlight >}}

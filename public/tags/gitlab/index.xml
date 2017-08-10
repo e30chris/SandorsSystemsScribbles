@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gitlab on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/gitlab/</link>
+    <description>Recent content in Gitlab on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Thu, 10 Aug 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/gitlab/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Git push to two remotes</title>
+      <link>https://theargo.io/post/git_push_to_two_remotes/</link>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/git_push_to_two_remotes/</guid>
+      <description>The Problem: Need a way to share code hosted in a private GitLab repo publicly on GitHub.
+The solution: Use a second Git remote to share a private Git repo publicly on GitHub.
+Backstory: GitLab with its free unlimited private repository hosting and CiCd services offers a great place to host Git repos and build code. GitHub is the defacto home of Open Source code repositories and is also a great way to add to a resume by sharing projects publicly.</description>
+    </item>
+    
+  </channel>
+</rss>

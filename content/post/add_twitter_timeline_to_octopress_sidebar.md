@@ -29,27 +29,29 @@ Add a twitter html page to `source/_include/custom/asides`
 
 Add that aside in your _config.yml
 
-~~~
+{{< highlight bash >}}
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
 default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
-~~~
+{{< highlight bash >}}
 
 and update the Twitter settings
 
-~~~
+{{< highlight bash >}}
 # Twitter Embed Timeline
 twitter_user: tweety_username
 twitter_widget_id: widget_id_from_twitter_widget_code_blob
 twitter_tweet_button: true
-~~~
+{{< highlight bash >}}
 
 ## rake generate | deploy
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> rake generate
 spudBud@pineApplez> rake deploy
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## The results
 You should now have your Twitter timeline embedded on the sidebar of your OctoPress blog.

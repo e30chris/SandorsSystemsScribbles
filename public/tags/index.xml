@@ -84,11 +84,29 @@
     </item>
     
     <item>
+      <title>Git</title>
+      <link>https://theargo.io/tags/git/</link>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Github</title>
       <link>https://theargo.io/tags/github/</link>
-      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gitlab</title>
+      <link>https://theargo.io/tags/gitlab/</link>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/gitlab/</guid>
       <description></description>
     </item>
     

@@ -25,15 +25,19 @@ image: "MIWG_2013_Kirkland_Concours_14.jpg"
 
 - Open a Command Prompt and `Run as Administrator`
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 C:\Windows\system32\>vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
-~~~
+&nbsp;
+{{< /highlight >}}
 
 What that does:
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 C:\Windows\system32\>vagrant box add boxName http://url.box
-~~~
+&nbsp;
+{{< /highlight >}}
 
 - Downloads the .box file to the Vagrant boxes directory
 - nocm = No "configuration management" installed
@@ -42,17 +46,23 @@ C:\Windows\system32\>vagrant box add boxName http://url.box
 
 ## Start the Vagrant Box
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 C:\stuff\vagrants\>vagrant init centosPupLabs
-~~~
+&nbsp;
+{{< /highlight >}}
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 C:\stuff\vagrants\>vagrant up
-~~~
+&nbsp;
+{{< /highlight >}}
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 C:\stuff\vagrants\>vagrant ssh
-~~~
+&nbsp;
+{{< /highlight >}}
 
 What that does:
 

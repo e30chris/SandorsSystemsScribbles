@@ -57,9 +57,11 @@ image: ""
 ## Configure OpenVPN Server
 
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> ovpn-init
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## Access Client Website
 
@@ -68,17 +70,21 @@ https://"aws public ip":943/admin/
 ## Change default OpenVPN Admin Password
 
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> passwd 'admin user set in user-data'
-~~~
+&nbsp;
+{{< /highlight >}}
 
 ## Add a new VPN user
 
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> useradd sandor
 spudBud@pineApplez> passwd sandor
-~~~
+&nbsp;
+{{< /highlight >}}
 
 
 Login with new user account to web to download client config files.

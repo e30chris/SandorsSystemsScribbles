@@ -16,6 +16,8 @@ Install Python on HP-UX so Ansible can manage and automate the ancient servers.
 
 ## HowTo
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 sandor@pineapplez:$ ansible -i hosts all -m raw -a "swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python"
-~~~
+&nbsp;
+{{< /highlight >}}

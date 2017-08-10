@@ -29,11 +29,13 @@ Instructions [here](http://kaworu.github.io/octopress/setup/install/)
 
 From the base OctoPress dir
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> git clone https://github.com/kAworu/octostrap3 .themes/octostrap3
 spudBud@pineApplez> rake "install[octostrap3]"
+&nbsp;
+{{< /highlight >}}
 
-~~~
 
 ## Category List Aside
 
@@ -43,17 +45,19 @@ Add a category list html page to `source/_includes/custom/asides`
 
 Add the new aside in the _config.yml
 
-~~~
+{{< highlight bash >}}
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
 default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
-~~~
+{{< highlight bash >}}
 
 ## rake generate | deploy
 
-~~~
+{{< highlight bash >}}
+&nbsp;
 spudBud@pineApplez> rake generate
 spudBud@pineApplez> rake deploy
-~~~
+&nbsp;
+{{< /highlight >}}
 
 You should now have a Twitter Bootstrapped UI on your OctoPress blog.  You should also have an aside that list each category, the number of posts for each and have a highlight if you are on that categories page.
