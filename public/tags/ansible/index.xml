@@ -1,555 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/ansible/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Ansible on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/ansible/</link>
+    <description>Recent content in Ansible on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 08 Jul 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Configure new servers with the basics via Ansible</title>
-      <link>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</link>
+      <link>https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/</link>
       <pubDate>Wed, 08 Jul 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;You have a throw away server that you only need for the next couple of hours to try something out.  You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;This Ansible playbook that is simple and to the point.  It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-ServerDelivery&#34;&gt;GitHub - e30chris/ServerDelivery&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured and easy to login to without any manual steps.  This playbook takes care of both requirements.&lt;/p&gt;
-
-&lt;h3 id=&#34;todo&#34;&gt;ToDo:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add a role to this playbook to kick off the droplet creation and then register the names and IP&amp;rsquo;s for the new servers before handing off to this current playbook config.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Servers booted and running&lt;/li&gt;
-&lt;li&gt;SSH access&lt;/li&gt;
-&lt;li&gt;SSH public keys for each user in files/&lt;/li&gt;
-&lt;li&gt;Server OS is in the Debian family or the RedHat family.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;create-the-new-droplets&#34;&gt;Create the new droplets&lt;/h3&gt;
-
-&lt;p&gt;Using the excellent Digital Ocean cli tool - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;TugBoat - GitHub&lt;/a&gt;&lt;/p&gt;
-
-
-sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 915832
-
-
-&lt;p&gt;That equals:&lt;/p&gt;
-
-&lt;p&gt;-s size (66 = 512 mb)&lt;/p&gt;
-
-&lt;p&gt;-i image (Centos 7 x64)&lt;/p&gt;
-
-&lt;p&gt;-r region (San Francisco)&lt;/p&gt;
-
-&lt;p&gt;-k ssh public key (mine)&lt;/p&gt;
-
-&lt;h3 id=&#34;add-new-droplet-to-ssh-config&#34;&gt;Add new droplet to SSH config&lt;/h3&gt;
-
-
-sandor@pineApplez$ cat ~/.ssh/config
-#SSH Stuff
-Host bloggindroplet
-  Hostname 45.55.7.178
-  User root
-Host *
-  ServerAliveInterval 60
-  ServerAliveCountMax 30
-  ControlMaster auto
-  ControlPath ~/.ssh/connections/ssh-%r@%h:%p
-  ControlPersist 4h
-  StrictHostKeyChecking no
-  IdentityFile ~/.ssh/id_rsa
-
-
-&lt;h3 id=&#34;add-new-droplet-to-ansible-hosts-file&#34;&gt;Add new droplet to Ansible hosts file&lt;/h3&gt;
-
-
-sandor@pineApplez$ › cat ~/.ansible/hosts
-# All Servers
-docks
-cent7
-fed22
-
-# App servers
-[app]
-
-# DB servers
-[db]
-
-# Group &#39;multi&#39; with all servers
-[multi:children]
-
-# Variables applied to all servers
-[multi:vars]
-
-
-
-&lt;h3 id=&#34;test-ssh-login&#34;&gt;Test ssh login&lt;/h3&gt;
-
-
-sandor@pineApplez$ ssh bloggindroplet
-Last login: Thu Jul  9 00:34:41 2015 from 67.135.32.227
-[root@bloggindroplet ~]#
-
-
-&lt;h3 id=&#34;test-ansible&#34;&gt;Test Ansible&lt;/h3&gt;
-
-
-sandor@pineApplez$ ansible bloggindroplet -m ping
-servfed | success &gt;&gt; {
-    &#34;changed&#34;: false,
-    &#34;ping&#34;: &#34;pong&#34;
-}
-sandor@pineApplez$
-
-
-&lt;h3 id=&#34;git-clone-the-playbook&#34;&gt;git clone the playbook&lt;/h3&gt;
-
-&lt;p&gt;Download:&lt;/p&gt;
-
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
-
-
-&lt;h3 id=&#34;create-the-user-accounts&#34;&gt;Create the user accounts&lt;/h3&gt;
-
-&lt;p&gt;via the variables in group_vars/main.yml&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;delivered_users: this is the user accounts you want created on the new server, each with sudo access.&lt;/em&gt;&lt;/p&gt;
-
-
----
-# vars file for ServerDelivery
-delivered_users:
-  - chrisl
-  - dpr
-  - weev
-
-
-&lt;h3 id=&#34;give-each-users-ssh-key-a-password&#34;&gt;Give each users ssh key a password&lt;/h3&gt;
-
-&lt;h4 id=&#34;and-encrypt-it-with-ansible-vault&#34;&gt;and encrypt it with Ansible Vault&lt;/h4&gt;
-
-&lt;p&gt;via group_vars/passes.yml&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;this file will need to be created with ansible-vault&lt;/em&gt;&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-vault create group_vars/passes.yml
----
-# vars file for ServerDelivery encrypted via ansible-vault
-users_ssh_key_pass: stallman was right
-
-
-&lt;h3 id=&#34;run-the-playbook&#34;&gt;Run the playbook&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;This will run with &amp;lsquo;hosts: all&amp;rsquo; which will put every server in your Ansible hosts file in this state.  This should be ok since all this playbook does is ensure sane security, adds users and updates packages.  Because Ansible is idempotent if these setting have not changed then nothing will be done.  If you do not want to run on all your hosts then specify that with either a group in the Ansible hosts file or with a cli switch.&lt;/em&gt;&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
-
-
-&lt;p&gt;which returns lots of cows:&lt;/p&gt;
-
-
-2.2.3 in ServerDelivery/ on dev
-› ansible-playbook -i &#34;docks,cent7,fed22,&#34; site.yml --ask-vault-pass
-Vault password:
- ____________
-&lt; PLAY [all] &gt;
- ------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
- _________________
-&lt; GATHERING FACTS &gt;
- -----------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [fed22]
-ok: [cent7]
-ok: [docks]
-docks: importing group_vars/Ubuntu.yml
-cent7: importing group_vars/CentOS.yml
-fed22: importing group_vars/Fedora.yml
- _____________________________________
-&lt; TASK: update all packages on CentOS &gt;
- -------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [docks]
-skipping: [fed22]
-skipping: [cent7]
- _______________________________
-&lt; TASK: install EPEL for CentOS &gt;
- -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [fed22]
-skipping: [docks]
- ________________________________________
-&lt; TASK: add the must have apps on CentOS &gt;
- ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [docks]
-skipping: [fed22]
- ____________________________________________
-&lt; TASK: update all packages on Ubuntu family &gt;
- --------------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [fed22]
-ok: [docks]
- ________________________________________
-&lt; TASK: add the must have apps on Ubuntu &gt;
- ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [fed22]
-ok: [docks] =&gt; (item=sudo,vim,htop,tmux,unzip,fail2ban)
- _____________________________________
-&lt; TASK: update all packages on Fedora &gt;
- -------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [docks]
-skipping: [cent7]
-ok: [fed22]
- ________________________________________
-&lt; TASK: add the must have apps on Fedora &gt;
- ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [docks]
-skipping: [cent7]
-ok: [fed22] =&gt; (item=sudo,vim,htop,tmux,unzip,fail2ban)
- _______________________________
-&lt; TASK: adding users to servers &gt;
- -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [docks] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=weev)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
- _________________________________
-&lt; TASK: add users ssh public keys &gt;
- ---------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [fed22] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=dpr)
-ok: [docks] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
-ok: [cent7] =&gt; (item=weev)
- _______________________
-&lt; TASK: add admin group &gt;
- -----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [docks]
-ok: [fed22]
-ok: [cent7]
- ________________________________
-&lt; TASK: add users to admin group &gt;
- --------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [cent7] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=dpr)
-ok: [docks] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=weev)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
- ______________________________
-&lt; TASK: add users sudoers file &gt;
- ------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [cent7] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=dpr)
-ok: [docks] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=weev)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
- __________________________________________
-&lt; TASK: secure SSH with a sane sshd_config &gt;
- ------------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [docks]
-ok: [cent7]
-ok: [fed22]
- _______________________
-&lt; TASK: restarting sshd &gt;
- -----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-changed: [cent7]
-changed: [fed22]
-changed: [docks]
- ____________
-&lt; PLAY RECAP &gt;
- ------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-cent7                      : ok=8    changed=1    unreachable=0    failed=0
-docks                      : ok=10   changed=1    unreachable=0    failed=0
-fed22                      : ok=10   changed=1    unreachable=0    failed=0
-
-
-</description>
+      <guid>https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/</guid>
+      <description>The Problem: You have a throw away server that you only need for the next couple of hours to try something out. You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.
+The solution: This Ansible playbook that is simple and to the point. It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.</description>
     </item>
     
     <item>
       <title>MacBook Setup Using Ansible and Homebrew</title>
-      <link>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</link>
+      <link>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</link>
       <pubDate>Mon, 18 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-MacDeploy&#34;&gt;GitHub - e30chris/Ansible-MacDeploy&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.&lt;/p&gt;
-
-&lt;h3 id=&#34;todo&#34;&gt;ToDo:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Bring in OSX user settings like desktop backgrounds and other System Preferences.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fresh OSX install&lt;/li&gt;
-&lt;li&gt;Homebrew installed&lt;/li&gt;
-&lt;li&gt;Ansible installed via Homebrew&lt;/li&gt;
-&lt;li&gt;GitHub Authenticated&lt;/li&gt;
-&lt;li&gt;GitHub API token set&lt;/li&gt;
-&lt;li&gt;.dotfiles forked and customized to your liking&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;fresh-osx-install&#34;&gt;Fresh OSX Install&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://osxdaily.com/2014/10/16/make-os-x-yosemite-boot-install-drive/&#34;&gt;USB install OSX&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;homebrew-installed&#34;&gt;Homebrew installed&lt;/h4&gt;
-
-&lt;p&gt;Follow the SysAdmin Bible and read the script before you run it:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/Homebrew/install/master/install&#34;&gt;Github Raw of Homebrew install script&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Run the script once verified that you know what it will be doing:&lt;/p&gt;
-
-
-ruby -e &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&#34;
-
-
-&lt;p&gt;Verify Homebrew is correct:&lt;/p&gt;
-
-
-sandor@pineApplez$ brew doctor
-
-
-&lt;h4 id=&#34;install-ansible-via-homebrew&#34;&gt;Install Ansible via Homebrew&lt;/h4&gt;
-
-&lt;p&gt;Installing the latest from dev:&lt;/p&gt;
-
-
-sandor@pineApplez$ brew install ansible --HEAD
-
-
-&lt;h4 id=&#34;github-authenticated&#34;&gt;GitHub Authenticated&lt;/h4&gt;
-
-
-sandor@pineApplez$ git config --global user.name &#34;sandor&#34;
-sandor@pineApplez$ git config --global user.email &#34;chris@e30chris.me&#34;
-sandor@pineApplez$ ssh-keygen -t rsa -b 4096 -C &#34;sandor@macbook&#34;
-sandor@pineApplez$ ssh-add ~/.ssh/id_rsa
-sandor@pineApplez$ pbcopy &lt; ~/.ssh/id_rsa.pub
-
-
-&lt;p&gt;Add your SSH Public Key to GitHub -&amp;gt; Settings.&lt;/p&gt;
-
-&lt;h4 id=&#34;github-api-token-set&#34;&gt;GitHub API Token Set&lt;/h4&gt;
-
-&lt;p&gt;This avoids annoying brew errors on lookups.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20130681/setting-github-api-token-for-homebrew#20130816&#34;&gt;stackoverflow&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;dotfile-forked&#34;&gt;.dotfile forked&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/holman/dotfiles&#34;&gt;All hail Holmans .dotfiles&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/&#34;&gt;Explained by Holman&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;download-and-run-the-playbook&#34;&gt;Download and run the playbook&lt;/h3&gt;
-
-&lt;p&gt;Download:&lt;/p&gt;
-
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
-
-
-&lt;p&gt;Edit:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Set the OSX username that is running the playbook in vars/main.yml&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Run:&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-playbook -i hosts site.yml --ask-sudo-pass
-
-
-&lt;p&gt;Then run the .dotfiles bootstrap script&lt;/p&gt;
-
-
-sandor@pineApplez$ ~/.dotfiles/script/bootstrap
-
-
-&lt;p&gt;Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.&lt;/p&gt;
-</description>
+      <guid>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</guid>
+      <description>The Problem: You have a brand new fresh install of OSX on your MacBook and you need to get up and running. You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.
+The solution: Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask. Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.</description>
     </item>
     
     <item>
@@ -558,21 +37,9 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
       <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/ansible_on_hp_ux_11_dot_31/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Install Python on HP-UX so Ansible can manage and automate the ancient servers.&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description> The problem Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.
+The goal Install Python on HP-UX so Ansible can manage and automate the ancient servers.
+HowTo sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;  </description>
     </item>
     
     <item>
@@ -581,41 +48,9 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
       <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/run_ansible_through_pmksh/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.&lt;/p&gt;
-
-&lt;h2 id=&#34;shells-ansible&#34;&gt;Shells &amp;amp; Ansible&lt;/h2&gt;
-
-&lt;p&gt;Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using &amp;lsquo;command&amp;rsquo; can move to using the full suite of modules.&lt;/p&gt;
-
-&lt;p&gt;The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.&lt;/p&gt;
-
-&lt;p&gt;Ansible Shells:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&#34;&gt;github repo - ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;p&gt;Current Workaround:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m command -a &amp;quot;/opt/quest/bin/pmksh -c &#39;/bin/touch /root/bmw.325&#39;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;tasks:
-
-- name: run a command through pmksh
-  command: &amp;quot;/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325&#39;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;em&gt;once ksh is added to the list of shells I will update this post&lt;/em&gt;&lt;/p&gt;
-</description>
+      <description>The problem Old corporations use shitty old software to do things that modern Linux is really good at doing itself. Using pmksh instead of a well laid out sudoers setup is what the problem is.
+The goal Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.
+Shells &amp;amp; Ansible Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.</description>
     </item>
     
     <item>
@@ -624,83 +59,8 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
       <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_ansible_to_align_passwords_on_servers/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;A group of servers get their passwords updated every 3 months with a new shared password.  The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal:&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it.  The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;note - using the same root password on all your servers is a terrible idea and completely against the SysAdmin Bible.  Use random passwords and keys!&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo:&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Download the playbook from
-
-&lt;ul&gt;
-&lt;li&gt;GitHub - &lt;a href=&#34;https://github.com/e30chris/Ansible-AlignPassword&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Galaxy - &lt;a href=&#34;https://galaxy.ansible.com/list#/roles/1134&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Create a branch to edit the variables for your environment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ cd ~/Codestuff/ansibles/Ansible-AlignPassword
-  sandor@pineapplez:$ git checkout -b qatenv    
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ansible-vault the file that will contain the passwords.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault encrypt group_vars/all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Edit the vars for the environment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault edit group_vars/all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add the inventory to hosts&lt;/li&gt;
-&lt;li&gt;Verify Ansible connect with ping pong&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible -i hosts all -m ping
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Run the playbook&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-playbook -i hosts site.yml -vv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;common-task-actions&#34;&gt;Common Task Actions&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Attempt to login to each server using all possible passwords&lt;/li&gt;
-&lt;li&gt;Register which passwords work on each server&lt;/li&gt;
-&lt;li&gt;Set a new shared password for every server&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;variables&#34;&gt;Variables&lt;/h2&gt;
-
-&lt;p&gt;Go here:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;group_vars/all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;With this format:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;variable: value
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem: A group of servers get their passwords updated every 3 months with a new shared password. The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.
+The Goal: Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it. The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.</description>
     </item>
     
     <item>
@@ -709,46 +69,11 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
       <pubDate>Mon, 16 Jun 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/installing_ansible/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;Install Ansible from the latest release on GitHub.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;clone-the-ansible-repo&#34;&gt;Clone the Ansible repo&lt;/h2&gt;
-
-&lt;p&gt;Go to the GitHub project page &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;github/ansible&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Choose a release version or the dev branch and clone.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController &amp;lt;-- Ansible runs from here
-sandor@pineapplez:$ mkdir ~/Codestuff/ansibles &amp;lt;-- Playbooks go here
-sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts &amp;lt;-- Server inventory goes here
-sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
-sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;run-the-environment-script&#34;&gt;Run the environment script&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ./hacking/env-setup
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.&lt;/p&gt;
-
-&lt;p&gt;You are now setup to run Ansible from the Controller.  Because the inventory file is inside the playbook dir or ~/Codestuff/ansibles/ansible_hosts it will not get overwritten if you change the AnsibleController dir.&lt;/p&gt;
-
-&lt;p&gt;Push some SSH public keys and start pushing playbooks!&lt;/p&gt;
-</description>
+      <description>The Problem Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.
+The Solution Install Ansible from the latest release on GitHub.
+The Goal Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.
+Clone the Ansible repo Go to the GitHub project page github/ansible
+Choose a release version or the dev branch and clone.</description>
     </item>
     
     <item>
@@ -757,146 +82,9 @@ sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
       <pubDate>Fri, 13 Jun 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_ansible_to_deploy_a_puppetmaster/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations.  Also need to deploy to several environments using a consistent configuration.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.&lt;/p&gt;
-
-&lt;h4 id=&#34;note-this-playbook-is-still-a-work-in-progress-most-of-the-issues-are-fighting-puppets-insane-complexity-of-getting-installed-correctly-with-a-few-small-ansible-bugs-sprinkled-in&#34;&gt;Note: this playbook is still a work in progress.  Most of the issues are fighting Puppets insane complexity of getting installed correctly with a few small Ansible bugs sprinkled in.&lt;/h4&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;github-repo&#34;&gt;GitHub Repo&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-PuppetEnterpriseDeploy&#34;&gt;github.com/e30chris/Ansible-PuppetEnterpriseDeploy&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;playbook-notes&#34;&gt;Playbook notes&lt;/h2&gt;
-
-&lt;h2 id=&#34;setting-the-variables-for-each-environment&#34;&gt;Setting the variables for each environment&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ cd ~/Ansible-PuppetEnterpriseDeploy/
-sandor@pineapplez:$ cat group_vars/all
----
-# common variables for PuppetMaster Deployment
-# format for this file
-# variable: fact
-#
-# version of Puppet Enterprise
-pe_version: 3.2.3
-
-# os family
-os_family: debian
-os_version: 7
-os_arch: amd64
-
-# pe installer
-pe_installer: puppet-enterprise-{{ pe_version }}-{{ os_family }}-{{ os_version }}-{{ os_arch }}
-
-# hostnames
-pupmaster_hostname: pupmaster.argo.local
-pupdb_hostname: pupdb.argo.local
-pupconsole_hostname: pupconsole.argo.local
-
-# IP&#39;s
-pupmaster_ip: 10.0.0.10
-pupdb_ip: 10.0.0.11
-pupconsole_ip: 10.0.0.12
-
-# dns salt hostnames
-pupmaster_salt_hostnames: puppet,puppetmaster
-pupdb_salt_hostnames: puppetdb
-pupconsole_salt_hostname: pupconsole
-
-# passwords
-console_auth_db_pass: arandompasswordthatneedschangedhere
-console_db_pass: arandompasswordthatneedschangedhere
-pupdb_db_pass: arandompasswordthatneedschangedhere
-db_root_pass: arandompasswordthatneedschangedhere
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To keep it simple only the values that should be changed are assigned variables.  Everything else is left with the Puppet defaults in the answer files.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;tasks-to-be-run-on-all-servers&#34;&gt;Tasks to be run on all servers&lt;/h2&gt;
-
-&lt;p&gt;Puppet needs very perfect name resolution between all agents and the PuppetMaster.  Having a &lt;strong&gt;perfect&lt;/strong&gt; hosts file on each server is required.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- name: Ensure common etc hosts file
-  template:
-    src=&amp;quot;../templates/hosts.j2&amp;quot;
-    dest=/etc/hosts
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To keep things simple all the installation tasks will run out of a /puppetinstall directory.  This should be in the user home dir that is running the installer.  The examples here use root but the SysAdmin Bible states never use root always use &lt;strong&gt;sudo&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- name: Ensure Puppet installer directory present
-  file:
-    path=/root/puppetinstall
-    state=directory
-
-- name: Ensure install log present
-  file:
-    path=/root/puppetinstall/pupconsole_install.log
-    owner=root
-    state=touch
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When you download the PE tarball you can grab the download url from S3.  This grabs the version you need and extracts it into the installer dir.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- name: Ensure PE tarball present
-  get_url:
-    url=https://s3.amazonaws.com/pe-builds/released/{{ pe_version }}/{{ pe_installer }}.tar.gz
-    dest=/root/peinstaller.tar.gz
-    force=no
-
-- name: Ensure Puppet untar&#39;d to install directory
-  unarchive:
-    copy=no
-    src=/root/peinstaller.tar.gz
-    dest=/root/puppetinstall
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;tasks-that-run-on-each-server-role&#34;&gt;Tasks that run on each server role&lt;/h2&gt;
-
-&lt;p&gt;Each server then runs the same basic installer command with a few things named for each role like the installer log.&lt;/p&gt;
-
-&lt;p&gt;Here is the PuppetMasters install-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-# Tasks for PupMaster
-- name: Ensure install log present
-  file:
-    path=/root/puppetinstall/pupmaster_install.log
-    owner=root
-    state=touch
-
-- name: answer file for PupMaster
-  template:
-    src=&amp;quot;../templates/pupmaster.answer.j2&amp;quot;
-    dest=/root/puppetinstall/pupmaster.answer
-    owner=root
-
-- name: run the pe installer
-  command: /root/puppetinstall/{{ pe_installer }}/puppet-enterprise-installer -a /root/puppetinstall/pupmaster.answer -l /root/puppetinstall/pupmaster_install.log
-
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations. Also need to deploy to several environments using a consistent configuration.
+The Solution Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key.
+The Goal A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.</description>
     </item>
     
     <item>
@@ -905,68 +93,10 @@ db_root_pass: arandompasswordthatneedschangedhere
       <pubDate>Tue, 01 Apr 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_goaccess_to_parse_webserver_logs/</guid>
-      <description>
-
-&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
-
-&lt;p&gt;Need the ability to track web traffic for a specific hours worth of logs.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-solution&#34;&gt;The Solution&lt;/h1&gt;
-
-&lt;p&gt;Using GoAccess to parse Apache logs that are rotated into hour chunks.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
-
-&lt;p&gt;Install GoAccess to parse webserver logs.  Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers.  Keep it simple by rotating logs on the hour.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;GoAccess - &lt;a href=&#34;https://github.com/allinurl/goaccess/&#34;&gt;real-time web log analyzer - allinurl/goaccess&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Ansible - &lt;a href=&#34;http://docs.ansible.com/&#34;&gt;Ansible Docs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Apache rotatelogs - &lt;a href=&#34;https://httpd.apache.org/docs/2.2/programs/rotatelogs.html&#34;&gt;Hourly Rotated WebServer Logs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com/?refcode=980586449ebd&#34;&gt;My referral link, thanks!&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;TugBoat - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;CLI for DO - pearkes/tugboat&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;ansible-playbook-install-goaccess&#34;&gt;Ansible Playbook - Install GoAccess&lt;/h1&gt;
-
-&lt;p&gt;Create the GoAccess Playbook.  This installs GoAccess using Apt on Debian.&lt;/p&gt;
-
-&lt;script src=&#34;https://gist.github.com/e30chris/9929303.js&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;Run the playbook with Ansible.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible-playbook ~/playbooks/goaccess/goaccess.yml -vvvv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;goaccess-usage&#34;&gt;GoAccess Usage&lt;/h1&gt;
-
-&lt;p&gt;Now that GoAccess is installed on the server we can login and parse the webserver logs.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.log
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;GoAccess now parses the log and outputs the results in a configurable format.  You can also export the results into various file formats.&lt;/p&gt;
-
-&lt;p&gt;Here is a screenshot that shows how many times an IP has hit the webserver.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://s3.amazonaws.com/sandorssystemsscribbles/GoAccessScreen.png&#34; alt=&#34;goscreen&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To keep it simple install Apache rotatelog and set the logs to rollover on the hour.  Then GoAccess can parse the logs by the hour.&lt;/p&gt;
-
-&lt;p&gt;Apache rotatelog setting for hourly logs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CustomLog &amp;quot;|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600&amp;quot; common
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Parsing a specific hours logs with GoAccess&lt;/p&gt;
-
-&lt;p&gt;Example - Logs for 8am April, 2 2014.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.2014-04-02-08
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem Need the ability to track web traffic for a specific hours worth of logs.
+The Solution Using GoAccess to parse Apache logs that are rotated into hour chunks.
+The Goal Install GoAccess to parse webserver logs. Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers. Keep it simple by rotating logs on the hour.
+The Links  GoAccess - real-time web log analyzer - allinurl/goaccess Ansible - Ansible Docs Apache rotatelogs - Hourly Rotated WebServer Logs Digital Ocean - My referral link, thanks!</description>
     </item>
     
     <item>
@@ -975,23 +105,10 @@ db_root_pass: arandompasswordthatneedschangedhere
       <pubDate>Tue, 03 Sep 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/ansible_on_redhat_5_dot_x/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Older Pythons that live on older RedHats do not have json support.  Old corporations still use old OS&amp;rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Using Ansible Raw&lt;/em&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;yum -y install python-simplejson&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description> The problem Older Pythons that live on older RedHats do not have json support. Old corporations still use old OS&amp;rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.
+The goal Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.
+HowTo Using Ansible Raw
+sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;yum -y install python-simplejson&amp;quot;  </description>
     </item>
     
   </channel>

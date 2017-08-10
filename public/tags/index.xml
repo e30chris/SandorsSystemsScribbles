@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/</link>
+    <description>Recent content in Tags on Sandors Systems Scribbles</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 08 Jul 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Ansible</title>
+      <link>https://theargo.io/tags/ansible/</link>
+      <pubDate>Wed, 08 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/ansible/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Aws</title>
+      <link>https://theargo.io/tags/aws/</link>
+      <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Beanstalk</title>
+      <link>https://theargo.io/tags/beanstalk/</link>
+      <pubDate>Sun, 30 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/beanstalk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bullshit</title>
+      <link>https://theargo.io/tags/bullshit/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/bullshit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Coins</title>
+      <link>https://theargo.io/tags/coins/</link>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/coins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Digitaloceans</title>
+      <link>https://theargo.io/tags/digitaloceans/</link>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/digitaloceans/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dogecoin</title>
+      <link>https://theargo.io/tags/dogecoin/</link>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/dogecoin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fedora</title>
+      <link>https://theargo.io/tags/fedora/</link>
+      <pubDate>Fri, 29 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/fedora/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Github</title>
+      <link>https://theargo.io/tags/github/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go</title>
+      <link>https://theargo.io/tags/go/</link>
+      <pubDate>Tue, 01 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Homebrew</title>
+      <link>https://theargo.io/tags/homebrew/</link>
+      <pubDate>Mon, 18 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/homebrew/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hp Ux</title>
+      <link>https://theargo.io/tags/hp-ux/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/hp-ux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Infrastructure Culture</title>
+      <link>https://theargo.io/tags/infrastructure-culture/</link>
+      <pubDate>Wed, 08 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/infrastructure-culture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://theargo.io/tags/linux/</link>
+      <pubDate>Fri, 29 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mac</title>
+      <link>https://theargo.io/tags/mac/</link>
+      <pubDate>Mon, 18 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/mac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Octopress</title>
+      <link>https://theargo.io/tags/octopress/</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/octopress/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Oldcorp</title>
+      <link>https://theargo.io/tags/oldcorp/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/oldcorp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Puppet</title>
+      <link>https://theargo.io/tags/puppet/</link>
+      <pubDate>Fri, 13 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/puppet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redhat</title>
+      <link>https://theargo.io/tags/redhat/</link>
+      <pubDate>Tue, 03 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/redhat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redshift</title>
+      <link>https://theargo.io/tags/redshift/</link>
+      <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/redshift/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://theargo.io/tags/security/</link>
+      <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Techdebt</title>
+      <link>https://theargo.io/tags/techdebt/</link>
+      <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/techdebt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vagrant</title>
+      <link>https://theargo.io/tags/vagrant/</link>
+      <pubDate>Fri, 20 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/vagrant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vim</title>
+      <link>https://theargo.io/tags/vim/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vpc</title>
+      <link>https://theargo.io/tags/vpc/</link>
+      <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/vpc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webstuff</title>
+      <link>https://theargo.io/tags/webstuff/</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/webstuff/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Winders</title>
+      <link>https://theargo.io/tags/winders/</link>
+      <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/winders/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workstation</title>
+      <link>https://theargo.io/tags/workstation/</link>
+      <pubDate>Mon, 16 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/tags/workstation/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

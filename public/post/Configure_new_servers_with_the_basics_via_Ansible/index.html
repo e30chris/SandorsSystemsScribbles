@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.17" />
+  <meta name="generator" content="Hugo 0.26" />
 
   <title>Configure new servers with the basics via Ansible &middot; Sandors Systems Scribbles</title>
 
@@ -68,12 +68,6 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
-      
-        </li>
-      
-      
-        <li class="pure-menu-item">
           <a class="pure-menu-link" href="https://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
       
         </li>
@@ -81,6 +75,12 @@
       
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="https://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
       
         </li>
       
@@ -138,7 +138,7 @@
 
   <div>
   <div class="small-print">
-    <small>&copy; 2016. All rights reserved.</small>
+    <small>&copy; 2017. All rights reserved.</small>
   </div>
   <div class="small-print">
     <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
@@ -222,8 +222,8 @@
 
 <p>Using the excellent Digital Ocean cli tool - <a href="https://github.com/pearkes/tugboat">TugBoat - GitHub</a></p>
 
-
-sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 915832
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>tugboat create bloggindroplet -s <span style="color: #ae81ff">66</span> -i <span style="color: #ae81ff">10322623</span> -r <span style="color: #ae81ff">3</span> -k 915832
+</pre></div>
 
 
 <p>That equals:</p>
@@ -238,9 +238,8 @@ sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 91583
 
 <h3 id="add-new-droplet-to-ssh-config">Add new droplet to SSH config</h3>
 
-
-sandor@pineApplez$ cat ~/.ssh/config
-#SSH Stuff
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>cat ~/.ssh/config
+<span style="color: #75715e">#SSH Stuff</span>
 Host bloggindroplet
   Hostname 45.55.7.178
   User root
@@ -252,56 +251,56 @@ Host *
   ControlPersist 4h
   StrictHostKeyChecking no
   IdentityFile ~/.ssh/id_rsa
+</pre></div>
 
 
 <h3 id="add-new-droplet-to-ansible-hosts-file">Add new droplet to Ansible hosts file</h3>
 
-
-sandor@pineApplez$ › cat ~/.ansible/hosts
-# All Servers
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>› cat ~/.ansible/hosts
+<span style="color: #75715e"># All Servers</span>
 docks
 cent7
 fed22
 
-# App servers
-[app]
+<span style="color: #75715e"># App servers</span>
+<span style="color: #f92672">[</span>app<span style="color: #f92672">]</span>
 
-# DB servers
-[db]
+<span style="color: #75715e"># DB servers</span>
+<span style="color: #f92672">[</span>db<span style="color: #f92672">]</span>
 
-# Group 'multi' with all servers
-[multi:children]
+<span style="color: #75715e"># Group &#39;multi&#39; with all servers</span>
+<span style="color: #f92672">[</span>multi:children<span style="color: #f92672">]</span>
 
-# Variables applied to all servers
-[multi:vars]
-
+<span style="color: #75715e"># Variables applied to all servers</span>
+<span style="color: #f92672">[</span>multi:vars<span style="color: #f92672">]</span>
+</pre></div>
 
 
 <h3 id="test-ssh-login">Test ssh login</h3>
 
-
-sandor@pineApplez$ ssh bloggindroplet
-Last login: Thu Jul  9 00:34:41 2015 from 67.135.32.227
-[root@bloggindroplet ~]#
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>ssh bloggindroplet
+Last login: Thu Jul  <span style="color: #ae81ff">9</span> 00:34:41 <span style="color: #ae81ff">2015</span> from 67.135.32.227
+<span style="color: #f92672">[</span>root@bloggindroplet ~<span style="color: #f92672">]</span><span style="color: #75715e">#</span>
+</pre></div>
 
 
 <h3 id="test-ansible">Test Ansible</h3>
 
-
-sandor@pineApplez$ ansible bloggindroplet -m ping
-servfed | success >> {
-    "changed": false,
-    "ping": "pong"
-}
-sandor@pineApplez$
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>ansible bloggindroplet -m ping
+servfed <span style="color: #f8f8f2">|</span> success &gt;&gt; <span style="color: #f92672">{</span>
+    <span style="color: #e6db74">&quot;changed&quot;</span>: <span style="color: #f8f8f2">false</span>,
+    <span style="color: #e6db74">&quot;ping&quot;</span>: <span style="color: #e6db74">&quot;pong&quot;</span>
+<span style="color: #f92672">}</span>
+sandor@pineApplez<span style="color: #960050; background-color: #1e0010">$</span>
+</pre></div>
 
 
 <h3 id="git-clone-the-playbook">git clone the playbook</h3>
 
 <p>Download:</p>
 
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
+</pre></div>
 
 
 <h3 id="create-the-user-accounts">Create the user accounts</h3>
@@ -310,13 +309,13 @@ sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git 
 
 <p><em>delivered_users: this is the user accounts you want created on the new server, each with sudo access.</em></p>
 
-
----
-# vars file for ServerDelivery
-delivered_users:
-  - chrisl
-  - dpr
-  - weev
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span style="color: #f8f8f2">---</span>
+<span style="color: #75715e"># vars file for ServerDelivery</span>
+<span style="color: #ae81ff">delivered_users</span><span style="color: #f8f8f2">:</span>
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">chrisl</span>
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">dpr</span>
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">weev</span>
+</pre></div>
 
 
 <h3 id="give-each-users-ssh-key-a-password">Give each users ssh key a password</h3>
@@ -327,273 +326,272 @@ delivered_users:
 
 <p><em>this file will need to be created with ansible-vault</em></p>
 
-
-sandor@pineApplez$ ansible-vault create group_vars/passes.yml
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>ansible-vault create group_vars/passes.yml
 ---
-# vars file for ServerDelivery encrypted via ansible-vault
+<span style="color: #75715e"># vars file for ServerDelivery encrypted via ansible-vault</span>
 users_ssh_key_pass: stallman was right
+</pre></div>
 
 
 <h3 id="run-the-playbook">Run the playbook</h3>
 
 <p><em>This will run with &lsquo;hosts: all&rsquo; which will put every server in your Ansible hosts file in this state.  This should be ok since all this playbook does is ensure sane security, adds users and updates packages.  Because Ansible is idempotent if these setting have not changed then nothing will be done.  If you do not want to run on all your hosts then specify that with either a group in the Ansible hosts file or with a cli switch.</em></p>
 
-
-sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>ansible-playbook site.yml -vv --ask-vault-pass
+</pre></div>
 
 
 <p>which returns lots of cows:</p>
 
-
-2.2.3 in ServerDelivery/ on dev
-› ansible-playbook -i "docks,cent7,fed22," site.yml --ask-vault-pass
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">2.2.3 in ServerDelivery/ on dev
+› ansible-playbook -i <span style="color: #e6db74">&quot;docks,cent7,fed22,&quot;</span> site.yml --ask-vault-pass
 Vault password:
  ____________
-< PLAY [all] >
+&lt; PLAY <span style="color: #f92672">[</span>all<span style="color: #f92672">]</span> &gt;
  ------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
  _________________
-< GATHERING FACTS >
+&lt; GATHERING FACTS &gt;
  -----------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [fed22]
-ok: [cent7]
-ok: [docks]
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
 docks: importing group_vars/Ubuntu.yml
 cent7: importing group_vars/CentOS.yml
 fed22: importing group_vars/Fedora.yml
  _____________________________________
-< TASK: update all packages on CentOS >
+&lt; TASK: update all packages on CentOS &gt;
  -------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [docks]
-skipping: [fed22]
-skipping: [cent7]
+skipping: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
  _______________________________
-< TASK: install EPEL for CentOS >
+&lt; TASK: install EPEL <span style="color: #66d9ef">for</span> CentOS &gt;
  -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [cent7]
-skipping: [fed22]
-skipping: [docks]
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
  ________________________________________
-< TASK: add the must have apps on CentOS >
+&lt; TASK: add the must have apps on CentOS &gt;
  ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [cent7]
-skipping: [docks]
-skipping: [fed22]
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
  ____________________________________________
-< TASK: update all packages on Ubuntu family >
+&lt; TASK: update all packages on Ubuntu family &gt;
  --------------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [cent7]
-skipping: [fed22]
-ok: [docks]
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
  ________________________________________
-< TASK: add the must have apps on Ubuntu >
+&lt; TASK: add the must have apps on Ubuntu &gt;
  ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [cent7]
-skipping: [fed22]
-ok: [docks] => (item=sudo,vim,htop,tmux,unzip,fail2ban)
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>sudo,vim,htop,tmux,unzip,fail2ban<span style="color: #f92672">)</span>
  _____________________________________
-< TASK: update all packages on Fedora >
+&lt; TASK: update all packages on Fedora &gt;
  -------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [docks]
-skipping: [cent7]
-ok: [fed22]
+skipping: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
  ________________________________________
-< TASK: add the must have apps on Fedora >
+&lt; TASK: add the must have apps on Fedora &gt;
  ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-skipping: [docks]
-skipping: [cent7]
-ok: [fed22] => (item=sudo,vim,htop,tmux,unzip,fail2ban)
+skipping: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
+skipping: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>sudo,vim,htop,tmux,unzip,fail2ban<span style="color: #f92672">)</span>
  _______________________________
-< TASK: adding users to servers >
+&lt; TASK: adding users to servers &gt;
  -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [docks] => (item=chrisl)
-ok: [fed22] => (item=chrisl)
-ok: [cent7] => (item=chrisl)
-ok: [docks] => (item=dpr)
-ok: [fed22] => (item=dpr)
-ok: [cent7] => (item=dpr)
-ok: [cent7] => (item=weev)
-ok: [fed22] => (item=weev)
-ok: [docks] => (item=weev)
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
  _________________________________
-< TASK: add users ssh public keys >
+&lt; TASK: add users ssh public keys &gt;
  ---------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [fed22] => (item=chrisl)
-ok: [cent7] => (item=chrisl)
-ok: [docks] => (item=chrisl)
-ok: [fed22] => (item=dpr)
-ok: [docks] => (item=dpr)
-ok: [cent7] => (item=dpr)
-ok: [fed22] => (item=weev)
-ok: [docks] => (item=weev)
-ok: [cent7] => (item=weev)
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
  _______________________
-< TASK: add admin group >
+&lt; TASK: add admin group &gt;
  -----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [docks]
-ok: [fed22]
-ok: [cent7]
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
  ________________________________
-< TASK: add users to admin group >
+&lt; TASK: add users to admin group &gt;
  --------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [cent7] => (item=chrisl)
-ok: [fed22] => (item=chrisl)
-ok: [docks] => (item=chrisl)
-ok: [cent7] => (item=dpr)
-ok: [fed22] => (item=dpr)
-ok: [docks] => (item=dpr)
-ok: [cent7] => (item=weev)
-ok: [fed22] => (item=weev)
-ok: [docks] => (item=weev)
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
  ______________________________
-< TASK: add users sudoers file >
+&lt; TASK: add users sudoers file &gt;
  ------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [cent7] => (item=chrisl)
-ok: [fed22] => (item=chrisl)
-ok: [docks] => (item=chrisl)
-ok: [cent7] => (item=dpr)
-ok: [fed22] => (item=dpr)
-ok: [docks] => (item=dpr)
-ok: [cent7] => (item=weev)
-ok: [fed22] => (item=weev)
-ok: [docks] => (item=weev)
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>chrisl<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>dpr<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span> <span style="color: #f92672">=</span>&gt; <span style="color: #f92672">(</span><span style="color: #f8f8f2">item</span><span style="color: #f92672">=</span>weev<span style="color: #f92672">)</span>
  __________________________________________
-< TASK: secure SSH with a sane sshd_config >
+&lt; TASK: secure SSH with a sane sshd_config &gt;
  ------------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-ok: [docks]
-ok: [cent7]
-ok: [fed22]
+ok: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+ok: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
  _______________________
-< TASK: restarting sshd >
+&lt; TASK: restarting sshd &gt;
  -----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-changed: [cent7]
-changed: [fed22]
-changed: [docks]
+changed: <span style="color: #f92672">[</span>cent7<span style="color: #f92672">]</span>
+changed: <span style="color: #f92672">[</span>fed22<span style="color: #f92672">]</span>
+changed: <span style="color: #f92672">[</span>docks<span style="color: #f92672">]</span>
  ____________
-< PLAY RECAP >
+&lt; PLAY RECAP &gt;
  ------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
+        <span style="color: #ae81ff">\ </span>  ^__^
+         <span style="color: #ae81ff">\ </span> <span style="color: #f92672">(</span>oo<span style="color: #f92672">)</span><span style="color: #ae81ff">\_</span>______
+            <span style="color: #f92672">(</span>__<span style="color: #f92672">)</span><span style="color: #ae81ff">\ </span>      <span style="color: #f92672">)</span><span style="color: #ae81ff">\/\</span>
+                <span style="color: #f92672">||</span>----w <span style="color: #f8f8f2">|</span>
+                <span style="color: #f92672">||</span>     <span style="color: #f92672">||</span>
 
 
-cent7                      : ok=8    changed=1    unreachable=0    failed=0
-docks                      : ok=10   changed=1    unreachable=0    failed=0
-fed22                      : ok=10   changed=1    unreachable=0    failed=0
-
+cent7                      : <span style="color: #f8f8f2">ok</span><span style="color: #f92672">=</span><span style="color: #ae81ff">8</span>    <span style="color: #f8f8f2">changed</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span>    <span style="color: #f8f8f2">unreachable</span><span style="color: #f92672">=</span><span style="color: #ae81ff">0</span>    <span style="color: #f8f8f2">failed</span><span style="color: #f92672">=</span>0
+docks                      : <span style="color: #f8f8f2">ok</span><span style="color: #f92672">=</span><span style="color: #ae81ff">10</span>   <span style="color: #f8f8f2">changed</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span>    <span style="color: #f8f8f2">unreachable</span><span style="color: #f92672">=</span><span style="color: #ae81ff">0</span>    <span style="color: #f8f8f2">failed</span><span style="color: #f92672">=</span>0
+fed22                      : <span style="color: #f8f8f2">ok</span><span style="color: #f92672">=</span><span style="color: #ae81ff">10</span>   <span style="color: #f8f8f2">changed</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span>    <span style="color: #f8f8f2">unreachable</span><span style="color: #f92672">=</span><span style="color: #ae81ff">0</span>    <span style="color: #f8f8f2">failed</span><span style="color: #f92672">=</span>0
+</pre></div>
 
 
 
@@ -601,13 +599,13 @@ fed22                      : ok=10   changed=1    unreachable=0    failed=0
 <div class="prev-next-post pure-g">
   <div class="pure-u-1-24" style="text-align: left;">
     
-    <a href="https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/"><i class="fa fa-chevron-left"></i></a>
+    <a href="https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/"><i class="fa fa-chevron-left"></i></a>
     
   </div>
   <div class="pure-u-10-24">
     
     <nav class="prev">
-      <a href="https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/">MacBook Setup Using Ansible and Homebrew</a>
+      <a href="https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/">MacBook Setup Using Ansible and Homebrew</a>
     </nav>
     
   </div>

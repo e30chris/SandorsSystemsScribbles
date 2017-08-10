@@ -1,75 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/vpc/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Vpc on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/vpc/</link>
+    <description>Recent content in Vpc on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/vpc/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Fri, 01 May 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/vpc/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</title>
-      <link>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</link>
+      <link>https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/</link>
       <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;The Problem - By default new AWS accounts are based on the EC2-VPC platform.  If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;As the SRE team we manage each teams AWS environment.  To keep it simple all teams are in their own VPC with the default VPC being left unused.  Launching a Redshift cluster for the Data Analytics team and trying to put that Redshift cluster into the Data Analytics VPC presented the problem of not being able to select anything other than the default VPC.  Reading the AWS documentation does not address launching Redshift into a non-default VPC.  This Sandors notebook note does.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites:&lt;/h3&gt;
-
-&lt;p&gt;Create a VPC with subnets for the Redshift cluster to be deployed.&lt;/p&gt;
-
-&lt;h2 id=&#34;cli&#34;&gt;CLI&lt;/h2&gt;
-
-&lt;p&gt;Create the Cluster Subnet Group&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default).&lt;/em&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aws redshift create-cluster-subnet-group
-
-  --cluster-subnet-group-name argodataanalyticsredshiftsubnet
-
-  --description &amp;quot;Argo Data Analytics Redshift Subnet&amp;quot;
-
-  --subnet-ids subnet-382fee1w
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html&#34;&gt;AWS CLI Documentation create=cluster-subnet-group&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;aws-console&#34;&gt;AWS Console&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Open RDS Dashboard&lt;/li&gt;
-&lt;li&gt;Security&lt;/li&gt;
-&lt;li&gt;Subnet Groups
-
-&lt;ul&gt;
-&lt;li&gt;Click &lt;em&gt;Create Cluster Subnet Group&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Give the Subnet a name &amp;amp; description&lt;/li&gt;
-&lt;li&gt;Select the VPC you want to launch Redshift into&lt;/li&gt;
-&lt;li&gt;Select the Availability Zone you want the subnet in&lt;/li&gt;
-&lt;li&gt;Select the subnet for that AZ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-subnet-group-console.html&#34;&gt;AWS Console Documentation&lt;/a&gt;&lt;/p&gt;
-</description>
+      <guid>https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/</guid>
+      <description>The Problem: The Problem - By default new AWS accounts are based on the EC2-VPC platform. If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.
+The solution: Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.</description>
     </item>
     
   </channel>

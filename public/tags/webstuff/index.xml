@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/webstuff/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Webstuff on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/webstuff/</link>
+    <description>Recent content in Webstuff on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/webstuff/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 26 Nov 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/webstuff/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Add Twitter Bootstrap 3 to OctoPress with OctoStrap3</title>
@@ -14,57 +17,14 @@
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/add_twitter_bootstrap_3_to_octopress_with_octostrap3/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Use awesome Twitter Bootstrap 3 on Octopress&lt;/li&gt;
-&lt;li&gt;Setup OctoStrap3 to do that&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-links&#34;&gt;The Links&lt;/h2&gt;
-
-&lt;p&gt;OctoPress - &lt;a href=&#34;http://octopress.org&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;OctoStrap3 - &lt;a href=&#34;http://kaworu.github.io/octopress/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;octopress-setup&#34;&gt;Octopress Setup&lt;/h2&gt;
-
-&lt;p&gt;Go &lt;a href=&#34;http://octopress.org/docs/setup/&#34;&gt;here&lt;/a&gt; and do all of that&lt;/p&gt;
-
-&lt;h2 id=&#34;octostrap3-setup&#34;&gt;OctoStrap3 Setup&lt;/h2&gt;
-
-&lt;p&gt;Instructions &lt;a href=&#34;http://kaworu.github.io/octopress/setup/install/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;From the base OctoPress dir&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; git clone https://github.com/kAworu/octostrap3 .themes/octostrap3
-spudBud@pineApplez&amp;gt; rake &amp;quot;install[octostrap3]&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;category-list-aside&#34;&gt;Category List Aside&lt;/h2&gt;
-
-&lt;p&gt;Add a category list html page to &lt;code&gt;source/_includes/custom/asides&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;{% gist 7669102 %}&lt;/p&gt;
-
-&lt;p&gt;Add the new aside in the _config.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# list each of the sidebar modules you want to include, in the order you want them to appear.
-# To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like &#39;custom/asides/custom_aside_name.html&#39;
-default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;rake-generate-deploy&#34;&gt;rake generate | deploy&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; rake generate
-spudBud@pineApplez&amp;gt; rake deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You should now have a Twitter Bootstrapped UI on your OctoPress blog.  You should also have an aside that list each category, the number of posts for each and have a highlight if you are on that categories page.&lt;/p&gt;
-</description>
+      <description>The Goal  Use awesome Twitter Bootstrap 3 on Octopress Setup OctoStrap3 to do that  The Links OctoPress - link
+OctoStrap3 - link
+Octopress Setup Go here and do all of that
+OctoStrap3 Setup Instructions here
+From the base OctoPress dir
+spudBud@pineApplez&amp;gt; git clone https://github.com/kAworu/octostrap3 .themes/octostrap3 spudBud@pineApplez&amp;gt; rake &amp;quot;install[octostrap3]&amp;quot;  Category List Aside Add a category list html page to source/_includes/custom/asides
+{% gist 7669102 %}
+Add the new aside in the _config.</description>
     </item>
     
     <item>
@@ -73,55 +33,13 @@ spudBud@pineApplez&amp;gt; rake deploy
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/add_twitter_timeline_to_octopress_sidebar/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add a Twitter timeline to the sidebar of an Octopress blog&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-links&#34;&gt;The links&lt;/h2&gt;
-
-&lt;p&gt;Octopress - &lt;a href=&#34;http://octopress.org/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Acqui-hire.me - &lt;a href=&#34;http://acqui-hire.me/blog/2012/11/07/octopress-and-twitter-timelines/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;create-a-twitter-widget&#34;&gt;Create a Twitter widget&lt;/h2&gt;
-
-&lt;p&gt;Goto the Twitter widget settings page &lt;a href=&#34;https://twitter.com/settings/widgets&#34;&gt;here&lt;/a&gt; and create your timeline.&lt;/p&gt;
-
-&lt;h2 id=&#34;twitter-aside&#34;&gt;Twitter Aside&lt;/h2&gt;
-
-&lt;p&gt;Add a twitter html page to &lt;code&gt;source/_include/custom/asides&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;{% gist 7669257 %}&lt;/p&gt;
-
-&lt;p&gt;Add that aside in your _config.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# list each of the sidebar modules you want to include, in the order you want them to appear.
-# To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like &#39;custom/asides/custom_aside_name.html&#39;
-default_asides: [asides/recent_posts.html, asides/category_list.html, asides/twitter.html, asides/github.html, asides/googleplus.html]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;and update the Twitter settings&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Twitter Embed Timeline
-twitter_user: tweety_username
-twitter_widget_id: widget_id_from_twitter_widget_code_blob
-twitter_tweet_button: true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;rake-generate-deploy&#34;&gt;rake generate | deploy&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; rake generate
-spudBud@pineApplez&amp;gt; rake deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;the-results&#34;&gt;The results&lt;/h2&gt;
-
-&lt;p&gt;You should now have your Twitter timeline embedded on the sidebar of your OctoPress blog.&lt;/p&gt;
-</description>
+      <description>The Goal  Add a Twitter timeline to the sidebar of an Octopress blog  The links Octopress - link
+Acqui-hire.me - link
+Create a Twitter widget Goto the Twitter widget settings page here and create your timeline.
+Twitter Aside Add a twitter html page to source/_include/custom/asides
+{% gist 7669257 %}
+Add that aside in your _config.yml
+# list each of the sidebar modules you want to include, in the order you want them to appear.</description>
     </item>
     
     <item>
@@ -130,121 +48,12 @@ spudBud@pineApplez&amp;gt; rake deploy
       <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/post_to_octopress_and_deploy_to_github_pages/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Use Jekyll &amp;amp; octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are &lt;a href=&#34;http://sandorsscribbl.es/post-to-octopress-and-deploy-to-github-pages/&#34;&gt;now&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;not anymore, Sandors HowTo notebook has been moved to Amazon AWS&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;the-links&#34;&gt;The Links&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Jekyll - &lt;a href=&#34;http://jekyllrb.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;OctoPress - &lt;a href=&#34;http://octopress.org&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;GitHub Pages - &lt;a href=&#34;http://pages.github.com&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;create-a-new-post&#34;&gt;Create a new post&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake new_post
-Enter a title for your post: post to octopress and deploy to github pages
-mkdir -p source/_posts
-Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Write the post in markdown, save it.  &lt;a href=&#34;http://mouapp.com/&#34;&gt;Mou&lt;/a&gt; is a nice markdown editor for OS X.&lt;/p&gt;
-
-&lt;h2 id=&#34;generate-new-blog&#34;&gt;Generate new blog&lt;/h2&gt;
-
-&lt;p&gt;This throws away everything and recreates the static files from scratch.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake -v generate
-## Generating Site with Jekyll
-identical source/stylesheets/screen.css
-Configuration from /Users/Sandors/Codestuff/e30chris.github.io/_config.yml
-Building site: source -&amp;gt; public
-Successfully generated site: source -&amp;gt; public
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;deploy-new-blog&#34;&gt;Deploy new blog&lt;/h2&gt;
-
-&lt;p&gt;This does a bunch of stuff to move the new blog content in the &amp;lsquo;source&amp;rsquo; branch to the &amp;lsquo;master&amp;rsquo; branch on GitHub which then updates the GitHub Pages content.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $rake -v deploy
-## Deploying branch to Github Pages
-## Pulling any updates from Github Pages
-cd _deploy
-remote: Counting objects: 7, done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 5 (delta 2), reused 5 (delta 2)
-Unpacking objects: 100% (5/5), done.
-From github.com:e30chris/e30chris.github.io
-   d6ed173..281b573  source     -&amp;gt; origin/source
-There is no tracking information for the current branch.
-Please specify which branch you want to merge with.
-See git-pull(1) for details
-
-    git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt;
-
-If you wish to set tracking information for this branch you can do so with:
-
-    git branch --set-upstream master origin/&amp;lt;branch&amp;gt;
-
-cd -
-rm -rf _deploy/CNAME
-rm -rf _deploy/assets
-rm -rf _deploy/atom.xml
-rm -rf _deploy/blog
-rm -rf _deploy/categories
-rm -rf _deploy/favicon.png
-rm -rf _deploy/images
-rm -rf _deploy/index.html
-rm -rf _deploy/javascripts
-rm -rf _deploy/robots.txt
-rm -rf _deploy/sitemap.xml
-rm -rf _deploy/stylesheets
-rm -rf _deploy/vanilla-vagrant-setup
-
-## Copying public to _deploy
-cp -r public/. _deploy
-cd _deploy
-
-## Commiting: Site updated at 2013-11-13 05:02:52 UTC
-[master 3df53cc] Site updated at 2013-11-13 05:02:52 UTC
- 8 files changed, 484 insertions(+), 8 deletions(-)
- create mode 100644 auto-update-virtualbox-guest-additions-with-vagrant-vbguest/index.html
-
-## Pushing generated _deploy website
-Counting objects: 29, done.
-Delta compression using up to 2 threads.
-Compressing objects: 100% (11/11), done.
-Writing objects: 100% (16/16), 5.66 KiB, done.
-Total 16 (delta 8), reused 0 (delta 0)
-To git@github.com:e30chris/e30chris.github.io.git
-   02467a6..3df53cc  master -&amp;gt; master
-
-## Github Pages deploy complete
-cd -
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;commit-the-new-post&#34;&gt;Commit the new post&lt;/h3&gt;
-
-&lt;p&gt;Now that the code is up on GitHub save it in the git repo.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pineApplez&amp;gt;e30chris.github.io $git add .
-pineApplez&amp;gt;e30chris.github.io $git commit -m &#39;post - post to octopress and deploy to github pages&#39;
-[source e200e58] post - post to octopress and deploy to github pages
- 1 file changed, 52 insertions(+)
- create mode 100644 source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.markdown
-pineApplez&amp;gt;e30chris.github.io $git push origin source
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now write more scribbles and make the nerd world even more lazyier.&lt;/p&gt;
-</description>
+      <description>The Goal Use Jekyll &amp;amp; octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are now)
+not anymore, Sandors HowTo notebook has been moved to Amazon AWS
+The Links  Jekyll - link
+ OctoPress - link
+ GitHub Pages - link
+  Create a new post pineApplez&amp;gt;e30chris.github.io $rake new_post Enter a title for your post: post to octopress and deploy to github pages mkdir -p source/_posts Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.</description>
     </item>
     
   </channel>

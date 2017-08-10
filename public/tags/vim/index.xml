@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/vim/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Vim on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/vim/</link>
+    <description>Recent content in Vim on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 12 Nov 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Puppet vim setup</title>
@@ -14,64 +17,13 @@
       <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/puppet_vim_setup/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-links&#34;&gt;The Links&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;PuppetLabs - &lt;a href=&#34;http://puppetlabs.com/&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;vim-puppet - &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;vim tabular - &lt;a href=&#34;https://github.com/godlygeek/tabular&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;vim syntastic - &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;vim-pathogen&#34;&gt;Vim-Pathogen&lt;/h2&gt;
-
-&lt;p&gt;Vim-Pathogen on &lt;a href=&#34;https://github.com/tpope/vim-pathogen&#34; title=&#34;vim-pathogen&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# mkdir -p ~/.vim/autoload ~/.vim/bundle
-[root@Argon ~]# cd ~/.vim/autoload
-[root@Argon ~]# curl -o pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Add these settings to .vimrc&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;execute pathogen#infect()
-syntax on
-filetype plugin indent on
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;vim-puppet&#34;&gt;Vim-Puppet&lt;/h2&gt;
-
-&lt;p&gt;Vim-Puppet on &lt;a href=&#34;https://github.com/rodjek/vim-puppet&#34; title=&#34;vim-puppet&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
-[root@Argon ~]# git clone git://github.com/rodjek/vim-puppet.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;tabular&#34;&gt;Tabular&lt;/h2&gt;
-
-&lt;p&gt;Tabular on &lt;a href=&#34;https://github.com/godlygeek/tabular&#34; title=&#34;tabular&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
-[root@Argon ~]# git clone git://github.com/godlygeek/tabular.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;syntastic&#34;&gt;Syntastic&lt;/h2&gt;
-
-&lt;p&gt;Syntastic on &lt;a href=&#34;https://github.com/scrooloose/syntastic&#34; title=&#34;syntastic&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@Argon ~]# cd ~/.vim/bundle
-[root@Argon ~]# git clone https://github.com/scrooloose/syntastic.git
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Goal Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.
+The Links  PuppetLabs - link
+ vim-puppet - link
+ vim tabular - link
+ vim syntastic - link
+  Vim-Pathogen Vim-Pathogen on github
+[root@Argon ~]# mkdir -p ~/.vim/autoload ~/.vim/bundle [root@Argon ~]# cd ~/.vim/autoload [root@Argon ~]# curl -o pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim  Add these settings to .</description>
     </item>
     
   </channel>

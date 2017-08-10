@@ -1,136 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/mac/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Mac on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/mac/</link>
+    <description>Recent content in Mac on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 18 May 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>MacBook Setup Using Ansible and Homebrew</title>
-      <link>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</link>
+      <link>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</link>
       <pubDate>Mon, 18 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-MacDeploy&#34;&gt;GitHub - e30chris/Ansible-MacDeploy&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.&lt;/p&gt;
-
-&lt;h3 id=&#34;todo&#34;&gt;ToDo:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Bring in OSX user settings like desktop backgrounds and other System Preferences.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fresh OSX install&lt;/li&gt;
-&lt;li&gt;Homebrew installed&lt;/li&gt;
-&lt;li&gt;Ansible installed via Homebrew&lt;/li&gt;
-&lt;li&gt;GitHub Authenticated&lt;/li&gt;
-&lt;li&gt;GitHub API token set&lt;/li&gt;
-&lt;li&gt;.dotfiles forked and customized to your liking&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;fresh-osx-install&#34;&gt;Fresh OSX Install&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://osxdaily.com/2014/10/16/make-os-x-yosemite-boot-install-drive/&#34;&gt;USB install OSX&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;homebrew-installed&#34;&gt;Homebrew installed&lt;/h4&gt;
-
-&lt;p&gt;Follow the SysAdmin Bible and read the script before you run it:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/Homebrew/install/master/install&#34;&gt;Github Raw of Homebrew install script&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Run the script once verified that you know what it will be doing:&lt;/p&gt;
-
-
-ruby -e &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&#34;
-
-
-&lt;p&gt;Verify Homebrew is correct:&lt;/p&gt;
-
-
-sandor@pineApplez$ brew doctor
-
-
-&lt;h4 id=&#34;install-ansible-via-homebrew&#34;&gt;Install Ansible via Homebrew&lt;/h4&gt;
-
-&lt;p&gt;Installing the latest from dev:&lt;/p&gt;
-
-
-sandor@pineApplez$ brew install ansible --HEAD
-
-
-&lt;h4 id=&#34;github-authenticated&#34;&gt;GitHub Authenticated&lt;/h4&gt;
-
-
-sandor@pineApplez$ git config --global user.name &#34;sandor&#34;
-sandor@pineApplez$ git config --global user.email &#34;chris@e30chris.me&#34;
-sandor@pineApplez$ ssh-keygen -t rsa -b 4096 -C &#34;sandor@macbook&#34;
-sandor@pineApplez$ ssh-add ~/.ssh/id_rsa
-sandor@pineApplez$ pbcopy &lt; ~/.ssh/id_rsa.pub
-
-
-&lt;p&gt;Add your SSH Public Key to GitHub -&amp;gt; Settings.&lt;/p&gt;
-
-&lt;h4 id=&#34;github-api-token-set&#34;&gt;GitHub API Token Set&lt;/h4&gt;
-
-&lt;p&gt;This avoids annoying brew errors on lookups.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20130681/setting-github-api-token-for-homebrew#20130816&#34;&gt;stackoverflow&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;dotfile-forked&#34;&gt;.dotfile forked&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/holman/dotfiles&#34;&gt;All hail Holmans .dotfiles&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/&#34;&gt;Explained by Holman&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;download-and-run-the-playbook&#34;&gt;Download and run the playbook&lt;/h3&gt;
-
-&lt;p&gt;Download:&lt;/p&gt;
-
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
-
-
-&lt;p&gt;Edit:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Set the OSX username that is running the playbook in vars/main.yml&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Run:&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-playbook -i hosts site.yml --ask-sudo-pass
-
-
-&lt;p&gt;Then run the .dotfiles bootstrap script&lt;/p&gt;
-
-
-sandor@pineApplez$ ~/.dotfiles/script/bootstrap
-
-
-&lt;p&gt;Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.&lt;/p&gt;
-</description>
+      <guid>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</guid>
+      <description>The Problem: You have a brand new fresh install of OSX on your MacBook and you need to get up and running. You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.
+The solution: Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask. Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.</description>
     </item>
     
     <item>
@@ -139,70 +27,8 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
       <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Get MacBook to connect to a OpenVPN Server&lt;/li&gt;
-&lt;li&gt;Install Tunnelblick to make that happen&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;setup-the-openvpn-server&#34;&gt;Setup the OpenVPN Server&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Follow this - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws/&#34;&gt;sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;install-tunnelblick&#34;&gt;Install Tunnelblick&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://code.google.com/p/tunnelblick/&#34;&gt;Tunnelblick Google Code&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;download-openvpn-client-config-file&#34;&gt;Download OpenVPN Client Config file&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Goto OpenVPN web client&lt;/li&gt;
-&lt;li&gt;Login with new user&lt;/li&gt;
-&lt;li&gt;Choose to download cert&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;modify-client-config-file-for-tunnelblick&#34;&gt;Modify Client Config File for Tunnelblick&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Create a folder for the new config / VPN connection&lt;/li&gt;
-&lt;li&gt;The $vpnname.tblk folder is where that VPN connection is saved&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; mkdir -p ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Copy the .ovpn client config file to that directory&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;start-tunnelblick&#34;&gt;Start Tunnelblick&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Choose VPN from the tunnel&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-test&#34;&gt;The Test&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Verify IP using Tunnelblick&lt;/li&gt;
-&lt;li&gt;Verify IP with Tunnelblick off&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://ipchicken.com/&#34;&gt;IP Chicken&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-result&#34;&gt;The Result&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Using a VPN your nets are safe from all prying eyes except the NSAs&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>The Goal  Get MacBook to connect to a OpenVPN Server Install Tunnelblick to make that happen  Setup the OpenVPN Server  Follow this - sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws  Install Tunnelblick Tunnelblick Google Code
+Download OpenVPN Client Config file  Goto OpenVPN web client Login with new user Choose to download cert  Modify Client Config File for Tunnelblick  Create a folder for the new config / VPN connection The $vpnname.</description>
     </item>
     
   </channel>

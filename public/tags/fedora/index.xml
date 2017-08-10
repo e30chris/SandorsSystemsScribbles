@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/fedora/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Fedora on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/fedora/</link>
+    <description>Recent content in Fedora on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/fedora/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Fri, 29 Nov 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/fedora/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Add WebProxy Cert to Fedora</title>
@@ -14,26 +17,7 @@
       <pubDate>Fri, 29 Nov 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/add_webproxy_cert_to_fedora/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Make Fedora work behind a restrictive idiotic corporate web proxy&lt;/li&gt;
-&lt;li&gt;Install a corporate cert to make that happen&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;get-the-cert&#34;&gt;Get the cert&lt;/h2&gt;
-
-&lt;h2 id=&#34;install-the-cert&#34;&gt;Install the cert&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
-
-&lt;p&gt;Your corporate overlord has now man in the middled your personal gmail, have fun.&lt;/p&gt;
-</description>
+      <description>The Goal  Make Fedora work behind a restrictive idiotic corporate web proxy Install a corporate cert to make that happen  Get the cert Install the cert spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt  The result Your corporate overlord has now man in the middled your personal gmail, have fun.</description>
     </item>
     
   </channel>

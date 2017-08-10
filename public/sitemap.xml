@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <url>
-    <loc>https://theargo.io/</loc>
-    <lastmod>2016-07-01T00:00:00+00:00</lastmod>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>https://theargo.io/about/</loc>
@@ -12,17 +8,17 @@
   </url>
   
   <url>
-    <loc>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</loc>
+    <loc>https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/</loc>
     <lastmod>2015-07-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</loc>
+    <loc>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</loc>
     <lastmod>2015-05-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</loc>
+    <loc>https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/</loc>
     <lastmod>2015-05-01T00:00:00+00:00</lastmod>
   </url>
   
@@ -124,6 +120,197 @@
   <url>
     <loc>https://theargo.io/post/ansible_on_redhat_5_dot_x/</loc>
     <lastmod>2013-09-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/ansible/</loc>
+    <lastmod>2015-07-08T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/aws/</loc>
+    <lastmod>2015-05-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/beanstalk/</loc>
+    <lastmod>2014-11-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/bullshit/</loc>
+    <lastmod>2014-09-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/coins/</loc>
+    <lastmod>2014-03-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/digitaloceans/</loc>
+    <lastmod>2014-03-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/dogecoin/</loc>
+    <lastmod>2014-03-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/fedora/</loc>
+    <lastmod>2013-11-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/github/</loc>
+    <lastmod>2013-11-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/go/</loc>
+    <lastmod>2014-04-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/homebrew/</loc>
+    <lastmod>2015-05-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/hp-ux/</loc>
+    <lastmod>2014-09-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/infrastructure-culture/</loc>
+    <lastmod>2015-07-08T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/linux/</loc>
+    <lastmod>2013-11-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/mac/</loc>
+    <lastmod>2015-05-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/octopress/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/oldcorp/</loc>
+    <lastmod>2014-09-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/post/</loc>
+    <lastmod>2015-07-08T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/puppet/</loc>
+    <lastmod>2014-06-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/redhat/</loc>
+    <lastmod>2013-09-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/redshift/</loc>
+    <lastmod>2015-05-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/</loc>
+    <lastmod>2016-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/security/</loc>
+    <lastmod>2014-07-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/</loc>
+    <lastmod>2015-07-08T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/techdebt/</loc>
+    <lastmod>2014-09-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/topics/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/vagrant/</loc>
+    <lastmod>2013-12-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/vim/</loc>
+    <lastmod>2013-11-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/vpc/</loc>
+    <lastmod>2015-05-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/webstuff/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/winders/</loc>
+    <lastmod>2013-12-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://theargo.io/tags/workstation/</loc>
+    <lastmod>2014-06-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

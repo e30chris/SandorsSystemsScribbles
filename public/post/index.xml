@@ -1,620 +1,44 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Post-rsses on Sandors Systems Scribbles</title>
-    <link>https://theargo.io/post/index.xml</link>
-    <description>Recent content in Post-rsses on Sandors Systems Scribbles</description>
+    <title>Posts on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/post/</link>
+    <description>Recent content in Posts on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
     <lastBuildDate>Wed, 08 Jul 2015 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://theargo.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://theargo.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Configure new servers with the basics via Ansible</title>
-      <link>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</link>
+      <link>https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/</link>
       <pubDate>Wed, 08 Jul 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;You have a throw away server that you only need for the next couple of hours to try something out.  You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;This Ansible playbook that is simple and to the point.  It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-ServerDelivery&#34;&gt;GitHub - e30chris/ServerDelivery&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;After pitching Ansible as a great solution to infrastructure automation I wanted a simple playbook to demo that would show off the simplest side of Ansible.  I also need the short lived servers I spin up on Digital Ocean to be secured and easy to login to without any manual steps.  This playbook takes care of both requirements.&lt;/p&gt;
-
-&lt;h3 id=&#34;todo&#34;&gt;ToDo:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add a role to this playbook to kick off the droplet creation and then register the names and IP&amp;rsquo;s for the new servers before handing off to this current playbook config.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Servers booted and running&lt;/li&gt;
-&lt;li&gt;SSH access&lt;/li&gt;
-&lt;li&gt;SSH public keys for each user in files/&lt;/li&gt;
-&lt;li&gt;Server OS is in the Debian family or the RedHat family.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;create-the-new-droplets&#34;&gt;Create the new droplets&lt;/h3&gt;
-
-&lt;p&gt;Using the excellent Digital Ocean cli tool - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;TugBoat - GitHub&lt;/a&gt;&lt;/p&gt;
-
-
-sandor@pineApplez$ tugboat create bloggindroplet -s 66 -i 10322623 -r 3 -k 915832
-
-
-&lt;p&gt;That equals:&lt;/p&gt;
-
-&lt;p&gt;-s size (66 = 512 mb)&lt;/p&gt;
-
-&lt;p&gt;-i image (Centos 7 x64)&lt;/p&gt;
-
-&lt;p&gt;-r region (San Francisco)&lt;/p&gt;
-
-&lt;p&gt;-k ssh public key (mine)&lt;/p&gt;
-
-&lt;h3 id=&#34;add-new-droplet-to-ssh-config&#34;&gt;Add new droplet to SSH config&lt;/h3&gt;
-
-
-sandor@pineApplez$ cat ~/.ssh/config
-#SSH Stuff
-Host bloggindroplet
-  Hostname 45.55.7.178
-  User root
-Host *
-  ServerAliveInterval 60
-  ServerAliveCountMax 30
-  ControlMaster auto
-  ControlPath ~/.ssh/connections/ssh-%r@%h:%p
-  ControlPersist 4h
-  StrictHostKeyChecking no
-  IdentityFile ~/.ssh/id_rsa
-
-
-&lt;h3 id=&#34;add-new-droplet-to-ansible-hosts-file&#34;&gt;Add new droplet to Ansible hosts file&lt;/h3&gt;
-
-
-sandor@pineApplez$ › cat ~/.ansible/hosts
-# All Servers
-docks
-cent7
-fed22
-
-# App servers
-[app]
-
-# DB servers
-[db]
-
-# Group &#39;multi&#39; with all servers
-[multi:children]
-
-# Variables applied to all servers
-[multi:vars]
-
-
-
-&lt;h3 id=&#34;test-ssh-login&#34;&gt;Test ssh login&lt;/h3&gt;
-
-
-sandor@pineApplez$ ssh bloggindroplet
-Last login: Thu Jul  9 00:34:41 2015 from 67.135.32.227
-[root@bloggindroplet ~]#
-
-
-&lt;h3 id=&#34;test-ansible&#34;&gt;Test Ansible&lt;/h3&gt;
-
-
-sandor@pineApplez$ ansible bloggindroplet -m ping
-servfed | success &gt;&gt; {
-    &#34;changed&#34;: false,
-    &#34;ping&#34;: &#34;pong&#34;
-}
-sandor@pineApplez$
-
-
-&lt;h3 id=&#34;git-clone-the-playbook&#34;&gt;git clone the playbook&lt;/h3&gt;
-
-&lt;p&gt;Download:&lt;/p&gt;
-
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-ServerDelivery.git ~/Codestuff/Ansible/.
-
-
-&lt;h3 id=&#34;create-the-user-accounts&#34;&gt;Create the user accounts&lt;/h3&gt;
-
-&lt;p&gt;via the variables in group_vars/main.yml&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;delivered_users: this is the user accounts you want created on the new server, each with sudo access.&lt;/em&gt;&lt;/p&gt;
-
-
----
-# vars file for ServerDelivery
-delivered_users:
-  - chrisl
-  - dpr
-  - weev
-
-
-&lt;h3 id=&#34;give-each-users-ssh-key-a-password&#34;&gt;Give each users ssh key a password&lt;/h3&gt;
-
-&lt;h4 id=&#34;and-encrypt-it-with-ansible-vault&#34;&gt;and encrypt it with Ansible Vault&lt;/h4&gt;
-
-&lt;p&gt;via group_vars/passes.yml&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;this file will need to be created with ansible-vault&lt;/em&gt;&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-vault create group_vars/passes.yml
----
-# vars file for ServerDelivery encrypted via ansible-vault
-users_ssh_key_pass: stallman was right
-
-
-&lt;h3 id=&#34;run-the-playbook&#34;&gt;Run the playbook&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;This will run with &amp;lsquo;hosts: all&amp;rsquo; which will put every server in your Ansible hosts file in this state.  This should be ok since all this playbook does is ensure sane security, adds users and updates packages.  Because Ansible is idempotent if these setting have not changed then nothing will be done.  If you do not want to run on all your hosts then specify that with either a group in the Ansible hosts file or with a cli switch.&lt;/em&gt;&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-playbook site.yml -vv --ask-vault-pass
-
-
-&lt;p&gt;which returns lots of cows:&lt;/p&gt;
-
-
-2.2.3 in ServerDelivery/ on dev
-› ansible-playbook -i &#34;docks,cent7,fed22,&#34; site.yml --ask-vault-pass
-Vault password:
- ____________
-&lt; PLAY [all] &gt;
- ------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
- _________________
-&lt; GATHERING FACTS &gt;
- -----------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [fed22]
-ok: [cent7]
-ok: [docks]
-docks: importing group_vars/Ubuntu.yml
-cent7: importing group_vars/CentOS.yml
-fed22: importing group_vars/Fedora.yml
- _____________________________________
-&lt; TASK: update all packages on CentOS &gt;
- -------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [docks]
-skipping: [fed22]
-skipping: [cent7]
- _______________________________
-&lt; TASK: install EPEL for CentOS &gt;
- -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [fed22]
-skipping: [docks]
- ________________________________________
-&lt; TASK: add the must have apps on CentOS &gt;
- ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [docks]
-skipping: [fed22]
- ____________________________________________
-&lt; TASK: update all packages on Ubuntu family &gt;
- --------------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [fed22]
-ok: [docks]
- ________________________________________
-&lt; TASK: add the must have apps on Ubuntu &gt;
- ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [cent7]
-skipping: [fed22]
-ok: [docks] =&gt; (item=sudo,vim,htop,tmux,unzip,fail2ban)
- _____________________________________
-&lt; TASK: update all packages on Fedora &gt;
- -------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [docks]
-skipping: [cent7]
-ok: [fed22]
- ________________________________________
-&lt; TASK: add the must have apps on Fedora &gt;
- ----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-skipping: [docks]
-skipping: [cent7]
-ok: [fed22] =&gt; (item=sudo,vim,htop,tmux,unzip,fail2ban)
- _______________________________
-&lt; TASK: adding users to servers &gt;
- -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [docks] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=weev)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
- _________________________________
-&lt; TASK: add users ssh public keys &gt;
- ---------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [fed22] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=dpr)
-ok: [docks] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
-ok: [cent7] =&gt; (item=weev)
- _______________________
-&lt; TASK: add admin group &gt;
- -----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [docks]
-ok: [fed22]
-ok: [cent7]
- ________________________________
-&lt; TASK: add users to admin group &gt;
- --------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [cent7] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=dpr)
-ok: [docks] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=weev)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
- ______________________________
-&lt; TASK: add users sudoers file &gt;
- ------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [cent7] =&gt; (item=chrisl)
-ok: [fed22] =&gt; (item=chrisl)
-ok: [docks] =&gt; (item=chrisl)
-ok: [cent7] =&gt; (item=dpr)
-ok: [fed22] =&gt; (item=dpr)
-ok: [docks] =&gt; (item=dpr)
-ok: [cent7] =&gt; (item=weev)
-ok: [fed22] =&gt; (item=weev)
-ok: [docks] =&gt; (item=weev)
- __________________________________________
-&lt; TASK: secure SSH with a sane sshd_config &gt;
- ------------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-ok: [docks]
-ok: [cent7]
-ok: [fed22]
- _______________________
-&lt; TASK: restarting sshd &gt;
- -----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-changed: [cent7]
-changed: [fed22]
-changed: [docks]
- ____________
-&lt; PLAY RECAP &gt;
- ------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
-
-cent7                      : ok=8    changed=1    unreachable=0    failed=0
-docks                      : ok=10   changed=1    unreachable=0    failed=0
-fed22                      : ok=10   changed=1    unreachable=0    failed=0
-
-
-</description>
+      <guid>https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/</guid>
+      <description>The Problem: You have a throw away server that you only need for the next couple of hours to try something out. You need the server configured so that you can login and get to work without messing with yum updates or adding your user and public ssh keys to access it.
+The solution: This Ansible playbook that is simple and to the point. It updates yum or apt, applies a sane sshd config, adds users and groups and then gets your public ssh key onto the throwaway box so you can login without a password.</description>
     </item>
     
     <item>
       <title>MacBook Setup Using Ansible and Homebrew</title>
-      <link>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</link>
+      <link>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</link>
       <pubDate>Mon, 18 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/MacBook_Setup_using_Ansible_and_Homebrew/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-MacDeploy&#34;&gt;GitHub - e30chris/Ansible-MacDeploy&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.&lt;/p&gt;
-
-&lt;h3 id=&#34;todo&#34;&gt;ToDo:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Bring in OSX user settings like desktop backgrounds and other System Preferences.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites:&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fresh OSX install&lt;/li&gt;
-&lt;li&gt;Homebrew installed&lt;/li&gt;
-&lt;li&gt;Ansible installed via Homebrew&lt;/li&gt;
-&lt;li&gt;GitHub Authenticated&lt;/li&gt;
-&lt;li&gt;GitHub API token set&lt;/li&gt;
-&lt;li&gt;.dotfiles forked and customized to your liking&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;fresh-osx-install&#34;&gt;Fresh OSX Install&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://osxdaily.com/2014/10/16/make-os-x-yosemite-boot-install-drive/&#34;&gt;USB install OSX&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;homebrew-installed&#34;&gt;Homebrew installed&lt;/h4&gt;
-
-&lt;p&gt;Follow the SysAdmin Bible and read the script before you run it:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/Homebrew/install/master/install&#34;&gt;Github Raw of Homebrew install script&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Run the script once verified that you know what it will be doing:&lt;/p&gt;
-
-
-ruby -e &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&#34;
-
-
-&lt;p&gt;Verify Homebrew is correct:&lt;/p&gt;
-
-
-sandor@pineApplez$ brew doctor
-
-
-&lt;h4 id=&#34;install-ansible-via-homebrew&#34;&gt;Install Ansible via Homebrew&lt;/h4&gt;
-
-&lt;p&gt;Installing the latest from dev:&lt;/p&gt;
-
-
-sandor@pineApplez$ brew install ansible --HEAD
-
-
-&lt;h4 id=&#34;github-authenticated&#34;&gt;GitHub Authenticated&lt;/h4&gt;
-
-
-sandor@pineApplez$ git config --global user.name &#34;sandor&#34;
-sandor@pineApplez$ git config --global user.email &#34;chris@e30chris.me&#34;
-sandor@pineApplez$ ssh-keygen -t rsa -b 4096 -C &#34;sandor@macbook&#34;
-sandor@pineApplez$ ssh-add ~/.ssh/id_rsa
-sandor@pineApplez$ pbcopy &lt; ~/.ssh/id_rsa.pub
-
-
-&lt;p&gt;Add your SSH Public Key to GitHub -&amp;gt; Settings.&lt;/p&gt;
-
-&lt;h4 id=&#34;github-api-token-set&#34;&gt;GitHub API Token Set&lt;/h4&gt;
-
-&lt;p&gt;This avoids annoying brew errors on lookups.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/20130681/setting-github-api-token-for-homebrew#20130816&#34;&gt;stackoverflow&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;dotfile-forked&#34;&gt;.dotfile forked&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/holman/dotfiles&#34;&gt;All hail Holmans .dotfiles&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/&#34;&gt;Explained by Holman&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;download-and-run-the-playbook&#34;&gt;Download and run the playbook&lt;/h3&gt;
-
-&lt;p&gt;Download:&lt;/p&gt;
-
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
-
-
-&lt;p&gt;Edit:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Set the OSX username that is running the playbook in vars/main.yml&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Run:&lt;/p&gt;
-
-
-sandor@pineApplez$ ansible-playbook -i hosts site.yml --ask-sudo-pass
-
-
-&lt;p&gt;Then run the .dotfiles bootstrap script&lt;/p&gt;
-
-
-sandor@pineApplez$ ~/.dotfiles/script/bootstrap
-
-
-&lt;p&gt;Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.&lt;/p&gt;
-</description>
+      <guid>https://theargo.io/post/macbook_setup_using_ansible_and_homebrew/</guid>
+      <description>The Problem: You have a brand new fresh install of OSX on your MacBook and you need to get up and running. You want all your apps installed using Homebrew &amp;amp; Cask and OSX setup with goodies like zsh and .dotfiles.
+The solution: Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask. Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.</description>
     </item>
     
     <item>
       <title>Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</title>
-      <link>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</link>
+      <link>https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/</link>
       <pubDate>Fri, 01 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;The Problem - By default new AWS accounts are based on the EC2-VPC platform.  If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The solution:&lt;/h2&gt;
-
-&lt;p&gt;Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.&lt;/p&gt;
-
-&lt;h3 id=&#34;backstory&#34;&gt;Backstory:&lt;/h3&gt;
-
-&lt;p&gt;As the SRE team we manage each teams AWS environment.  To keep it simple all teams are in their own VPC with the default VPC being left unused.  Launching a Redshift cluster for the Data Analytics team and trying to put that Redshift cluster into the Data Analytics VPC presented the problem of not being able to select anything other than the default VPC.  Reading the AWS documentation does not address launching Redshift into a non-default VPC.  This Sandors notebook note does.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pre-requisites&#34;&gt;Pre-Requisites:&lt;/h3&gt;
-
-&lt;p&gt;Create a VPC with subnets for the Redshift cluster to be deployed.&lt;/p&gt;
-
-&lt;h2 id=&#34;cli&#34;&gt;CLI&lt;/h2&gt;
-
-&lt;p&gt;Create the Cluster Subnet Group&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;subnet-ids is the VPC Subnet you want the Redshift cluster launched into. This is an existing VPC (not the default).&lt;/em&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;aws redshift create-cluster-subnet-group
-
-  --cluster-subnet-group-name argodataanalyticsredshiftsubnet
-
-  --description &amp;quot;Argo Data Analytics Redshift Subnet&amp;quot;
-
-  --subnet-ids subnet-382fee1w
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/redshift/create-cluster-subnet-group.html&#34;&gt;AWS CLI Documentation create=cluster-subnet-group&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;aws-console&#34;&gt;AWS Console&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Open RDS Dashboard&lt;/li&gt;
-&lt;li&gt;Security&lt;/li&gt;
-&lt;li&gt;Subnet Groups
-
-&lt;ul&gt;
-&lt;li&gt;Click &lt;em&gt;Create Cluster Subnet Group&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Give the Subnet a name &amp;amp; description&lt;/li&gt;
-&lt;li&gt;Select the VPC you want to launch Redshift into&lt;/li&gt;
-&lt;li&gt;Select the Availability Zone you want the subnet in&lt;/li&gt;
-&lt;li&gt;Select the subnet for that AZ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-subnet-group-console.html&#34;&gt;AWS Console Documentation&lt;/a&gt;&lt;/p&gt;
-</description>
+      <guid>https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/</guid>
+      <description>The Problem: The Problem - By default new AWS accounts are based on the EC2-VPC platform. If you want to launch a Redshift cluster into a specific VPC that is not the default you must first create a Redshift Cluster Subnet.
+The solution: Create a Redshift Cluster Subnet that will be joined to a existing VPC (not the default VPC) which will then allow the new Redshift cluster to be launched into that dedicated VPC.</description>
     </item>
     
     <item>
@@ -623,154 +47,7 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
       <pubDate>Sun, 30 Nov 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/deploy_php_to_aws_beanstalk_using_eb/</guid>
-      <description>
-
-&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
-
-&lt;p&gt;Wordpress has lots of hosting options all of which cost money to be on a shared hosting server.  I need a autoscaling &amp;amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS.  AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
-
-&lt;p&gt;Deploy an autoscaling, auto-healing Wordpress website on AWS Beanstalk using the &amp;lsquo;eb&amp;rsquo; cli tool.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AWS Beanstalk - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;eb - &lt;a href=&#34;http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-get-started.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;AWS Regions &amp;amp; Endpoints - &lt;a href=&#34;http://docs.aws.amazon.com/general/latest/gr/rande.html&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Wordpress - &lt;a href=&#34;https://wordpress.org&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Wordpress on GitHub &lt;a href=&#34;https://github.com/WordPress/WordPress&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;howtos&#34;&gt;HowTos&lt;/h1&gt;
-
-&lt;h2 id=&#34;howto-setup-the-eb-tool&#34;&gt;HowTo - Setup the eb tool&lt;/h2&gt;
-
-&lt;p&gt;On your MacBook create a file to host your AWS creds.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ vim ~/.awscreds
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;AWSAccessKeyId=Your AWS access ID
-AWSSecretKey=Your AWS secret key
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Set the permissions&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ chmod 0600 ~/.awscreds
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Install &lt;em&gt;all&lt;/em&gt; the AWS tools using Homebrew&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew install awscli
-brew install aws-elasticbeanstalk
-brew install aws-as
-brew install aws-cfn-tools
-brew install aws-cloudsearch
-brew install aws-elasticcache
-brew install aws-mon
-brew install aws-sns-cli
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Some of those installs need stuff added to the bash|zsh profile&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# aws stuff
-export AWS_ACCESS_KEY=&amp;quot;Your AWS access ID&amp;quot;
-export AWS_SECRET_KEY=&amp;quot;Your AWS secret key&amp;quot;
-export AWS_CLOUDFORMATION_HOME=&amp;quot;/usr/local/Cellar/aws-cfn-tools/1.0.12/libexec&amp;quot;
-export AWS_CLOUDWATCH_HOME=&amp;quot;/usr/local/Cellar/cloud-watch/1.0.20.0/libexec&amp;quot;
-export AWS_ELASTICACHE_HOME=&amp;quot;/usr/local/Cellar/aws-elasticache/1.9.000/libexec&amp;quot;
-export CS_HOME=/usr/local/Cellar/aws-cloudsearch/1.0.1.4-2013.01.11
-export EC2_HOME=&amp;quot;/usr/local/Cellar/ec2-api-tools/1.7.1.0/libexec&amp;quot;
-export AWS_SNS_HOME=&amp;quot;/usr/local/Cellar/aws-sns-cli/2013-09-27/libexec&amp;quot;
-export JAVA_HOME=&amp;quot;$(/usr/libexec/java_home)&amp;quot;
-export AWS_CREDENTIAL_FILE=/Users/sandor/.awscreds
-export ELASTICBEANSTALK_URL=&amp;quot;https://elasticbeanstalk.us-west-2.amazonaws.com&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;em&gt;Planning ahead for the eventual &lt;a href=&#34;https://en.wikipedia.org/wiki/Cascadia_%28independence_movement%29&#34;&gt;Cascadia&lt;/a&gt; so Oregon is my AWS home&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;howto-setup-a-beanstalk-environment&#34;&gt;HowTo - Setup a BeanStalk Environment&lt;/h2&gt;
-
-&lt;p&gt;Setup a basic PHP BeanStalk to verify everything is working.  The end results is you should see a PHP test page.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb init
-sandor@pineApplez$ To get your AWS Access Key ID and Secret Access Key,
-  visit &amp;quot;https://aws-portal.amazon.com/gp/aws/securityCredentials&amp;quot;.
-Enter your AWS Access Key ID: Your AWS Access Key
-Enter your AWS Secret Access Key: Your AWS Secret Access Key
-Select an AWS Elastic Beanstalk service region.
-Available service regions are:
-…
-2) US West (Oregon)
-...
-Select (1 to 9): 2
-Enter an AWS Elastic Beanstalk application name (auto-generated value is &amp;quot;testapp&amp;quot;):
-Enter an AWS Elastic Beanstalk environment name (auto-generated value is &amp;quot;testapp-env&amp;quot;):
-Select an environment tier.
-Available environment tiers are:
-1) WebServer::Standard::1.0
-...
-Select (1 to 2): 1
-Select a solution stack.
-Available solution stacks are:
-1) 64bit Amazon Linux 2014.09 v1.0.9 running PHP 5.5
-…
-Select (1 to 49): 1
-Select an environment type.
-Available environment types are:
-...
-2) SingleInstance
-Select (1 to 2): 2
-Create an RDS DB Instance? [y/n]: y
-Create an RDS BD Instance from (current value is &amp;quot;[No snapshot]&amp;quot;):
-1) [No snapshot]
-...
-Select (1 to 2): 1
-Enter an RDS DB master password:
-Retype password to confirm:
-If you terminate your environment, your RDS DB Instance will be deleted and you will lose your data.
-Create snapshot? [y/n]: n
-Attach an instance profile (current value is &amp;quot;[Create a default instance profile]&amp;quot;):
-You IAM user does not have sufficient permission. User: arn:aws:iam::246173154382:user/smbec2r is not authorized to perform: iam:ListInstanceProfiles on resource: arn:aws:iam::246173154382:instance-profile/
-Do you want to proceed without attaching an instance profile? [y/n]: y
-Updated AWS Credential file at &amp;quot;/Users/sandor/.elasticbeanstalk/aws_credential_file&amp;quot;.
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now start the test BeanStalk&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ eb start
-Starting application &amp;quot;testapp&amp;quot;.
-Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
-2014-12-01 00:01:10	INFO	createEnvironment is starting.
-2014-12-01 00:01:12	INFO	Using elasticbeanstalk-us-west-2-246133154382 as Amazon S3 storage bucket for environment data.
-2014-12-01 00:01:47	INFO	Created EIP: 54.149.45.218
-2014-12-01 00:01:50	INFO	Created security group named: awseb-e-97v6vazrp7-stack-AWSEBSecurityGroup-1AECQMWSW2P6H
-2014-12-01 00:02:00	INFO	Creating RDS database named: ab1e1p73zy1ede2. This may take a few minutes.
-2014-12-01 00:11:27	INFO	Created RDS database named: aa1e1p73zv1ede2
-2014-12-01 00:12:23	INFO	Waiting for EC2 instances to launch. This may take a few minutes.
-2014-12-01 00:14:05	INFO	Successfully launched environment: testapp-env
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Navigate to the EIP - &lt;a href=&#34;http://54.149.45.218&#34;&gt;http://54.149.45.218&lt;/a&gt; and you should see the Beanstalk PHP congrats page.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/WebHostPics/AWSCongratsScreen.png&#34; alt=&#34;AWS Congrats Page Screenshot&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now that we know everything is setup correctly to deploy a test PHP environment we will deploy a full on Wordpress install.&lt;/p&gt;
-
-&lt;h2 id=&#34;howto-deploy-wordpress-to-beanstalk&#34;&gt;HowTo - Deploy Wordpress to Beanstalk&lt;/h2&gt;
-
-&lt;p&gt;First goal is to get a bare bones Wordpress setup working.  There are two ways to deploy to Beanstalk, hand it a docker container of your app or do a git push.  For this example we are going with a Docker container because in 2 years that will be the way it is and I dont want to go back and read how retarded I was in 2014 deploying with git.&lt;/p&gt;
-
-&lt;p&gt;This HowTo assumes we are starting with a clean whiteboard Wordpress deployment.  The HowTo of migrating an existing Wordpress will be a separate post.&lt;/p&gt;
-
-&lt;p&gt;Clone Wordpress from the Github mirror of the WP SVN, into the same directory we used for the eb steps above.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez$ git clone git@github.com:WordPress/WordPress.git .
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem Wordpress has lots of hosting options all of which cost money to be on a shared hosting server. I need a autoscaling &amp;amp; auto-healing Wordpress setup that will cost less than dedicated WP hosting while offering all the awesomeness of AWS. AWS is hard to setup all the moving pieces correctly, Beanstalk configures all those pieces while costing nothing other than paying for the AWS resources Beanstalk sets up.</description>
     </item>
     
     <item>
@@ -779,21 +56,9 @@ Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
       <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/ansible_on_hp_ux_11_dot_31/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Install Python on HP-UX so Ansible can manage and automate the ancient servers.&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description> The problem Old corporations that are running ancient OS&amp;rsquo;es desperately need configuration management and automation to keep the dinosaurs efficient.
+The goal Install Python on HP-UX so Ansible can manage and automate the ancient servers.
+HowTo sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;swinstall -x mount_all_filesystems=false -s depotserver:/depot/11.31/python python&amp;quot;  </description>
     </item>
     
     <item>
@@ -802,41 +67,9 @@ Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
       <pubDate>Wed, 03 Sep 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/run_ansible_through_pmksh/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The problem&lt;/h2&gt;
-
-&lt;p&gt;Old corporations use shitty old software to do things that modern Linux is really good at doing itself.  Using pmksh instead of a well laid out sudoers setup is what the problem is.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The goal&lt;/h2&gt;
-
-&lt;p&gt;Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.&lt;/p&gt;
-
-&lt;h2 id=&#34;shells-ansible&#34;&gt;Shells &amp;amp; Ansible&lt;/h2&gt;
-
-&lt;p&gt;Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.  Ansible does not understand ksh talk making running through pmksh a workaround for now.  Once Ansible add ksh to its list of shells then the current set of playbooks that are using &amp;lsquo;command&amp;rsquo; can move to using the full suite of modules.&lt;/p&gt;
-
-&lt;p&gt;The AIX setup I am Ansiblizing now using bash shell for standard user commands and pmksh for all root level (yes it should be sudoers) commands.  Tasks that do not need root level permissions I am using standard modules.  Tasks that need root I am using the following HowTo.&lt;/p&gt;
-
-&lt;p&gt;Ansible Shells:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&#34;&gt;github repo - ansible/ansible/tree/devel/lib/ansible/runner/shell_plugins&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo&lt;/h2&gt;
-
-&lt;p&gt;Current Workaround:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible -i hosts all -m command -a &amp;quot;/opt/quest/bin/pmksh -c &#39;/bin/touch /root/bmw.325&#39;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;tasks:
-
-- name: run a command through pmksh
-  command: &amp;quot;/opt/quest/bin/pmksh -c /bin/touch /root/bmw.325&#39;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;em&gt;once ksh is added to the list of shells I will update this post&lt;/em&gt;&lt;/p&gt;
-</description>
+      <description>The problem Old corporations use shitty old software to do things that modern Linux is really good at doing itself. Using pmksh instead of a well laid out sudoers setup is what the problem is.
+The goal Configure Ansible playbooks to execute through the pmksh shell on the targeted servers.
+Shells &amp;amp; Ansible Currently Ansible &amp;amp; Python work together to take the output from bash and report back with formatting.</description>
     </item>
     
     <item>
@@ -845,83 +78,8 @@ Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
       <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_ansible_to_align_passwords_on_servers/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem:&lt;/h2&gt;
-
-&lt;p&gt;A group of servers get their passwords updated every 3 months with a new shared password.  The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal:&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it.  The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;note - using the same root password on all your servers is a terrible idea and completely against the SysAdmin Bible.  Use random passwords and keys!&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;howto&#34;&gt;HowTo:&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Download the playbook from
-
-&lt;ul&gt;
-&lt;li&gt;GitHub - &lt;a href=&#34;https://github.com/e30chris/Ansible-AlignPassword&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Galaxy - &lt;a href=&#34;https://galaxy.ansible.com/list#/roles/1134&#34;&gt;repo&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Create a branch to edit the variables for your environment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ cd ~/Codestuff/ansibles/Ansible-AlignPassword
-  sandor@pineapplez:$ git checkout -b qatenv    
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ansible-vault the file that will contain the passwords.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault encrypt group_vars/all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Edit the vars for the environment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-vault edit group_vars/all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add the inventory to hosts&lt;/li&gt;
-&lt;li&gt;Verify Ansible connect with ping pong&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible -i hosts all -m ping
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Run the playbook&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;  sandor@pineapplez:$ ansible-playbook -i hosts site.yml -vv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;common-task-actions&#34;&gt;Common Task Actions&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Attempt to login to each server using all possible passwords&lt;/li&gt;
-&lt;li&gt;Register which passwords work on each server&lt;/li&gt;
-&lt;li&gt;Set a new shared password for every server&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;variables&#34;&gt;Variables&lt;/h2&gt;
-
-&lt;p&gt;Go here:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;group_vars/all
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;With this format:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;variable: value
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem: A group of servers get their passwords updated every 3 months with a new shared password. The servers passwords are then inconsistently updated leaving a group of servers with one of several possible user passwords.
+The Goal: Use Ansible to attempt to login to each server using each of the possible passwords to find the correct one and log it. The final step of the playbook will have Ansible logging into each server using the found to be correct password and updating each server to a new shared password.</description>
     </item>
     
     <item>
@@ -930,46 +88,11 @@ Waiting for environment &amp;quot;testapp-env&amp;quot; to launch.
       <pubDate>Mon, 16 Jun 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/installing_ansible/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;Install Ansible from the latest release on GitHub.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;clone-the-ansible-repo&#34;&gt;Clone the Ansible repo&lt;/h2&gt;
-
-&lt;p&gt;Go to the GitHub project page &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;github/ansible&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Choose a release version or the dev branch and clone.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ mkdir ~/Codestuff/AnsibleController &amp;lt;-- Ansible runs from here
-sandor@pineapplez:$ mkdir ~/Codestuff/ansibles &amp;lt;-- Playbooks go here
-sandor@pineapplez:$ touch ~/Codestuff/ansibles/ansible_hosts &amp;lt;-- Server inventory goes here
-sandor@pineapplez:$ cd ~/Codestuff/AnsibleController
-sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;run-the-environment-script&#34;&gt;Run the environment script&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ./hacking/env-setup
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To upgrade Ansible just go back into the AnsibleController directory and use git to get the latest.&lt;/p&gt;
-
-&lt;p&gt;You are now setup to run Ansible from the Controller.  Because the inventory file is inside the playbook dir or ~/Codestuff/ansibles/ansible_hosts it will not get overwritten if you change the AnsibleController dir.&lt;/p&gt;
-
-&lt;p&gt;Push some SSH public keys and start pushing playbooks!&lt;/p&gt;
-</description>
+      <description>The Problem Need to deploy an Ansible Controller to run Playbooks from that uses the latest build and is easy to upgrade/configure.
+The Solution Install Ansible from the latest release on GitHub.
+The Goal Create an Ansible Controller directory that will run the latest version via git clone and setup the shell with the Ansible environment scripts.
+Clone the Ansible repo Go to the GitHub project page github/ansible
+Choose a release version or the dev branch and clone.</description>
     </item>
     
     <item>
@@ -978,146 +101,9 @@ sandor@pineapplez:$ git clone git@github.com:ansible/ansible.git
       <pubDate>Fri, 13 Jun 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_ansible_to_deploy_a_puppetmaster/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations.  Also need to deploy to several environments using a consistent configuration.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;p&gt;A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.&lt;/p&gt;
-
-&lt;h4 id=&#34;note-this-playbook-is-still-a-work-in-progress-most-of-the-issues-are-fighting-puppets-insane-complexity-of-getting-installed-correctly-with-a-few-small-ansible-bugs-sprinkled-in&#34;&gt;Note: this playbook is still a work in progress.  Most of the issues are fighting Puppets insane complexity of getting installed correctly with a few small Ansible bugs sprinkled in.&lt;/h4&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;github-repo&#34;&gt;GitHub Repo&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/e30chris/Ansible-PuppetEnterpriseDeploy&#34;&gt;github.com/e30chris/Ansible-PuppetEnterpriseDeploy&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;playbook-notes&#34;&gt;Playbook notes&lt;/h2&gt;
-
-&lt;h2 id=&#34;setting-the-variables-for-each-environment&#34;&gt;Setting the variables for each environment&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ cd ~/Ansible-PuppetEnterpriseDeploy/
-sandor@pineapplez:$ cat group_vars/all
----
-# common variables for PuppetMaster Deployment
-# format for this file
-# variable: fact
-#
-# version of Puppet Enterprise
-pe_version: 3.2.3
-
-# os family
-os_family: debian
-os_version: 7
-os_arch: amd64
-
-# pe installer
-pe_installer: puppet-enterprise-{{ pe_version }}-{{ os_family }}-{{ os_version }}-{{ os_arch }}
-
-# hostnames
-pupmaster_hostname: pupmaster.argo.local
-pupdb_hostname: pupdb.argo.local
-pupconsole_hostname: pupconsole.argo.local
-
-# IP&#39;s
-pupmaster_ip: 10.0.0.10
-pupdb_ip: 10.0.0.11
-pupconsole_ip: 10.0.0.12
-
-# dns salt hostnames
-pupmaster_salt_hostnames: puppet,puppetmaster
-pupdb_salt_hostnames: puppetdb
-pupconsole_salt_hostname: pupconsole
-
-# passwords
-console_auth_db_pass: arandompasswordthatneedschangedhere
-console_db_pass: arandompasswordthatneedschangedhere
-pupdb_db_pass: arandompasswordthatneedschangedhere
-db_root_pass: arandompasswordthatneedschangedhere
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To keep it simple only the values that should be changed are assigned variables.  Everything else is left with the Puppet defaults in the answer files.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;tasks-to-be-run-on-all-servers&#34;&gt;Tasks to be run on all servers&lt;/h2&gt;
-
-&lt;p&gt;Puppet needs very perfect name resolution between all agents and the PuppetMaster.  Having a &lt;strong&gt;perfect&lt;/strong&gt; hosts file on each server is required.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- name: Ensure common etc hosts file
-  template:
-    src=&amp;quot;../templates/hosts.j2&amp;quot;
-    dest=/etc/hosts
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To keep things simple all the installation tasks will run out of a /puppetinstall directory.  This should be in the user home dir that is running the installer.  The examples here use root but the SysAdmin Bible states never use root always use &lt;strong&gt;sudo&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- name: Ensure Puppet installer directory present
-  file:
-    path=/root/puppetinstall
-    state=directory
-
-- name: Ensure install log present
-  file:
-    path=/root/puppetinstall/pupconsole_install.log
-    owner=root
-    state=touch
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When you download the PE tarball you can grab the download url from S3.  This grabs the version you need and extracts it into the installer dir.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- name: Ensure PE tarball present
-  get_url:
-    url=https://s3.amazonaws.com/pe-builds/released/{{ pe_version }}/{{ pe_installer }}.tar.gz
-    dest=/root/peinstaller.tar.gz
-    force=no
-
-- name: Ensure Puppet untar&#39;d to install directory
-  unarchive:
-    copy=no
-    src=/root/peinstaller.tar.gz
-    dest=/root/puppetinstall
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;tasks-that-run-on-each-server-role&#34;&gt;Tasks that run on each server role&lt;/h2&gt;
-
-&lt;p&gt;Each server then runs the same basic installer command with a few things named for each role like the installer log.&lt;/p&gt;
-
-&lt;p&gt;Here is the PuppetMasters install-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-# Tasks for PupMaster
-- name: Ensure install log present
-  file:
-    path=/root/puppetinstall/pupmaster_install.log
-    owner=root
-    state=touch
-
-- name: answer file for PupMaster
-  template:
-    src=&amp;quot;../templates/pupmaster.answer.j2&amp;quot;
-    dest=/root/puppetinstall/pupmaster.answer
-    owner=root
-
-- name: run the pe installer
-  command: /root/puppetinstall/{{ pe_installer }}/puppet-enterprise-installer -a /root/puppetinstall/pupmaster.answer -l /root/puppetinstall/pupmaster_install.log
-
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem Need to deploy a new Puppet Enterprise cluster with a PuppetMaster, PuppetConsole and a PuppetDB while avoiding typos and misconfigurations. Also need to deploy to several environments using a consistent configuration.
+The Solution Use Ansible to deploy Puppet onto freshly built servers that contain just a SysAdmins SSH public key.
+The Goal A repeatable and documented way to deploy the very finicky Puppet installer in any environment needed from local vagrants to the clouds of vSphere, AWS, RackSpace or Digital Ocean.</description>
     </item>
     
     <item>
@@ -1126,68 +112,10 @@ db_root_pass: arandompasswordthatneedschangedhere
       <pubDate>Tue, 01 Apr 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_goaccess_to_parse_webserver_logs/</guid>
-      <description>
-
-&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
-
-&lt;p&gt;Need the ability to track web traffic for a specific hours worth of logs.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-solution&#34;&gt;The Solution&lt;/h1&gt;
-
-&lt;p&gt;Using GoAccess to parse Apache logs that are rotated into hour chunks.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
-
-&lt;p&gt;Install GoAccess to parse webserver logs.  Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers.  Keep it simple by rotating logs on the hour.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;GoAccess - &lt;a href=&#34;https://github.com/allinurl/goaccess/&#34;&gt;real-time web log analyzer - allinurl/goaccess&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Ansible - &lt;a href=&#34;http://docs.ansible.com/&#34;&gt;Ansible Docs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Apache rotatelogs - &lt;a href=&#34;https://httpd.apache.org/docs/2.2/programs/rotatelogs.html&#34;&gt;Hourly Rotated WebServer Logs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com/?refcode=980586449ebd&#34;&gt;My referral link, thanks!&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;TugBoat - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;CLI for DO - pearkes/tugboat&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;ansible-playbook-install-goaccess&#34;&gt;Ansible Playbook - Install GoAccess&lt;/h1&gt;
-
-&lt;p&gt;Create the GoAccess Playbook.  This installs GoAccess using Apt on Debian.&lt;/p&gt;
-
-&lt;script src=&#34;https://gist.github.com/e30chris/9929303.js&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;Run the playbook with Ansible.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible-playbook ~/playbooks/goaccess/goaccess.yml -vvvv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;goaccess-usage&#34;&gt;GoAccess Usage&lt;/h1&gt;
-
-&lt;p&gt;Now that GoAccess is installed on the server we can login and parse the webserver logs.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.log
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;GoAccess now parses the log and outputs the results in a configurable format.  You can also export the results into various file formats.&lt;/p&gt;
-
-&lt;p&gt;Here is a screenshot that shows how many times an IP has hit the webserver.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://s3.amazonaws.com/sandorssystemsscribbles/GoAccessScreen.png&#34; alt=&#34;goscreen&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To keep it simple install Apache rotatelog and set the logs to rollover on the hour.  Then GoAccess can parse the logs by the hour.&lt;/p&gt;
-
-&lt;p&gt;Apache rotatelog setting for hourly logs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CustomLog &amp;quot;|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600&amp;quot; common
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Parsing a specific hours logs with GoAccess&lt;/p&gt;
-
-&lt;p&gt;Example - Logs for 8am April, 2 2014.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.2014-04-02-08
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem Need the ability to track web traffic for a specific hours worth of logs.
+The Solution Using GoAccess to parse Apache logs that are rotated into hour chunks.
+The Goal Install GoAccess to parse webserver logs. Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers. Keep it simple by rotating logs on the hour.
+The Links  GoAccess - real-time web log analyzer - allinurl/goaccess Ansible - Ansible Docs Apache rotatelogs - Hourly Rotated WebServer Logs Digital Ocean - My referral link, thanks!</description>
     </item>
     
     <item>
@@ -1196,92 +124,8 @@ db_root_pass: arandompasswordthatneedschangedhere
       <pubDate>Wed, 12 Mar 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/dogecoin_mining_on_digital_ocean/</guid>
-      <description>
-
-&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
-
-&lt;p&gt;Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://dl.dropboxusercontent.com/u/6735750/dogecoinsuchlogo.png&#34; alt=&#34;doge&#34; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Dogecoin - &lt;a href=&#34;http://dogecoin.com/&#34;&gt;very link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;/r/dogecoin - &lt;a href=&#34;http://www.reddit.com/r/dogecoin&#34;&gt;so reddit&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;/r/dogemining - &lt;a href=&#34;http://www.reddit.com/r/dogemining&#34;&gt;many mines&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Dogecoin Mining Pools - &lt;a href=&#34;http://www.doktorrf.com/dogecoin/pools.html&#34;&gt;much swim&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Dogecoin Resources - &lt;a href=&#34;https://github.com/ummjackson/dogecoin-resources&#34;&gt;sources&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Dogecoin Foundation - &lt;a href=&#34;http://foundation.dogecoin.com/&#34;&gt;now found&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com&#34;&gt;awesome drops&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;TugBoat - &lt;a href=&#34;https://www.digitalocean.com/community/articles/how-to-use-tugboat-to-manage-digitalocean-droplets-from-a-terminal&#34;&gt;command line ocean&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;create-a-droplet&#34;&gt;Create a droplet&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo&amp;gt; tugboat create lucydoge -s 62 -i 308287 -r 3 -k 44888
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;Name:             lucydoge
-Status:           active
-Region ID:        3
-Image ID:         308287
-Size ID:          62
-Backups Active:   false
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;create-user&#34;&gt;Create user&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;root@lucydoge:~# history
-root@lucydoge:~# ls -al
-root@lucydoge:~# useradd -m lucy
-root@lucydoge:~# passwd lucy
-root@lucydoge:~# adduser lucy sudo
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;update-debian&#34;&gt;Update Debian&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;root@lucydoge:~# apt-get -y update &amp;amp;&amp;amp; apt-get -y upgrade
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;install-screen&#34;&gt;Install Screen&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;root@lucydoge:~# apt-get install screen
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;install-a-cpu-miner&#34;&gt;Install a CPU Miner&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;root@lucydoge:~# sudo apt-get install git build-essential autotools-dev libcurl4-gnutls-dev autoconf automake
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# mkdir ~/miner2049er
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# cd miner2049er
-lucy@lucydoge:~# git clone https://github.com/pooler/cpuminer.git
-lucy@lucydoge:~# cd cpuminer
-lucy@lucydoge:~# ./autogen.sh
-lucy@lucydoge:~# CFLAGS=&amp;quot;-O3 -Wall -msse2&amp;quot; ./configure
-lucy@lucydoge:~# make
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;find-a-mining-pool&#34;&gt;Find a Mining Pool&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.doktorrf.com/dogecoin/pools.html&#34;&gt;Mining Pools&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Create a new address for mining deposits&lt;/li&gt;
-&lt;li&gt;Add that mining address to your pool profile&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;start-mining&#34;&gt;Start mining&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;lucy@lucydoge:~# ./minerd --url stratum+tcp://server:port --userpass worker.name:password
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;enjoy much coins&lt;/p&gt;
-</description>
+      <description>The Goal Create a droplet on Digital Ocean to mine Dogecoins so fun much profits.
+The Links  Dogecoin - very link /r/dogecoin - so reddit /r/dogemining - many mines Dogecoin Mining Pools - much swim Dogecoin Resources - sources Dogecoin Foundation - now found Digital Ocean - awesome drops TugBoat - command line ocean  Create a droplet sandor@argo&amp;gt; tugboat create lucydoge -s 62 -i 308287 -r 3 -k 44888  Name: lucydoge Status: active Region ID: 3 Image ID: 308287 Size ID: 62 Backups Active: false  Create user root@lucydoge:~# history root@lucydoge:~# ls -al root@lucydoge:~# useradd -m lucy root@lucydoge:~# passwd lucy root@lucydoge:~# adduser lucy sudo  Update Debian root@lucydoge:~# apt-get -y update &amp;amp;&amp;amp; apt-get -y upgrade  Install Screen root@lucydoge:~# apt-get install screen  Install a CPU Miner root@lucydoge:~# sudo apt-get install git build-essential autotools-dev libcurl4-gnutls-dev autoconf automake  lucy@lucydoge:~# mkdir ~/miner2049er  lucy@lucydoge:~# cd miner2049er lucy@lucydoge:~# git clone https://github.</description>
     </item>
     
     <item>
@@ -1290,96 +134,8 @@ lucy@lucydoge:~# make
       <pubDate>Fri, 20 Dec 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_oscar_to_build_a_local_puppet_environment_with_vagrant/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Install Oscar&lt;/li&gt;
-&lt;li&gt;Use Oscar to build a local PuppetMaster &amp;amp; Agent config&lt;/li&gt;
-&lt;li&gt;Use Vagrant to start the PuppetMaster &amp;amp; Agent&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;VirtualBox - &lt;a href=&#34;https://www.virtualbox.org/wiki/Downloads&#34;&gt;https://www.virtualbox.org/wiki/Downloads&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Vagrant - Oscar works with Vagrant version 1.3.4 - &lt;a href=&#34;http://downloads.vagrantup.com/tags/v1.3.4&#34;&gt;http://downloads.vagrantup.com/tags/v1.3.4&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Oscar - &lt;a href=&#34;https://github.com/adrienthebo/oscar&#34;&gt;https://github.com/adrienthebo/oscar&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant plugin install oscar
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;add-a-vagrant-box&#34;&gt;Add a Vagrant Box&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;What that does:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant box add boxName http://url.box
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Downloads the .box file to the Vagrant boxes directory&lt;/li&gt;
-&lt;li&gt;nocm = No &amp;ldquo;configuration management&amp;rdquo; installed&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;create-a-vagrant-environment-with-oscar&#34;&gt;Create a Vagrant environment with Oscar&lt;/h2&gt;
-
-&lt;p&gt;Give Vagrant a Puppet Enterprise installer location &amp;amp; version.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vim config/pe_build.yaml
-
----
- pe_build:
-   version: &amp;quot;3.1.3&amp;quot;
-   #download_root: &#39;http://s3.amazonpebucket.com&#39;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Set the download_root or manually add the installer with&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant pe-build copy puppet-enterprise-3.1.3-el-6-x86_64.tar.gz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant oscar init
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant oscar init-vms \
-                   --master master=centosPupLabs \
-                   --agent firstagent=centosPupLabs
-                   --agent secondagent=centosPupLabs
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant up
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;What that does:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Creates a Vagrantfile that is customized by Oscar&lt;/li&gt;
-&lt;li&gt;Adds a PuppetMaster and 2 agents to the Vagrant environment&lt;/li&gt;
-&lt;li&gt;Uses the PuppetLabs Centos box as the OS for all 3 VMsgs&lt;/li&gt;
-&lt;li&gt;Starts the group of VMs&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;login-to-the-vms&#34;&gt;Login to the VMs&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineApplez&amp;gt; vagrant ssh master
-sandor@pineApplez&amp;gt; vagrant ssh firstagent
-sandor@pineApplez&amp;gt; vagrant ssh secondagent
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;3 running VMs with a PuppetMaster and 2 agents&lt;/li&gt;
-&lt;li&gt;Both Agents are authenticated with the Master&lt;/li&gt;
-&lt;li&gt;You can now run your Puppet code&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>The Goal  Install Oscar Use Oscar to build a local PuppetMaster &amp;amp; Agent config Use Vagrant to start the PuppetMaster &amp;amp; Agent  Install  VirtualBox - https://www.virtualbox.org/wiki/Downloads Vagrant - Oscar works with Vagrant version 1.3.4 - http://downloads.vagrantup.com/tags/v1.3.4 Oscar - https://github.com/adrienthebo/oscar  sandor@pineApplez&amp;gt; vagrant plugin install oscar  Add a Vagrant Box sandor@pineApplez&amp;gt; vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box  What that does:
+sandor@pineApplez&amp;gt; vagrant box add boxName http://url.box   Downloads the .</description>
     </item>
     
     <item>
@@ -1388,71 +144,8 @@ sandor@pineApplez&amp;gt; vagrant ssh secondagent
       <pubDate>Tue, 17 Dec 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_vagrant_on_windows/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Install and configure VirtualBox &amp;amp; Vagrant on your Windows dev box&lt;/li&gt;
-&lt;li&gt;Download and start a Linux &amp;amp; Windows Vagrant Box.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;VirtualBox - &lt;a href=&#34;https://www.virtualbox.org/wiki/Downloads&#34;&gt;https://www.virtualbox.org/wiki/Downloads&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Vagrant - &lt;a href=&#34;http://www.vagrantup.com/downloads&#34;&gt;http://www.vagrantup.com/downloads&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Download the .msi&lt;/li&gt;
-&lt;li&gt;Right click and &lt;code&gt;Install as Administrator&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;add-a-vagrant-box&#34;&gt;Add a Vagrant Box&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Open a Command Prompt and &lt;code&gt;Run as Administrator&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;C:\Windows\system32\&amp;gt;vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;What that does:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;C:\Windows\system32\&amp;gt;vagrant box add boxName http://url.box
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Downloads the .box file to the Vagrant boxes directory&lt;/li&gt;
-&lt;li&gt;nocm = No &amp;ldquo;configuration management&amp;rdquo; installed&lt;/li&gt;
-&lt;li&gt;We will use a Vagrant plugin called Oscar to install and configure the PuppetMaster and Agent in a separate post.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;start-the-vagrant-box&#34;&gt;Start the Vagrant Box&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant init centosPupLabs
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant up
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;C:\stuff\vagrants\&amp;gt;vagrant ssh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;What that does:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Tells Vagrant to write a VagrantConfig file in &lt;code&gt;C:\stuff\vagrants\&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Vagrant then boots the centosPupLabs VirtualBox machine&lt;/li&gt;
-&lt;li&gt;SSH into the VM
-
-&lt;ul&gt;
-&lt;li&gt;Must have Cygwin or Git installed&lt;/li&gt;
-&lt;li&gt;You can also use PuTTY&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>The Goal  Install and configure VirtualBox &amp;amp; Vagrant on your Windows dev box Download and start a Linux &amp;amp; Windows Vagrant Box.  Install  VirtualBox - https://www.virtualbox.org/wiki/Downloads Vagrant - http://www.vagrantup.com/downloads  Download the .msi Right click and Install as Administrator   Add a Vagrant Box  Open a Command Prompt and Run as Administrator  C:\Windows\system32\&amp;gt;vagrant box add centosPupLabs http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box  What that does:
+C:\Windows\system32\&amp;gt;vagrant box add boxName http://url.</description>
     </item>
     
     <item>
@@ -1461,70 +154,8 @@ sandor@pineApplez&amp;gt; vagrant ssh secondagent
       <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/vpn_setup_macbook_to_openvpn_server_using_tunnelblick/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Get MacBook to connect to a OpenVPN Server&lt;/li&gt;
-&lt;li&gt;Install Tunnelblick to make that happen&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;setup-the-openvpn-server&#34;&gt;Setup the OpenVPN Server&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Follow this - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws/&#34;&gt;sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;install-tunnelblick&#34;&gt;Install Tunnelblick&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://code.google.com/p/tunnelblick/&#34;&gt;Tunnelblick Google Code&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;download-openvpn-client-config-file&#34;&gt;Download OpenVPN Client Config file&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Goto OpenVPN web client&lt;/li&gt;
-&lt;li&gt;Login with new user&lt;/li&gt;
-&lt;li&gt;Choose to download cert&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;modify-client-config-file-for-tunnelblick&#34;&gt;Modify Client Config File for Tunnelblick&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Create a folder for the new config / VPN connection&lt;/li&gt;
-&lt;li&gt;The $vpnname.tblk folder is where that VPN connection is saved&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; mkdir -p ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Copy the .ovpn client config file to that directory&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineAplez&amp;gt; cp ~/Downloads/client.ovpn ~/Library/Application\ Support/Tunnelblick/Configurations/argovoyage.tblk/Contents/Resources/.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;start-tunnelblick&#34;&gt;Start Tunnelblick&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Choose VPN from the tunnel&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-test&#34;&gt;The Test&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Verify IP using Tunnelblick&lt;/li&gt;
-&lt;li&gt;Verify IP with Tunnelblick off&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://ipchicken.com/&#34;&gt;IP Chicken&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-result&#34;&gt;The Result&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Using a VPN your nets are safe from all prying eyes except the NSAs&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>The Goal  Get MacBook to connect to a OpenVPN Server Install Tunnelblick to make that happen  Setup the OpenVPN Server  Follow this - sandorsscribbl.es/vpn-setup-openvpn-server-deploy-on-aws  Install Tunnelblick Tunnelblick Google Code
+Download OpenVPN Client Config file  Goto OpenVPN web client Login with new user Choose to download cert  Modify Client Config File for Tunnelblick  Create a folder for the new config / VPN connection The $vpnname.</description>
     </item>
     
     <item>
@@ -1533,195 +164,111 @@ sandor@pineApplez&amp;gt; vagrant ssh secondagent
       <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/vpn_setup_openvpn_server_deploy_on_aws/</guid>
-      <description>
-
-&lt;h2 id=&#34;the-goal&#34;&gt;The Goal&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Deploy an OpenVPN Server on AWS&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;launch-the-openvpn-access-server-ami&#34;&gt;Launch the OpenVPN Access Server AMI&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Set AMI to VPC network&lt;/li&gt;
-&lt;li&gt;Auto Assign Public Static IP&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ami-ids&#34;&gt;AMI ids&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;AMI Location&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;ami id&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;US East (Virginia)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-ff6b3096&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;US West (Oregon)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-c8039bf8&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;US West (N California)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-6c0b3d29&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;EU West (Ireland)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-89d83afe&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Asia Pacific (Singapore)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-3c9bce6e&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Asia Pacific (Tokyo)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-172d4916&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Asia Pacific (Sydney)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-db73efe1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;South America (Sao Paulo)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ami-6d4ee870&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;set-user-data&#34;&gt;Set user-data&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;Key&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;public_hostname&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;hostname that clients should use to contact the server&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;admin_user (default=openvpn)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Access Server administrative account name&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;license&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Access Server license key &lt;em&gt;without a license key only 2 connections allowed&lt;/em&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;reroute_gw default=0&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;if 1, clients will route internet traffic through the VPN&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;reroute_dns default=0&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;if 1, clients will route DNS queries through the VPN&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;set-new-security-group&#34;&gt;Set New Security Group&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;Protocol&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;Type&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;Port&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;Source&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;Role&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;SSH&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;22&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Linux Access&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;HTTPS&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;443&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;OpenVPN Client Web Server&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Custom TCP Rule&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TCP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;943&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;OpenVPN Web UI&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Custom UDP Rule&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;UDP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1194&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Anywhere 0.0.0.0/0&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Initiate UDP based VPN sessions&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;configure-openvpn-server&#34;&gt;Configure OpenVPN Server&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; ovpn-init
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;access-client-website&#34;&gt;Access Client Website&lt;/h2&gt;
-
-&lt;p&gt;https://&amp;ldquo;aws public ip&amp;rdquo;:943/admin/&lt;/p&gt;
-
-&lt;h2 id=&#34;change-default-openvpn-admin-password&#34;&gt;Change default OpenVPN Admin Password&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; passwd &#39;admin user set in user-data&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;add-a-new-vpn-user&#34;&gt;Add a new VPN user&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;spudBud@pineApplez&amp;gt; useradd sandor
-spudBud@pineApplez&amp;gt; passwd sandor
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Login with new user account to web to download client config files.&lt;/p&gt;
-
-&lt;p&gt;https://&amp;ldquo;aws public ip&amp;rdquo;:943/&lt;/p&gt;
-
-&lt;h2 id=&#34;configure-vpn-client&#34;&gt;Configure VPN client&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacBook - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick/&#34;&gt;sandorsscribbl.es/vpn-setup-macbook-to-openvpn-server-using-tunnelblick&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Fedora  - &lt;a href=&#34;http://sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server/&#34;&gt;sandorsscribbl.es/vpn-setup-fedora-to-openvpn-server&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;the-result&#34;&gt;The result&lt;/h2&gt;
-
-&lt;p&gt;A running OpenVPN Server that you can connect a MacBook or Linux box too.&lt;/p&gt;
-</description>
+      <description>The Goal  Deploy an OpenVPN Server on AWS  Launch the OpenVPN Access Server AMI  Set AMI to VPC network Auto Assign Public Static IP  AMI ids    AMI Location ami id     US East (Virginia) ami-ff6b3096   US West (Oregon) ami-c8039bf8   US West (N California) ami-6c0b3d29   EU West (Ireland) ami-89d83afe   Asia Pacific (Singapore) ami-3c9bce6e   Asia Pacific (Tokyo) ami-172d4916   Asia Pacific (Sydney) ami-db73efe1   South America (Sao Paulo) ami-6d4ee870    Set user-data    Key Value     public_hostname hostname that clients should use to contact the server   admin_user (default=openvpn) Access Server administrative account name   license Access Server license key without a license key only 2 connections allowed   reroute_gw default=0 if 1, clients will route internet traffic through the VPN   reroute_dns default=0 if 1, clients will route DNS queries through the VPN    Set New Security Group    Protocol Type Port Source Role     SSH TCP 22 Anywhere 0.</description>
+    </item>
+    
+    <item>
+      <title>Add WebProxy Cert to Fedora</title>
+      <link>https://theargo.io/post/add_webproxy_cert_to_fedora/</link>
+      <pubDate>Fri, 29 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/add_webproxy_cert_to_fedora/</guid>
+      <description>The Goal  Make Fedora work behind a restrictive idiotic corporate web proxy Install a corporate cert to make that happen  Get the cert Install the cert spudBud@pineApplez&amp;gt; openssl x509 -text -in /path/to/proxycert.crt &amp;gt;&amp;gt; /etc/pki/tls/certs/ca-bundle.crt  The result Your corporate overlord has now man in the middled your personal gmail, have fun.</description>
+    </item>
+    
+    <item>
+      <title>Add Twitter Bootstrap 3 to OctoPress with OctoStrap3</title>
+      <link>https://theargo.io/post/add_twitter_bootstrap_3_to_octopress_with_octostrap3/</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/add_twitter_bootstrap_3_to_octopress_with_octostrap3/</guid>
+      <description>The Goal  Use awesome Twitter Bootstrap 3 on Octopress Setup OctoStrap3 to do that  The Links OctoPress - link
+OctoStrap3 - link
+Octopress Setup Go here and do all of that
+OctoStrap3 Setup Instructions here
+From the base OctoPress dir
+spudBud@pineApplez&amp;gt; git clone https://github.com/kAworu/octostrap3 .themes/octostrap3 spudBud@pineApplez&amp;gt; rake &amp;quot;install[octostrap3]&amp;quot;  Category List Aside Add a category list html page to source/_includes/custom/asides
+{% gist 7669102 %}
+Add the new aside in the _config.</description>
+    </item>
+    
+    <item>
+      <title>Add Twitter Timeline to OctoPress Sidebar</title>
+      <link>https://theargo.io/post/add_twitter_timeline_to_octopress_sidebar/</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/add_twitter_timeline_to_octopress_sidebar/</guid>
+      <description>The Goal  Add a Twitter timeline to the sidebar of an Octopress blog  The links Octopress - link
+Acqui-hire.me - link
+Create a Twitter widget Goto the Twitter widget settings page here and create your timeline.
+Twitter Aside Add a twitter html page to source/_include/custom/asides
+{% gist 7669257 %}
+Add that aside in your _config.yml
+# list each of the sidebar modules you want to include, in the order you want them to appear.</description>
+    </item>
+    
+    <item>
+      <title>Auto Update VirtualBox Guest Additions with vagrant-vbguest</title>
+      <link>https://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/auto_update_virtualbox_guest_additions_with_vagrant_vbguest/</guid>
+      <description>The Goal  Keep the VirtualBox guest additions at the latest version using vagrant-vbguest built by dotless-de.  The Links  Vagrant - link
+ Vagrant vbguest - link
+ dotless-de - link
+  vagrant-vbguest A beautifully simple Vagrant plugin to manage the guest additions on VirtualBox.
+install spudBud@pineApplez&amp;gt; ~/Codestuff/vagrants/PuppetMaster $vagrant plugin install vagrant-vbguest  bootup usage vagrant-vbguest will run on every vagrant up or on a vagrant reload unless you specifically tell it not to.</description>
+    </item>
+    
+    <item>
+      <title>Post to octopress and deploy to Github pages</title>
+      <link>https://theargo.io/post/post_to_octopress_and_deploy_to_github_pages/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/post_to_octopress_and_deploy_to_github_pages/</guid>
+      <description>The Goal Use Jekyll &amp;amp; octopress to post to Sandors Systems Scribbles which is hosted on GitHub Pages (where you are now)
+not anymore, Sandors HowTo notebook has been moved to Amazon AWS
+The Links  Jekyll - link
+ OctoPress - link
+ GitHub Pages - link
+  Create a new post pineApplez&amp;gt;e30chris.github.io $rake new_post Enter a title for your post: post to octopress and deploy to github pages mkdir -p source/_posts Creating new post: source/_posts/2013-11-12-post-to-octopress-and-deploy-to-github-pages.</description>
+    </item>
+    
+    <item>
+      <title>Puppet vim setup</title>
+      <link>https://theargo.io/post/puppet_vim_setup/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/puppet_vim_setup/</guid>
+      <description>The Goal Setup vim to edit Puppet Manifests using a few good tools that will get you to pass Puppet Lint tests.
+The Links  PuppetLabs - link
+ vim-puppet - link
+ vim tabular - link
+ vim syntastic - link
+  Vim-Pathogen Vim-Pathogen on github
+[root@Argon ~]# mkdir -p ~/.vim/autoload ~/.vim/bundle [root@Argon ~]# cd ~/.vim/autoload [root@Argon ~]# curl -o pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim  Add these settings to .</description>
+    </item>
+    
+    <item>
+      <title>Vanilla Vagrant Setup</title>
+      <link>https://theargo.io/post/vanilla_vagrant_setup/</link>
+      <pubDate>Tue, 12 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/vanilla_vagrant_setup/</guid>
+      <description>The Goal  Setup Vagrant Start a Vanilla Ubuntu box  The Links  Vagrant - link  Vagrant Setup Grab the latest here Install it Thats it Adding Boxes When you add a box to your local puter it downloads the VM image to your home dir like so:
+vagrant box add name url  spudBud@pineApplez&amp;gt; vagrant box add precise32 http://files.vagrantup.com/precise32.box  This downloads the VM image into the /boxes dir:</description>
+    </item>
+    
+    <item>
+      <title>Ansible on RedHat 5.x</title>
+      <link>https://theargo.io/post/ansible_on_redhat_5_dot_x/</link>
+      <pubDate>Tue, 03 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://theargo.io/post/ansible_on_redhat_5_dot_x/</guid>
+      <description> The problem Older Pythons that live on older RedHats do not have json support. Old corporations still use old OS&amp;rsquo;es like RedHat 5.x but need to use modern configuration management tools like Ansible.
+The goal Enable RedHat 5.x systems to run Ansible by installing json support on Python 2.4.
+HowTo Using Ansible Raw
+sandor@pineapplez:$ ansible -i hosts all -m raw -a &amp;quot;yum -y install python-simplejson&amp;quot;  </description>
     </item>
     
   </channel>

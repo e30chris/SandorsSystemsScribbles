@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sandors Systems Scribbles</title>
-    <link>https://theargo.io/tags/go/index.xml</link>
-    <description>Recent content on Sandors Systems Scribbles</description>
+    <title>Go on Sandors Systems Scribbles</title>
+    <link>https://theargo.io/tags/go/</link>
+    <description>Recent content in Go on Sandors Systems Scribbles</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="https://theargo.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>&amp;copy; 2017. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 01 Apr 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://theargo.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Using GoAccess to parse webserver logs</title>
@@ -14,68 +17,10 @@
       <pubDate>Tue, 01 Apr 2014 00:00:00 +0000</pubDate>
       
       <guid>https://theargo.io/post/using_goaccess_to_parse_webserver_logs/</guid>
-      <description>
-
-&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
-
-&lt;p&gt;Need the ability to track web traffic for a specific hours worth of logs.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-solution&#34;&gt;The Solution&lt;/h1&gt;
-
-&lt;p&gt;Using GoAccess to parse Apache logs that are rotated into hour chunks.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-goal&#34;&gt;The Goal&lt;/h1&gt;
-
-&lt;p&gt;Install GoAccess to parse webserver logs.  Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers.  Keep it simple by rotating logs on the hour.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-links&#34;&gt;The Links&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;GoAccess - &lt;a href=&#34;https://github.com/allinurl/goaccess/&#34;&gt;real-time web log analyzer - allinurl/goaccess&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Ansible - &lt;a href=&#34;http://docs.ansible.com/&#34;&gt;Ansible Docs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Apache rotatelogs - &lt;a href=&#34;https://httpd.apache.org/docs/2.2/programs/rotatelogs.html&#34;&gt;Hourly Rotated WebServer Logs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Digital Ocean - &lt;a href=&#34;https://www.digitalocean.com/?refcode=980586449ebd&#34;&gt;My referral link, thanks!&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;TugBoat - &lt;a href=&#34;https://github.com/pearkes/tugboat&#34;&gt;CLI for DO - pearkes/tugboat&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;ansible-playbook-install-goaccess&#34;&gt;Ansible Playbook - Install GoAccess&lt;/h1&gt;
-
-&lt;p&gt;Create the GoAccess Playbook.  This installs GoAccess using Apt on Debian.&lt;/p&gt;
-
-&lt;script src=&#34;https://gist.github.com/e30chris/9929303.js&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;Run the playbook with Ansible.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@pineapplez:$ ansible-playbook ~/playbooks/goaccess/goaccess.yml -vvvv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;goaccess-usage&#34;&gt;GoAccess Usage&lt;/h1&gt;
-
-&lt;p&gt;Now that GoAccess is installed on the server we can login and parse the webserver logs.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.log
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;GoAccess now parses the log and outputs the results in a configurable format.  You can also export the results into various file formats.&lt;/p&gt;
-
-&lt;p&gt;Here is a screenshot that shows how many times an IP has hit the webserver.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://s3.amazonaws.com/sandorssystemsscribbles/GoAccessScreen.png&#34; alt=&#34;goscreen&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To keep it simple install Apache rotatelog and set the logs to rollover on the hour.  Then GoAccess can parse the logs by the hour.&lt;/p&gt;
-
-&lt;p&gt;Apache rotatelog setting for hourly logs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CustomLog &amp;quot;|bin/rotatelogs -l /var/log/apache2.%Y-%m-%d-%H 3600&amp;quot; common
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Parsing a specific hours logs with GoAccess&lt;/p&gt;
-
-&lt;p&gt;Example - Logs for 8am April, 2 2014.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sandor@argo:/var/log/apache2$ goaccess -f apache2.2014-04-02-08
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>The Problem Need the ability to track web traffic for a specific hours worth of logs.
+The Solution Using GoAccess to parse Apache logs that are rotated into hour chunks.
+The Goal Install GoAccess to parse webserver logs. Use Ansible Playbooks for the installation, configuration and for re-usabilty of GoAccess on other servers. Keep it simple by rotating logs on the hour.
+The Links  GoAccess - real-time web log analyzer - allinurl/goaccess Ansible - Ansible Docs Apache rotatelogs - Hourly Rotated WebServer Logs Digital Ocean - My referral link, thanks!</description>
     </item>
     
   </channel>

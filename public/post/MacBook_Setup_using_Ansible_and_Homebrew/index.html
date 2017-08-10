@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.17" />
+  <meta name="generator" content="Hugo 0.26" />
 
   <title>MacBook Setup Using Ansible and Homebrew &middot; Sandors Systems Scribbles</title>
 
@@ -68,12 +68,6 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
-      
-        </li>
-      
-      
-        <li class="pure-menu-item">
           <a class="pure-menu-link" href="https://theargo.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
       
         </li>
@@ -81,6 +75,12 @@
       
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="https://theargo.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://theargo.io/"><i class='fa fa-home fa-fw'></i>Home</a>
       
         </li>
       
@@ -138,7 +138,7 @@
 
   <div>
   <div class="small-print">
-    <small>&copy; 2016. All rights reserved.</small>
+    <small>&copy; 2017. All rights reserved.</small>
   </div>
   <div class="small-print">
     <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
@@ -234,32 +234,32 @@
 
 <p>Run the script once verified that you know what it will be doing:</p>
 
-
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">ruby -e <span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
+</pre></div>
 
 
 <p>Verify Homebrew is correct:</p>
 
-
-sandor@pineApplez$ brew doctor
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>brew doctor
+</pre></div>
 
 
 <h4 id="install-ansible-via-homebrew">Install Ansible via Homebrew</h4>
 
 <p>Installing the latest from dev:</p>
 
-
-sandor@pineApplez$ brew install ansible --HEAD
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>brew install ansible --HEAD
+</pre></div>
 
 
 <h4 id="github-authenticated">GitHub Authenticated</h4>
 
-
-sandor@pineApplez$ git config --global user.name "sandor"
-sandor@pineApplez$ git config --global user.email "chris@e30chris.me"
-sandor@pineApplez$ ssh-keygen -t rsa -b 4096 -C "sandor@macbook"
-sandor@pineApplez$ ssh-add ~/.ssh/id_rsa
-sandor@pineApplez$ pbcopy < ~/.ssh/id_rsa.pub
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>git config --global user.name <span style="color: #e6db74">&quot;sandor&quot;</span>
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>git config --global user.email <span style="color: #e6db74">&quot;chris@e30chris.me&quot;</span>
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>ssh-keygen -t rsa -b <span style="color: #ae81ff">4096</span> -C <span style="color: #e6db74">&quot;sandor@macbook&quot;</span>
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>ssh-add ~/.ssh/id_rsa
+sandor@pineApplez<span style="color: #f8f8f2">$ </span>pbcopy &lt; ~/.ssh/id_rsa.pub
+</pre></div>
 
 
 <p>Add your SSH Public Key to GitHub -&gt; Settings.</p>
@@ -280,8 +280,8 @@ sandor@pineApplez$ pbcopy < ~/.ssh/id_rsa.pub
 
 <p>Download:</p>
 
-
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
+</pre></div>
 
 
 <p>Edit:</p>
@@ -292,14 +292,14 @@ sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Cod
 
 <p>Run:</p>
 
-
-sandor@pineApplez$ ansible-playbook -i hosts site.yml --ask-sudo-pass
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>ansible-playbook -i hosts site.yml --ask-sudo-pass
+</pre></div>
 
 
 <p>Then run the .dotfiles bootstrap script</p>
 
-
-sandor@pineApplez$ ~/.dotfiles/script/bootstrap
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%">sandor@pineApplez<span style="color: #f8f8f2">$ </span>~/.dotfiles/script/bootstrap
+</pre></div>
 
 
 <p>Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.</p>
@@ -309,13 +309,13 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
 <div class="prev-next-post pure-g">
   <div class="pure-u-1-24" style="text-align: left;">
     
-    <a href="https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/"><i class="fa fa-chevron-left"></i></a>
+    <a href="https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/"><i class="fa fa-chevron-left"></i></a>
     
   </div>
   <div class="pure-u-10-24">
     
     <nav class="prev">
-      <a href="https://theargo.io/post/Deploy_AWS_Redshift_into_a_dedicated_VPC_on_the_EC2_VPC_platform/">Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</a>
+      <a href="https://theargo.io/post/deploy_aws_redshift_into_a_dedicated_vpc_on_the_ec2_vpc_platform/">Deploy AWS Redshift into a dedicated VPC on the EC2-VPC platform</a>
     </nav>
     
   </div>
@@ -325,13 +325,13 @@ sandor@pineApplez$ ~/.dotfiles/script/bootstrap
   <div class="pure-u-10-24">
     
     <nav class="next">
-      <a href="https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/">Configure new servers with the basics via Ansible</a>
+      <a href="https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/">Configure new servers with the basics via Ansible</a>
     </nav>
     
   </div>
   <div class="pure-u-1-24" style="text-align: right;">
     
-    <a href="https://theargo.io/post/Configure_new_servers_with_the_basics_via_Ansible/"><i class="fa fa-chevron-right"></i></a>
+    <a href="https://theargo.io/post/configure_new_servers_with_the_basics_via_ansible/"><i class="fa fa-chevron-right"></i></a>
     
   </div>
 </div>
