@@ -1,117 +1,57 @@
 ---
-title: "MacBook Setup Using Ansible and Homebrew"
-date: "2015-05-18"
-tags: [ "ansible", "mac", "homebrew"]
-categories: [ "ansible" ]
+title: "Git push to two remotes"
+date: "2017-08-10"
+tags: [ "git", "github", "gitlab"]
+categories: [ "git" ]
 image: ""
 ---
 
 ## The Problem:
-You have a brand new fresh install of OSX on your MacBook and you need to get up and running.  You want all your apps installed using Homebrew & Cask and OSX setup with goodies like zsh and .dotfiles.
+Need a way to share code hosted in a private GitLab repo publicly on GitHub.
 
 ## The solution:
-Use Ansible to deploy CLI apps via Homebrew and GUI Apps via Cask.  Then have Ansible setup the shell with zsh and .dotfiles that are pulled from a GitHub repo.
-
-
-[GitHub - e30chris/Ansible-MacDeploy](https://github.com/e30chris/Ansible-MacDeploy)
-
+Use a second Git remote to share a private Git repo publicly on GitHub.
 
 ### Backstory:
-Everything infrastructure is code according to proper DevOps and the MacBook that is the control center for that DevOps is certainly going to be setup using code as much as possible.
-
-### ToDo:
-  - Bring in OSX user settings like desktop backgrounds and other System Preferences.
+GitLab with its free unlimited private repository hosting and CiCd services offers a great place to host Git repos and build code.  GitHub is the defacto home of Open Source code repositories and is also a great way to add to a resume by sharing projects publicly.
 
 ---
 
 ### Pre-Requisites:
-  - Fresh OSX install
-  - Homebrew installed
-  - Ansible installed via Homebrew
-  - GitHub Authenticated
-  - GitHub API token set
-  - .dotfiles forked and customized to your liking
+  - [GitLab](https://gitlab.com) account
+  - [GitHub](https://github.com) account
+  - Private Git repo hosted on GitLab
+  - Public Git repo hosted on GitHub
 
+### Verify the current remote
 
-#### Fresh OSX Install
-
-[USB install OSX](http://osxdaily.com/2014/10/16/make-os-x-yosemite-boot-install-drive/)
-
-#### Homebrew installed
-
-Follow the SysAdmin Bible and read the script before you run it:
-
-[Github Raw of Homebrew install script](https://raw.githubusercontent.com/Homebrew/install/master/install)
-
-
-Run the script once verified that you know what it will be doing:
+From the GitLab hosted repo:
 
 {{< highlight bash >}}
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-{{< / highlight >}}
+&nbsp;
+sandor@pineApplez$ git remote -v
+origin	git@gitlab.com:e30chris/theargo.io.git (fetch)
+origin	git@gitlab.com:e30chris/theargo.io.git (push)
+&nbsp;
+{{< /highlight >}}
 
-Verify Homebrew is correct:
-
-{{< highlight bash >}}
-sandor@pineApplez$ brew doctor
-{{< / highlight >}}
-
-#### Install Ansible via Homebrew
-
-Installing the latest from dev:
+### Add the second GitHub remote
 
 {{< highlight bash >}}
-sandor@pineApplez$ brew install ansible --HEAD
-{{< / highlight >}}
+&nbsp;
+sandor@pineApplez$ git remote set-url --add --push origin git@github.com:e30chris/SandorsSystemsScribbles.git
+&nbsp;
+{{< /highlight >}}
 
-#### GitHub Authenticated
-
-{{< highlight bash >}}
-sandor@pineApplez$ git config --global user.name "sandor"
-sandor@pineApplez$ git config --global user.email "chris@e30chris.me"
-sandor@pineApplez$ ssh-keygen -t rsa -b 4096 -C "sandor@macbook"
-sandor@pineApplez$ ssh-add ~/.ssh/id_rsa
-sandor@pineApplez$ pbcopy < ~/.ssh/id_rsa.pub
-{{< / highlight >}}
-
-Add your SSH Public Key to GitHub -> Settings.
-
-
-#### GitHub API Token Set
-
-This avoids annoying brew errors on lookups.
-
-[stackoverflow](http://stackoverflow.com/questions/20130681/setting-github-api-token-for-homebrew#20130816)
-
-#### .dotfile forked
-
-[All hail Holmans .dotfiles](https://github.com/holman/dotfiles)
-
-[Explained by Holman](http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/)
-
-
-### Download and run the playbook
-
-Download:
+### Verify the remotes
 
 {{< highlight bash >}}
-sandor@pineApplez$ git clone git@github.com:e30chris/Ansible-MacDeploy.git ~/Codestuff/Ansible/.
-{{< / highlight >}}
+&nbsp;
+sandor@pineApplez$ git remote -v
+origin	git@gitlab.com:e30chris/theargo.io.git (fetch)
+origin	git@github.com:e30chris/SandorsSystemsScribbles.git (push)
+origin	git@gitlab.com:e30chris/theargo.io.git (push)
+&nbsp;
+{{< /highlight >}}
 
-Edit:
-
-  - Set the OSX username that is running the playbook in vars/main.yml
-
-Run:
-
-{{< highlight bash >}}
-sandor@pineApplez$ ansible-playbook -i hosts site.yml --ask-sudo-pass
-{{< / highlight >}}
-
-Then run the .dotfiles bootstrap script
-
-{{< highlight bash >}}
-sandor@pineApplez$ ~/.dotfiles/script/bootstrap
-{{< / highlight >}}
-
-Now go and setup all the OSX pieces that are not easily Ansibilized like the App Store.
+This is using `origin` as the remote name for both GitLab and GitHub.  Using `gitlab` and `github` as the remote names is another possibility and would enable pushing to GitHub only when the project is ready to be published publicly.
